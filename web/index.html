@@ -737,12 +737,12 @@ body[data-theme="light"] #login-btn:disabled{background:#ddd;color:#aaa;}
   font-family:var(--mono);font-size:10px;color:var(--text-bright);
   max-height:88px;overflow:auto;white-space:pre-wrap;
 }
-body.defcon33-mode #tsk-logo{
+body.defcon34-mode #tsk-logo{
   color:#ffd700!important;
   text-shadow:0 0 30px rgba(255,215,0,0.8)!important;
 }
-body.defcon33-mode .header-ticker-text{color:#ffd700;text-shadow:0 0 12px rgba(255,215,0,0.6);}
-body.defcon33-mode .header-title-backdrop{
+body.defcon34-mode .header-ticker-text{color:#ffd700;text-shadow:0 0 12px rgba(255,215,0,0.6);}
+body.defcon34-mode .header-title-backdrop{
   border-left-color:rgba(255,215,0,0.5);
   background:linear-gradient(90deg,rgba(255,215,0,0.2) 0%,transparent 100%);
 }
@@ -1768,7 +1768,7 @@ body.presentation-mode #cmd-input{font-size:14px;}
         <div id="login-subtitle">TSK | THE SKELETON KEY v1.0</div>
         <div id="login-sub-badge">USB HID FRAMEWORK</div>
       </div>
-      <div id="login-edition">DEF CON 33 EDITION</div>
+      <div id="login-edition">DEF CON 34 EDITION</div>
     </div>
     <div id="login-body">
       <div class="login-tabs">
@@ -1938,10 +1938,10 @@ body.presentation-mode #cmd-input{font-size:14px;}
           <div id="logo-text">
             <div id="tsk-logo">TSK</div>
             <div id="logo-tagline-row">
-              <div id="logo-tagline">THE SKELETON KEY &nbsp; v1.0</div>
+              <div id="logo-tagline">THE SKELETON KEY</div>
               <div id="logo-sub2">USB HID FRAMEWORK</div>
             </div>
-            <div id="logo-edition">DEF CON 33 EDITION</div>
+            <div id="logo-edition">DEF CON 34 EDITION</div>
           </div>
         </div>
       </div>
@@ -2290,7 +2290,7 @@ const S = {
   selectedPayload: null,  // set synchronously on click
   deviceConnected: {},
   lastSnarfCatch: null,
-  defcon33: false,
+  defcon34: false,
   presentationMode: false,
   music: { tracks: [], index: 0, loaded: false },
 };
@@ -2730,7 +2730,7 @@ const BOOT_LINES = [
   '  FLASH ENGINE.................... ARMED',
   '  LAN TURTLE SSH MODULE........... READY',
   '  BASH BUNNY MASS STORAGE......... READY',
-  '  DEF CON 33 EDITION.............. ACTIVE',
+  '  DEF CON 34 EDITION.............. ACTIVE',
   '  ALL SYSTEMS NOMINAL',
   '',
   '  WELCOME, OPERATOR.',
@@ -2905,7 +2905,7 @@ function applyConfig(cfg) {
 
 function updateHeaderTicker() {
   const op = (S.currentUser || S.config?._user || S.config?.username || 'operator').trim();
-  const msg = `// TSK | THE SKELETON KEY // PAYLOAD DELIVERY SYSTEM // DEF CON 33 EDITION // WELCOME ${op} //`;
+  const msg = `// TSK | THE SKELETON KEY // PAYLOAD DELIVERY SYSTEM // DEF CON 34 EDITION // WELCOME ${op} //`;
   const a = document.getElementById('header-ticker-a');
   const b = document.getElementById('header-ticker-b');
   if (a) a.textContent = msg;
@@ -3598,7 +3598,7 @@ async function saveField(key) {
               document.querySelector(`input[id="cfg-${key}"]`);
   if (!inp) { toast(`✗ Input not found for ${key}`, 'err'); return; }
   const val = inp.value.trim();
-  if (val.toLowerCase() === 'defcon33') {
+  if (val.toLowerCase() === 'defcon34') {
     triggerDefconEasterEgg();
     inp.value = '';
     return;
@@ -3677,7 +3677,7 @@ async function showAbout() {
     </div>
     <a class="about-github-link" href="${GITHUB_REPO_URL}" target="_blank" rel="noopener">github.com/neur0sp1cy/TSK2</a>
     <div class="about-meta-line">
-      DEF CON 33 · Las Vegas 2026 · ${total} payloads loaded
+      DEF CON 34 · Las Vegas 2026 · ${total} payloads loaded
     </div>
 
     <div class="about-qr-row">
@@ -4633,8 +4633,8 @@ async function loadDeployments() {
 }
 
 function triggerDefconEasterEgg() {
-  S.defcon33 = true;
-  document.body.classList.add('defcon33-mode');
+  S.defcon34 = true;
+  document.body.classList.add('defcon34-mode');
   const logo = document.getElementById('tsk-logo');
   if (logo) {
     logo.style.animation = 'none';
@@ -4644,13 +4644,13 @@ function triggerDefconEasterEgg() {
   window.open('https://defcon.org/', '_blank', 'noopener');
   toast('DEF CON - opening defcon.org', 'ok');
   setTimeout(() => {
-    document.body.classList.remove('defcon33-mode');
+    document.body.classList.remove('defcon34-mode');
     if (logo) {
       logo.style.color = '';
       logo.style.textShadow = '';
       logo.style.animation = 'glitch 8s infinite,flicker 6s infinite';
     }
-    S.defcon33 = false;
+    S.defcon34 = false;
   }, 8000);
 }
 
@@ -5609,7 +5609,7 @@ function onCmd(e) {
   if (raw === 'next') { musicNext(); return; }
   if (raw === 'back') { musicBack(); return; }
   if (raw === 'np' || raw === 'now playing') { musicNp(); return; }
-  if (raw === 'defcon' || raw === 'defcon33') {
+  if (raw === 'defcon' || raw === 'defcon34') {
     triggerDefconEasterEgg();
     return;
   }

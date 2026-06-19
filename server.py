@@ -1233,7 +1233,7 @@ def main():
 \033[1;31m    ██║   ███████║██║  ██╗\033[0m
 \033[1;31m    ╚═╝   ╚══════╝╚═╝  ╚═╝\033[0m
 
-\033[0;37m  TSK | THE SKELETON KEY  \033[1;31mv1.0\033[0m  \033[0;90mDEF CON 33\033[0m
+\033[0;37m  TSK | THE SKELETON KEY  \033[1;31mv1.0\033[0m  \033[0;90mDEF CON 34\033[0m
 
 \033[0;32m  ✓ Server starting on \033[1;37m{local_url}\033[0m
 \033[0;90m    (listening on all interfaces - phone-home reachable on LAN)\033[0m

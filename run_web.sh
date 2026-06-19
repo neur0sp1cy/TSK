@@ -4,7 +4,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo ""
 echo "  TSK | The Skeleton Key  v1.0"
-echo "  DEF CON 33 Edition"
+echo "  DEF CON 34 Edition"
 echo ""
 
 # Install deps if needed and launch directly

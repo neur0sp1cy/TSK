@@ -90,7 +90,7 @@ Prioritized for booth demo and first GitHub visitors. **Must-have** before go-li
 | Hack the Planet overlay | BACKLOG | Text fallback works; add `hacktheplanet.gif` when you have an asset |
 | **Demo preset command** | NOT BUILT | e.g. `demo on` → present + defcon + dismiss LHOST hint (single command for booth) |
 | Editor flash diff view | NOT BUILT | Side-by-side or inline diff before FLASH (VARS panel exists) |
-| Edition year branding | REVIEW | Copy says DEF CON 33; update if you want DC34 for 2026 release |
+| Edition year branding | PASS | DEF CON 34 across UI, README, and server banner |
 | GitHub social preview | | README screenshot or `web/static/` hero for repo Open Graph |
 | CHANGELOG.md | | v1.0.0 release notes for GitHub Release |
 
