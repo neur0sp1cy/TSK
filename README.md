@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="web/static/kofi-header-readme.png" alt="TSK | The Skeleton Key" width="100%">
+  <img src="web/static/TSK-Header.png" alt="TSK | The Skeleton Key" width="100%">
 </p>
 
 # TSK | The Skeleton Key

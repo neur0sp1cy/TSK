@@ -66,7 +66,7 @@ WEB_DIR = Path(__file__).parent / "web"
 STATIC_DIR = WEB_DIR / "static"
 BRANDING_ASSETS = {
     "avatar": ("kofi-avatar-ui.png", "kofi-avatar.png"),
-    "header": ("kofi-header-ui.png", "kofi-header.png"),
+    "header": ("TSK-Header.png",),
 }
 
 # Active WebSocket connections for live updates
