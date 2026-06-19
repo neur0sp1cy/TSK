@@ -1,0 +1,92 @@
+name: Bug report
+description: Report a problem in an authorized lab environment
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve TSK. Please test only in systems you own or have **written permission** to assess.
+        See [TESTING_CHECKLIST.md](https://github.com/neur0sp1cy/TSK2/blob/main/TESTING_CHECKLIST.md) for repro ideas.
+
+  - type: checkboxes
+    id: authorized
+    attributes:
+      label: Authorized use
+      options:
+        - label: I confirm this report is from an authorized lab environment (systems I own or have permission to test)
+      validations:
+        required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: TSK version or commit
+      placeholder: e.g. v1.0.0 or git sha
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area (checklist section)
+      options:
+        - Auth / operators
+        - Config / LHOST
+        - Browse / repos
+        - SNARF EXFIL
+        - SNARF LURE
+        - CATCH
+        - Multi-operator isolation
+        - USB stick / flash
+        - Bash Bunny
+        - Rubber Ducky
+        - LAN Turtle / SSH
+        - UI / themes
+        - Tutorial / docs
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: Numbered steps from a clean install or checklist row
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Python version, browser, victim VM if relevant
+      placeholder: |
+        Operator OS: Ubuntu 24.04
+        Python: 3.12
+        Browser: Firefox 128
+        Victim: Windows 11 VM
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Terminal output, browser console, or paths on disk (no real victim PII)
+    validations:
+      required: false

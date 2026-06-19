@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TSK | Tutorial Missions</title>
+<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --red:#ff1a1a;--red-dim:#cc3333;
+  --green:#00ff88;--cyan:#00e5ff;--yellow:#ffd700;--blue:#4488ff;
+  --bg:#030308;--bg2:#07070f;--bg3:#0a0a18;
+  --border:#2a2a4a;--border-bright:#3a3a6a;
+  --text:#b0b0cc;--text-bright:#e8e8f8;
+  --mono:'Share Tech Mono',monospace;
+  --display:'Orbitron',monospace;
+}
+body{
+  font-family:var(--mono);background:var(--bg);color:var(--text);
+  line-height:1.65;font-size:14px;min-height:100vh;
+}
+a{color:var(--cyan);text-decoration:none;}
+a:hover{text-decoration:underline;}
+code,kbd{
+  font-family:var(--mono);font-size:12px;
+  background:rgba(0,229,255,0.08);padding:1px 5px;border-radius:3px;
+  border:1px solid var(--border);color:var(--text-bright);
+}
+#wrap{max-width:920px;margin:0 auto;padding:28px 20px 60px;}
+#topbar{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  flex-wrap:wrap;margin-bottom:28px;padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+}
+#brand{font-family:var(--display);font-size:18px;letter-spacing:2px;color:var(--red);}
+#brand span{color:var(--text-bright);font-size:11px;letter-spacing:3px;display:block;margin-top:4px;}
+.back-btn{
+  font-family:var(--display);font-size:10px;letter-spacing:1px;
+  padding:8px 14px;border:1px solid var(--border-bright);border-radius:4px;
+  color:var(--text-bright);background:var(--bg2);
+}
+.back-btn:hover{border-color:var(--cyan);color:var(--cyan);text-decoration:none;}
+.lead{
+  font-size:15px;color:var(--text-bright);margin-bottom:24px;
+  padding:14px 16px;border:1px solid var(--border);border-radius:4px;
+  background:rgba(255,26,26,0.05);
+}
+.warn{
+  margin:12px 0;padding:10px 12px;border-left:3px solid var(--yellow);
+  background:rgba(255,215,0,0.06);color:var(--text-bright);font-size:13px;
+}
+#toc{
+  margin:24px 0 36px;padding:16px 18px;
+  border:1px solid var(--border);border-radius:4px;background:var(--bg2);
+}
+#toc h2{font-family:var(--display);font-size:12px;letter-spacing:2px;color:var(--cyan);margin-bottom:12px;}
+#toc ol{padding-left:20px;}
+#toc li{margin:6px 0;}
+.mission{
+  margin:40px 0;padding:0 0 32px;
+  border-bottom:1px solid var(--border);
+}
+.mission:last-child{border-bottom:none;}
+.mission-head{
+  font-family:var(--display);font-size:16px;letter-spacing:2px;
+  color:var(--red);margin-bottom:6px;
+}
+.mission-sub{font-size:12px;color:var(--cyan);letter-spacing:1px;margin-bottom:16px;}
+.step{
+  margin:18px 0;padding:14px 16px;
+  border:1px solid var(--border);border-radius:4px;background:var(--bg2);
+}
+.step-title{
+  font-family:var(--display);font-size:11px;letter-spacing:1px;
+  color:var(--yellow);margin-bottom:10px;
+}
+.step-block{margin:8px 0;font-size:13px;}
+.step-block strong{color:var(--text-bright);display:inline-block;min-width:148px;}
+.step-block em{color:var(--green);font-style:normal;}
+.pass{
+  margin-top:10px;padding:8px 10px;border-radius:3px;
+  background:rgba(0,255,136,0.07);border:1px solid rgba(0,255,136,0.25);
+  font-size:12px;color:var(--green);
+}
+.fail{
+  margin-top:8px;padding:8px 10px;border-radius:3px;
+  background:rgba(255,26,26,0.06);border:1px solid rgba(255,26,26,0.25);
+  font-size:12px;color:#ff8888;
+}
+ul.compact{margin:8px 0 0 18px;}
+ul.compact li{margin:4px 0;}
+footer{
+  margin-top:40px;padding-top:16px;border-top:1px solid var(--border);
+  font-size:12px;color:var(--text);text-align:center;
+}
+@media print{
+  body{background:#fff;color:#111;font-size:11pt;}
+  a{color:#000;text-decoration:underline;}
+  code,kbd{background:#f4f4f4;border-color:#ccc;color:#111;}
+  #topbar,.back-btn{display:none;}
+  .mission,.step,#toc,.lead,.warn{break-inside:avoid-page;}
+  .mission-head{color:#900;}
+  .pass,.fail{border-color:#999;background:#f8f8f8;color:#333;}
+}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="topbar">
+    <div id="brand">
+      TSK | THE SKELETON KEY
+      <span>TUTORIAL MISSIONS · DEF CON 33 EDITION</span>
+    </div>
+    <a class="back-btn" href="/">← BACK TO APP</a>
+  </div>
+
+  <p class="lead">
+    Seven hands-on missions that walk you from first login to flashing payloads on every supported device.
+    Use only on systems and networks you own or have explicit permission to test.
+    Print this page (<kbd>Ctrl+P</kbd>) for a clean black-on-white handout.
+  </p>
+
+  <nav id="toc">
+    <h2>MISSION INDEX</h2>
+    <ol>
+      <li><a href="#mission-1">Initial Setup</a></li>
+      <li><a href="#mission-2">USB Exfil - Build &amp; Flash</a></li>
+      <li><a href="#mission-3">USB Exfil - Catch &amp; Review</a></li>
+      <li><a href="#mission-4">Lure Package</a></li>
+      <li><a href="#mission-5">Bash Bunny</a></li>
+      <li><a href="#mission-6">LAN Turtle</a></li>
+      <li><a href="#mission-7">Rubber Ducky</a></li>
+    </ol>
+  </nav>
+
+  <!-- MISSION 1 -->
+  <section class="mission" id="mission-1">
+    <div class="mission-head">MISSION 01 · INITIAL SETUP</div>
+    <div class="mission-sub">Install, login, configure LHOST/LPORT, verify the server is reachable</div>
+
+    <div class="step">
+      <div class="step-title">STEP 1 · START THE SERVER</div>
+      <div class="step-block"><strong>What to do:</strong> From the repo root, run <code>uv sync</code> then <code>uv run python server.py</code> (add <code>--ssl</code> for HTTPS).</div>
+      <div class="step-block"><strong>Expected result:</strong> Terminal shows Uvicorn listening on port <code>1337</code>.</div>
+      <div class="pass"><strong>Pass if:</strong> Browser opens <code>http://127.0.0.1:1337</code> and the login screen appears.</div>
+      <div class="fail"><strong>Troubleshooting:</strong> Port in use - stop other TSK instances or run <code>fuser -k 1337/tcp</code> on Linux.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">STEP 2 · REGISTER &amp; LOGIN</div>
+      <div class="step-block"><strong>What to do:</strong> Click <em>NEW</em>, pick an operator name, set a password (8+ chars), register, then log in.</div>
+      <div class="step-block"><strong>Expected result:</strong> Main UI loads with sidebar devices and payload list.</div>
+      <div class="pass"><strong>Pass if:</strong> Header shows your operator name and <code>PAYLOADS</code> count.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">STEP 3 · SET LHOST &amp; LPORT</div>
+      <div class="step-block"><strong>What to do:</strong> Open <em>CONFIG</em> (sidebar or <kbd>C</kbd>). Click the LAN IP helper next to LHOST, or type your machine's LAN IP manually. Set LPORT to <code>1337</code> unless you changed the server port.</div>
+      <div class="step-block"><strong>Expected result:</strong> Bottom bar and header show your LAN IP in green instead of <code>NOT SET</code>.</div>
+      <div class="pass"><strong>Pass if:</strong> <code>set lhost</code> in the command bar reflects the saved value after reload.</div>
+      <div class="fail"><strong>Troubleshooting:</strong> Phone-home will fail if LHOST is <code>127.0.0.1</code> and the target is another machine on the LAN - use your real LAN IP.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">STEP 4 · CLONE A PAYLOAD REPO (OPTIONAL)</div>
+      <div class="step-block"><strong>What to do:</strong> Open <em>PAYLOAD REPOS</em>, click <em>CLONE</em> on Rubber Ducky (or any device you plan to use).</div>
+      <div class="step-block"><strong>Expected result:</strong> Toast confirms clone; payload counts update in the sidebar badges.</div>
+      <div class="pass"><strong>Pass if:</strong> BROWSE tab lists payloads for that device.</div>
+    </div>
+  </section>
+
+  <!-- MISSION 2 -->
+  <section class="mission" id="mission-2">
+    <div class="mission-head">MISSION 02 · USB EXFIL - BUILD &amp; FLASH</div>
+    <div class="mission-sub">SnarfSnarf builder, format options, save, and flash to a plain USB stick</div>
+
+    <div class="warn">Use a blank FAT32 or exFAT USB stick - not a Bash Bunny volume, not a Windows install ISO.</div>
+
+    <div class="step">
+      <div class="step-title">STEP 1 · OPEN SNARF BUILDER</div>
+      <div class="step-block"><strong>What to do:</strong> Sidebar → <em>USB DROPPER</em>. Center tab → <em>SNARF</em>. Confirm <em>EXFIL</em> sub-tab is active.</div>
+      <div class="step-block"><strong>Expected result:</strong> Exfil targets checklist, output/format dropdowns, and <em>BUILD PREVIEW</em> button visible.</div>
+      <div class="pass"><strong>Pass if:</strong> Right preview panel shows generated script after clicking <em>BUILD PREVIEW</em>.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">STEP 2 · CONFIGURE TARGETS &amp; OUTPUT</div>
+      <div class="step-block"><strong>What to do:</strong>
+        <ul class="compact">
+          <li>Check exfil targets (e.g. Documents, Credentials, Clipboard).</li>
+          <li>Pick <em>Phone home - HTTP POST</em> for CATCH tab testing, or <em>Copy to USB root</em> for offline exfil.</li>
+          <li>Choose <em>PowerShell [Windows]</em> or <em>Bash [Linux]</em> format.</li>
+          <li>Set filename (default <code>snarf_exfil</code>).</li>
+        </ul>
+      </div>
+      <div class="step-block"><strong>Expected result:</strong> Preview script includes your LHOST/LPORT when phone-home is selected.</div>
+      <div class="pass"><strong>Pass if:</strong> Preview URL contains <code>http://&lt;your-lhost&gt;:1337/api/snarf</code> (or your LPORT).</div>
+      <div class="fail"><strong>Troubleshooting:</strong> Missing LHOST in script - return to Mission 1 Step 3.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">STEP 3 · SAVE TO PAYLOAD LIBRARY</div>
+      <div class="step-block"><strong>What to do:</strong> Click <em>SAVE TO PAYLOADS</em> (or <em>SAVE + FLASH</em> if stick is already plugged in).</div>
+      <div class="step-block"><strong>Expected result:</strong> Toast confirms save. Switch to <em>BROWSE</em> tab - script appears under <code>SNARFSNARF</code> category.</div>
+      <div class="pass"><strong>Pass if:</strong> Selecting the saved payload shows its content in the right preview panel.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">STEP 4 · PLUG USB &amp; FLASH</div>
+      <div class="step-block"><strong>What to do:</strong>
+        <ul class="compact">
+          <li>Plug a writable USB stick. Wait for <em>USB DRIVE</em> status → <code>READY</code> in sidebar.</li>
+          <li>Right panel: confirm stick is detected. Pick deploy target (<code>USB root</code> or hidden <code>.tsk/</code>).</li>
+          <li>Select your saved SNARF payload in BROWSE, then click <em>FLASH</em> (or <kbd>f</kbd>).</li>
+        </ul>
+      </div>
+      <div class="step-block"><strong>Expected result:</strong> Flash log shows copy progress. Stick contains script + <code>RUN_PAYLOAD.bat</code> (Windows) or <code>RUN_PAYLOAD.sh</code> (Linux).</div>
+      <div class="pass"><strong>Pass if:</strong> Toast says flash OK and terminal log shows the deploy path.</div>
+      <div class="fail"><strong>Troubleshooting:</strong> <code>read-only</code> error - reformat stick as FAT32/exFAT. No stick detected - try another port; check <code>devices</code> command.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">STEP 5 · TRIGGER ON TARGET (MANUAL TEST)</div>
+      <div class="step-block"><strong>What to do:</strong> On a lab Windows VM or Linux box, open the stick and run the launcher (or execute the script directly).</div>
+      <div class="step-block"><strong>Expected result:</strong> Script runs without errors. Phone-home mode posts files to TSK; USB mode copies files to the stick.</div>
+      <div class="pass"><strong>Pass if:</strong> Target can reach <code>http://&lt;LHOST&gt;:&lt;LPORT&gt;/api/snarf</code> over the LAN (Mission 3 verifies catches).</div>
+    </div>
+  </section>
+
+  <!-- MISSION 3 -->
+  <section class="mission" id="mission-3">
+    <div class="mission-head">MISSION 03 · USB EXFIL - CATCH &amp; REVIEW</div>
+    <div class="mission-sub">Watch phone-home uploads land in the CATCH tab, preview files, export</div>
+
+    <div class="step">
+      <div class="step-title">STEP 1 · OPEN CATCH TAB</div>
+      <div class="step-block"><strong>What to do:</strong> <em>USB DROPPER</em> → <em>SNARF</em> tab → click <em>CATCH</em> sub-tab.</div>
+      <div class="step-block"><strong>Expected result:</strong> <em>LIVE FEED</em> and <em>SNARFED FILES</em> panels visible. Feed may say "Waiting for phone-home uploads..."</div>
+      <div class="pass"><strong>Pass if:</strong> CATCH tab loads without errors while logged in as the operator who built the script.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">STEP 2 · RUN PHONE-HOME EXFIL ON TARGET</div>
+      <div class="step-block"><strong>What to do:</strong> Execute the flashed script from Mission 2 on a lab machine that can reach your LHOST over the network.</div>
+      <div class="step-block"><strong>Expected result:</strong> LIVE FEED shows new lines with hostname, timestamp, and filepath as uploads arrive.</div>
+      <div class="pass"><strong>Pass if:</strong> A new session folder appears under <em>SNARFED FILES</em> grouped by hostname.</div>
+      <div class="fail"><strong>Troubleshooting:</strong>
+        <ul class="compact">
+          <li>No feed activity - ping LHOST from target; check firewall on TSK machine (allow inbound TCP on LPORT).</li>
+          <li>Wrong operator's catches - each operator has isolated storage; log in as the builder.</li>
+          <li>HTTP blocked - try same-subnet test first before crossing VLANs.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">STEP 3 · PREVIEW &amp; DOWNLOAD</div>
+      <div class="step-block"><strong>What to do:</strong> Click a snarfed file in the list. Use preview in the right panel. Click download on individual files or <em>EXPORT ALL</em> for a ZIP.</div>
+      <div class="step-block"><strong>Expected result:</strong> File contents render in preview (text) or download prompt (binary).</div>
+      <div class="pass"><strong>Pass if:</strong> Downloaded file matches what the target exfiltrated (e.g. a test document you planted).</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">STEP 4 · REFRESH &amp; VERIFY ISOLATION</div>
+      <div class="step-block"><strong>What to do:</strong> Click <em>REFRESH</em>. Optionally log in as a second operator and confirm their CATCH tab does not show the first operator's files.</div>
+      <div class="step-block"><strong>Expected result:</strong> Catches persist after refresh. Second operator sees empty feed (unless they ran their own script).</div>
+      <div class="pass"><strong>Pass if:</strong> Files exist on disk at <code>snarfed/&lt;operator&gt;/</code> on the TSK server.</div>
+    </div>
+  </section>
+
+  <!-- MISSION 4 -->
+  <section class="mission" id="mission-4">
+    <div class="mission-head">MISSION 04 · LURE PACKAGE</div>
+    <div class="mission-sub">Build LNK/README lure, attach exfil script, flash the full package</div>
+
+    <div class="step">
+      <div class="step-title">STEP 1 · OPEN LURE BUILDER</div>
+      <div class="step-block"><strong>What to do:</strong> <em>USB DROPPER</em> → <em>SNARF</em> → <em>LURE</em> sub-tab.</div>
+      <div class="step-block"><strong>Expected result:</strong> Lure type selector (Windows LNK / Linux README / .desktop), package name field, payload attachment dropdown.</div>
+      <div class="pass"><strong>Pass if:</strong> Saved exfil scripts from Mission 2 appear in the attach dropdown.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">STEP 2 · BUILD &amp; SAVE PACKAGE</div>
+      <div class="step-block"><strong>What to do:</strong> Pick lure type, name the package, attach your exfil script (or a test stub). Click <em>BUILD PREVIEW</em>, then <em>SAVE PACKAGE</em>.</div>
+      <div class="step-block"><strong>Expected result:</strong> Package saved under BROWSE → <code>LURES</code> category with multiple files in the manifest.</div>
+      <div class="pass"><strong>Pass if:</strong> Preview lists lure file + payload script + launcher files together.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">STEP 3 · FLASH PACKAGE TO STICK</div>
+      <div class="step-block"><strong>What to do:</strong> Select the lure package in BROWSE. Click <em>FLASH PACKAGE</em> (or <em>FLASH</em> - TSK detects lure manifests automatically).</div>
+      <div class="step-block"><strong>Expected result:</strong> All package files copy to the stick. Windows stick shows a convincing shortcut or README; script stays alongside.</div>
+      <div class="pass"><strong>Pass if:</strong> Target user double-clicking the lure runs the attached exfil (lab test only).</div>
+      <div class="fail"><strong>Troubleshooting:</strong> LNK blocked by policy - test README lure on Linux or use manual script execution for lab validation.</div>
+    </div>
+  </section>
+
+  <!-- MISSION 5 -->
+  <section class="mission" id="mission-5">
+    <div class="mission-head">MISSION 05 · BASH BUNNY</div>
+    <div class="mission-sub">Mount detection, payload select, switch position, ARMED state, flash</div>
+
+    <div class="step">
+      <div class="step-title">STEP 1 · CONNECT BUNNY</div>
+      <div class="step-block"><strong>What to do:</strong> Plug Bash Bunny in arming mode (switch toward USB logo). Set <em>BUNNY MOUNT</em> in CONFIG if auto-detect fails.</div>
+      <div class="step-block"><strong>Expected result:</strong> Sidebar <em>BASH BUNNY</em> shows <code>READY</code>. <em>ARMED</em> badge may show <code>STANDBY</code> until switch position is valid.</div>
+      <div class="pass"><strong>Pass if:</strong> <code>devices</code> command lists bunny as connected with a mount path.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">STEP 2 · SELECT PAYLOAD &amp; SWITCH</div>
+      <div class="step-block"><strong>What to do:</strong> Navigate to <em>BASH BUNNY</em>. Clone repo if needed. Pick a payload from BROWSE. Set switch position <code>1</code> or <code>2</code> in the header.</div>
+      <div class="step-block"><strong>Expected result:</strong> Preview shows payload.txt content. Switch buttons highlight active position.</div>
+      <div class="pass"><strong>Pass if:</strong> <code>flash 1</code> or <code>flash 2</code> in command bar targets the selected switch.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">STEP 3 · FLASH &amp; DEPLOY</div>
+      <div class="step-block"><strong>What to do:</strong> Click <em>FLASH</em>. Flip Bunny switch to payload mode (away from USB logo) and plug into target.</div>
+      <div class="step-block"><strong>Expected result:</strong> Flash log shows copy to <code>payloads/switchN/</code> on the Bunny mass-storage volume.</div>
+      <div class="pass"><strong>Pass if:</strong> Bunny executes payload on target (LED pattern / expected target behavior per payload README).</div>
+      <div class="fail"><strong>Troubleshooting:</strong> ARMED stays STANDBY - Bunny not in arming mode or mount path wrong. Re-seat switch and refresh CONFIG mount.</div>
+    </div>
+  </section>
+
+  <!-- MISSION 6 -->
+  <section class="mission" id="mission-6">
+    <div class="mission-head">MISSION 06 · LAN TURTLE</div>
+    <div class="mission-sub">SSH connect, browse modules, flash over the network</div>
+
+    <div class="step">
+      <div class="step-title">STEP 1 · CONFIGURE TURTLE SSH</div>
+      <div class="step-block"><strong>What to do:</strong> CONFIG tab → set <em>TURTLE IP</em> (default <code>172.16.84.1</code>), user <code>root</code>, port <code>22</code>, password if set.</div>
+      <div class="step-block"><strong>Expected result:</strong> Turtle row in sidebar shows <code>READY</code> when reachable on the network.</div>
+      <div class="pass"><strong>Pass if:</strong> <code>turtle connect</code> opens the in-browser SSH terminal.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">STEP 2 · BROWSE &amp; PREVIEW MODULE</div>
+      <div class="step-block"><strong>What to do:</strong> Sidebar → <em>LAN TURTLE</em>. Clone turtle modules repo. Select a module payload from BROWSE.</div>
+      <div class="step-block"><strong>Expected result:</strong> Preview shows module scripts. Source indicator shows repo path.</div>
+      <div class="pass"><strong>Pass if:</strong> Payload list populates after clone completes.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">STEP 3 · FLASH OVER SSH</div>
+      <div class="step-block"><strong>What to do:</strong> With Turtle connected, select payload and click <em>FLASH</em>. TSK copies module files over SSH/SFTP.</div>
+      <div class="step-block"><strong>Expected result:</strong> Flash log shows remote copy progress. Module appears on Turtle filesystem.</div>
+      <div class="pass"><strong>Pass if:</strong> SSH terminal shows deployed files under the expected Turtle path.</div>
+      <div class="fail"><strong>Troubleshooting:</strong> Auth failure - try blank password (press Enter) or default <code>hak5lan</code>. Host key errors are handled automatically.</div>
+    </div>
+  </section>
+
+  <!-- MISSION 7 -->
+  <section class="mission" id="mission-7">
+    <div class="mission-head">MISSION 07 · RUBBER DUCKY</div>
+    <div class="mission-sub">SD card prep, payload select, encode, manual flash</div>
+
+    <div class="step">
+      <div class="step-title">STEP 1 · PREP DUCKY SD CARD</div>
+      <div class="step-block"><strong>What to do:</strong> Insert microSD in Rubber Ducky (or SD adapter). Plug Ducky into TSK machine. Set <em>DUCKY MOUNT</em> in CONFIG if not auto-detected.</div>
+      <div class="step-block"><strong>Expected result:</strong> Sidebar <em>RUBBER DUCKY</em> shows <code>READY</code> when the volume mounts.</div>
+      <div class="pass"><strong>Pass if:</strong> CONFIG shows a valid mount path for the Ducky volume.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">STEP 2 · CLONE &amp; SELECT PAYLOAD</div>
+      <div class="step-block"><strong>What to do:</strong> Clone the Ducky payload repo. Browse payloads, pick one (start with a harmless <code>EXEC</code> or <code>RECON</code> example).</div>
+      <div class="step-block"><strong>Expected result:</strong> Preview shows Ducky Script (<code>REM</code>, <code>STRING</code>, <code>ENTER</code> commands).</div>
+      <div class="pass"><strong>Pass if:</strong> Payload preview renders with syntax highlighting.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">STEP 3 · SET ENCODER &amp; FLASH</div>
+      <div class="step-block"><strong>What to do:</strong> CONFIG → set path to <code>encoder.jar</code> (Hak5 Duck Encoder). Select payload, click <em>FLASH</em>.</div>
+      <div class="step-block"><strong>Expected result:</strong> TSK encodes script to <code>inject.bin</code> and writes it to the Ducky root.</div>
+      <div class="pass"><strong>Pass if:</strong> Flash log reports encode + copy success; <code>inject.bin</code> exists on the SD volume.</div>
+      <div class="fail"><strong>Troubleshooting:</strong> Encoder not found - install Java, download encoder.jar, set path in CONFIG. Mount missing - re-seat SD and refresh devices.</div>
+    </div>
+
+    <div class="step">
+      <div class="step-title">STEP 4 · DEPLOY ON TARGET</div>
+      <div class="step-block"><strong>What to do:</strong> Eject safely, insert Ducky in target machine USB port.</div>
+      <div class="step-block"><strong>Expected result:</strong> Ducky runs inject.bin - keystrokes inject per payload (lab VM recommended).</div>
+      <div class="pass"><strong>Pass if:</strong> Target shows expected payload behavior within seconds of plug-in.</div>
+    </div>
+  </section>
+
+  <footer>
+    TSK | THE SKELETON KEY v1.0 · <a href="/">Return to app</a> · <a href="https://github.com/neur0sp1cy/TSK2" target="_blank" rel="noopener">GitHub</a> · <a href="mailto:neur0sp1cy@proton.me">Contact</a> · See <code>TESTING.md</code> for extended lab scenarios
+  </footer>
+</div>
+</body>
+</html>

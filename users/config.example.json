@@ -1,0 +1,22 @@
+{
+  "lhost": "",
+  "lport": "4444",
+  "editor": "nano",
+  "encoder_jar": "",
+  "ducky_mount": "",
+  "bunny_mount": "",
+  "turtle_ip": "172.16.84.1",
+  "turtle_user": "root",
+  "turtle_port": "22",
+  "turtle_password": "",
+  "theme": "neon",
+  "music_enabled": true,
+  "repos": {
+    "ducky": "https://github.com/hak5/usbrubberducky-payloads",
+    "bunny": "https://github.com/hak5/bashbunny-payloads",
+    "turtle": "https://github.com/hak5/lanturtle-modules"
+  },
+  "last_device": "ducky",
+  "repo_dir": "",
+  "username": "your_username"
+}
