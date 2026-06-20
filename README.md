@@ -2,8 +2,17 @@
   <img src="web/static/TSK-Header.png" alt="TSK | The Skeleton Key" width="100%">
 </p>
 
-# TSK | The Skeleton Key
-## DEF CON 34 Edition
+<div align="center">
+<table>
+<tr>
+<td valign="middle"><img src="web/static/tsk-avatar-ui.png" width="96" height="96" alt="TSK | The Skeleton Key"></td>
+<td valign="middle">
+<h1 style="margin:0;padding:0;border:none">TSK | The Skeleton Key</h1>
+<p style="margin:0"><strong>DEF CON 34 Edition</strong></p>
+</td>
+</tr>
+</table>
+</div>
 
 A free, open source platform for building and deploying USB / HID payloads. Includes a web UI for payload browsing, device flashing, SnarfSnarf exfil generation, lure building, and phone-home catch.
 

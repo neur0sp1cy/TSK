@@ -65,7 +65,7 @@ app = FastAPI(title="TSK", version="2.0.0")
 WEB_DIR = Path(__file__).parent / "web"
 STATIC_DIR = WEB_DIR / "static"
 BRANDING_ASSETS = {
-    "avatar": ("kofi-avatar-ui.png", "kofi-avatar.png"),
+    "avatar": ("tsk-avatar-ui.png", "tsk-avatar.png"),
     "header": ("TSK-Header.png",),
 }
 
