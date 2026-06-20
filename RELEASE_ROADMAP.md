@@ -100,6 +100,53 @@ Prioritized for booth demo and first GitHub visitors. **Must-have** before go-li
 - Teensy compile pipeline in UI
 - Full mobile layout
 - Password reset / email flows
+- Operator **NEW payload** authoring per device (planned for v1.0.1 - see Phase 4)
+- In-app **Ducky / Bunny command reference** (planned post-launch - see Phase 4)
+
+---
+
+## Phase 4 | Post v1.0.0 (after release)
+
+**Not blockers for v1.0.0.** Ship after checklist sign-off and Git tag. Target: **v1.0.1** for payload authoring; command ref can land in the same release or a quick follow-up.
+
+### 4A | NEW payload + MY PAYLOADS (priority)
+
+Today: USB/Snarf can save to `users/<operator>/payloads/usb/`. Ducky, Bunny, Turtle, and Teensy are browse/edit/flash against cloned repos only. Builtin payloads open in the editor with a template but cannot be saved to the operator library (`path: ""` disables SAVE FILE; SAVE COPY only downloads locally).
+
+| # | Feature | Notes |
+|---|---------|-------|
+| 1 | **+ NEW PAYLOAD** on BROWSE for each device (Ducky, Bunny, Turtle, Teensy, USB) | Name prompt → create file under `users/<operator>/payloads/<device>/` |
+| 2 | **MY PAYLOADS** category in browse tree | Operator-owned files; do not lump Ducky/Bunny saves under SNARFSNARF |
+| 3 | **SAVE TO LIBRARY** in editor | When no file path exists, save to MY PAYLOADS instead of download-only |
+| 4 | **Repo-safe saves** | Editing a file under `repos/` should save-as to MY PAYLOADS by default (no silent overwrite of cloned libraries) |
+| 5 | **API** `POST /api/payload/create` | `device`, `filename`, optional `content` or template id; validate path under user payload dir |
+| 6 | **index_user_payloads** | Use cat `MY PAYLOADS` (or `OPERATOR`) for non-USB devices; keep SNARFSNARF for USB exfil scripts |
+
+**Effort:** Medium. Backend paths largely exist (`config.payload_path`, `/api/payload/save`, `index_user_payloads`).
+
+### 4B | Device command reference
+
+Help (`H`) covers TSK operator workflow, not DuckyScript or Bash Bunny syntax. Booth and new operators ask for ATTACKMODE, QUACK, DELAY, etc.
+
+| # | Feature | Notes |
+|---|---------|-------|
+| 1 | **DEVICE REF** section in Help modal | DuckyScript essentials: `DELAY`, `STRING`, `ENTER`, `GUI`, `REM`, `DEFAULT_DELAY`, etc. |
+| 2 | **Bash Bunny** quick ref | `ATTACKMODE`, `LED`, `QUACK`, `REQUIRETOOL`, switch folders (`switch1` / `switch2`) |
+| 3 | **LAN Turtle** notes | Module layout, `autossh`, SCP push pointers |
+| 4 | **External links** | HAK5 official docs for full language references |
+| 5 | Optional: `ref` command or **?** to open DEVICE REF | Same content as Help subsection |
+| 6 | **Later:** editor insert chips | Click-to-insert common commands when `lang` is DS1 / BB |
+
+**Effort:** Small for Help + links; Medium for editor chips.
+
+### 4C | Suggested post-launch order
+
+```
+After v1.0.0 tag
+  1   NEW payload + MY PAYLOADS (v1.0.1)
+  2   DEVICE REF in Help (+ HAK5 doc links)
+  3   Optional polish: editor command chips, demo on command
+```
 
 ---
 
@@ -174,8 +221,12 @@ Week 1
 
 Week 2
   Day 1-2   Nice-to-have polish (demo command, screenshots, CHANGELOG)
-  Day 3     Phase 3 go-live + git tag
+  Day 3     Phase 3 go-live + git tag v1.0.0
   Day 4-7   Buffer for hardware arrives / VM issues / booth dry run
+
+Post v1.0.0 (Phase 4)
+  Week 1    NEW payload + MY PAYLOADS (target v1.0.1)
+  Week 1-2  DEVICE REF in Help modal
 ```
 
 ---
