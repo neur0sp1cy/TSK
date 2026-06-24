@@ -5,7 +5,7 @@ Per-user configs stored in users/<username>/
 Repos stored in repos/ (shared) or users/<username>/repos/ (per-user)
 """
 
-import json, os, hashlib, hmac
+import json, os, hashlib, hmac, re
 from pathlib import Path
 
 try:
@@ -15,6 +15,7 @@ except ImportError:
     HAS_BCRYPT = False
 
 MIN_PASSWORD_LEN = 8
+OPERATOR_NAME_RE = re.compile(r"^[a-zA-Z0-9_-]{2,32}$")
 
 SENSITIVE_CONFIG_KEYS = frozenset({"turtle_password", "catch_token"})
 
@@ -48,6 +49,7 @@ DEFAULTS = {
     "turtle_port":     "22",
     "turtle_password": "",  # OG Turtle: blank (Enter) or hak5lan
     "theme":          "neon",
+    "clock_24h":      True,
     "music_enabled":  True,
     "repos": {
         "ducky":  "https://github.com/hak5/usbrubberducky-payloads",
@@ -108,6 +110,9 @@ def save_users(users: dict) -> None:
 
 def create_user(username: str, password: str) -> dict:
     """Create a new user. Returns user dict."""
+    username = username.strip()
+    if not OPERATOR_NAME_RE.match(username):
+        raise ValueError("Operator name must be 2-32 characters: letters, numbers, underscore, hyphen")
     if len(password) < MIN_PASSWORD_LEN:
         raise ValueError(f"Password must be at least {MIN_PASSWORD_LEN} characters")
     users = load_users()
@@ -154,6 +159,48 @@ def change_password(username: str, current_password: str, new_password: str) -> 
         raise ValueError("Current password is incorrect")
     user["password"] = _hash_password(new_password)
     users[username] = user
+    save_users(users)
+
+
+def rename_user(old_username: str, new_username: str, password: str) -> None:
+    """Rename operator account, user directory, and snarfed catches folder."""
+    old = old_username.strip()
+    new = new_username.strip()
+    if not OPERATOR_NAME_RE.match(new):
+        raise ValueError("Operator name must be 2-32 characters: letters, numbers, underscore, hyphen")
+    if new == old:
+        raise ValueError("New name is the same as the current name")
+    if not authenticate(old, password):
+        raise ValueError("Current password is incorrect")
+    users = load_users()
+    if old not in users:
+        raise ValueError("Operator not found")
+    if new in users:
+        raise ValueError(f"Operator '{new}' already exists")
+
+    user = users.pop(old)
+    user["username"] = new
+    user["user_dir"] = str(USERS_DIR / new)
+
+    old_dir = USERS_DIR / old
+    new_dir = USERS_DIR / new
+    if old_dir.exists():
+        old_dir.rename(new_dir)
+    else:
+        new_dir.mkdir(parents=True, exist_ok=True)
+        (new_dir / "payloads").mkdir(exist_ok=True)
+
+    cfg = load(new)
+    cfg["username"] = new
+    save(cfg, new)
+
+    snarfed_root = BASE_DIR / "snarfed"
+    snarfed_old = snarfed_root / old
+    snarfed_new = snarfed_root / new
+    if snarfed_old.is_dir() and not snarfed_new.exists():
+        snarfed_old.rename(snarfed_new)
+
+    users[new] = user
     save_users(users)
 
 def list_users() -> list[str]:

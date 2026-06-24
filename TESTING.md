@@ -26,7 +26,7 @@ Press **H** in the web UI for the full operator guide.
    uv run python server.py --ssl
    ```
 2. Register and sign in (login screen → **NEW**).
-3. **CONFIG** tab: set **LHOST** to your machine's **LAN IP** (not `127.0.0.1` if the victim is another host).
+3. **CONFIG** modal (sidebar **C** or command bar): set **LHOST** to your machine's **LAN IP** (not `127.0.0.1` if the victim is another host).
 4. Set **LPORT** to `1337` (default).
 5. Allow inbound TCP on that port through your firewall.
 6. Plug a **blank FAT32/exFAT USB stick** (not a Bunny/Ducky volume).
@@ -40,7 +40,7 @@ CONFIG (LHOST / LPORT)
     ↓
 SNARF → EXFIL   build PowerShell (Windows) or Bash (Linux) script
     ↓
-SAVE or SAVE + FLASH   script appears under BROWSE → SNARFSNARF
+SAVE or SAVE + FLASH   script appears in payload list under SNARFSNARF
     ↓
 SNARF → LURE   optional Windows .lnk or Linux README / .desktop lure
     ↓
@@ -79,7 +79,7 @@ Payload options: saved exfil script, minimal test stub (`tsk2_lure_ok` phone-hom
 
 1. **Scan** USB stick - status should show green writable.
 2. **Deploy**: `root` or hidden (`.tsk/` on stick).
-3. Select payload in BROWSE → **FLASH**, or use **SAVE + FLASH** from SNARF.
+3. Select payload in the center list → **FLASH**, or use **SAVE + FLASH** from the SNARF modal.
 
 `.ps1` / `.sh` payloads also get `RUN_PAYLOAD.bat` / `RUN_PAYLOAD.sh` on the stick.
 
@@ -109,7 +109,7 @@ Payload options: saved exfil script, minimal test stub (`tsk2_lure_ok` phone-hom
 1. **SNARF → EXFIL** - select targets, **PowerShell** or **Bash**, output **Phone home**
 2. **SAVE + FLASH**
 3. Victim: `RUN_PAYLOAD.bat` (Windows) or `RUN_PAYLOAD.sh` (Linux)
-4. **CATCH** tab - review uploads, export ZIP if needed
+4. **SNARF → CATCH** - review uploads, export ZIP if needed
 
 ### Scenario D: Exfil to USB only (no network)
 
@@ -146,7 +146,7 @@ Payload options: saved exfil script, minimal test stub (`tsk2_lure_ok` phone-hom
 
 1. Register two operators (e.g. `alice` and `bob`).
 2. Log in as `alice`, build and run a phone-home stub; confirm catches appear in **CATCH** for alice only.
-3. Log in as `bob` - CATCH tab should not show alice's files.
+3. Log in as `bob` - SNARF **CATCH** must not show alice's files.
 4. On disk: catches under `snarfed/alice/` and `snarfed/bob/` separately.
 
 ---

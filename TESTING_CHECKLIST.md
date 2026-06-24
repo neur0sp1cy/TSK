@@ -82,7 +82,7 @@ Optional for v1.0.0 but recommended: one HAK5 device flash (Bunny, Ducky, or Tur
 
 | # | Test | Blocker? | Result | Notes |
 |---|------|----------|--------|-------|
-| 2.1 | CONFIG tab shows current settings | Yes | | |
+| 2.1 | CONFIG modal shows current settings | Yes | | |
 | 2.2 | Set LHOST via UI saves to `users/<op>/config.json` | Yes | | |
 | 2.3 | LAN IP helper returns sensible address | No | | |
 | 2.4 | Set LPORT; persists after refresh | Yes | | |
@@ -101,8 +101,8 @@ Optional for v1.0.0 but recommended: one HAK5 device flash (Bunny, Ducky, or Tur
 |---|------|----------|--------|-------|
 | 3.1 | Device nav: Ducky, Bunny, Turtle, USB (Teensy hidden) | Yes | | |
 | 3.2 | Keyboard shortcuts R/B/L/U jump devices | No | | |
-| 3.3 | Tabs: BROWSE, SNARF (USB only), CONFIG, REPOS | Yes | | |
-| 3.4 | Header ticker and operator stats update | No | | |
+| 3.3 | Center: payload list always visible; CONFIG/REPOS/OPERATOR open as modals | Yes | | |
+| 3.4 | USB → SNARF button in PAYLOADS header opens SNARF modal | Yes | | |
 | 3.5 | Theme picker: all 6 themes apply | No | | |
 | 3.6 | Command `theme <name>` works | No | | |
 | 3.7 | Device status dots reflect plug/unplug (if hardware) | No | | |
@@ -116,12 +116,12 @@ Optional for v1.0.0 but recommended: one HAK5 device flash (Bunny, Ducky, or Tur
 
 | # | Test | Blocker? | Result | Notes |
 |---|------|----------|--------|-------|
-| 4.1 | BROWSE shows built-in payloads per device | Yes | | |
+| 4.1 | Payload list shows built-in payloads per device | Yes | | |
 | 4.2 | Select payload → preview panel updates | Yes | | |
 | 4.3 | Payload search filters list | No | | |
-| 4.4 | REPOS tab shows clone status | Yes | | |
+| 4.4 | REPOS modal shows clone status | Yes | | |
 | 4.5 | `clone ducky` (or bunny/turtle) succeeds | No | | |
-| 4.6 | After clone, BROWSE shows repo payloads | No | | |
+| 4.6 | After clone, payload list shows repo payloads | No | | |
 | 4.7 | `update all` pulls without error | No | | |
 | 4.8 | Saved operator payloads appear under SNARFSNARF / USER | No | | |
 
@@ -144,12 +144,12 @@ Optional for v1.0.0 but recommended: one HAK5 device flash (Bunny, Ducky, or Tur
 
 | # | Test | Blocker? | Result | Notes |
 |---|------|----------|--------|-------|
-| 6.1 | USB device → SNARF tab visible | Yes | | |
+| 6.1 | USB device → SNARF button visible in PAYLOADS header | Yes | | |
 | 6.2 | EXFIL builder: select targets, PowerShell format | Yes | | |
 | 6.3 | EXFIL builder: Bash format | No | | |
-| 6.4 | BUILD PREVIEW shows script with LHOST/LPORT | Yes | | |
+| 6.4 | BUILD PREVIEW shows script in SNARF modal (LHOST/LPORT) | Yes | | |
 | 6.5 | SAVE writes to `users/<op>/payloads/usb/` | Yes | | |
-| 6.6 | SAVE appears in BROWSE → SNARFSNARF | Yes | | |
+| 6.6 | SAVE appears in payload list → SNARFSNARF | Yes | | |
 | 6.7 | Phone-home output mode in generated script | Yes | | |
 | 6.8 | USB root / hidden deploy modes in builder | No | | |
 | 6.9 | SAVE + FLASH copies to stick | Yes | | |
@@ -161,7 +161,7 @@ Optional for v1.0.0 but recommended: one HAK5 device flash (Bunny, Ducky, or Tur
 
 | # | Test | Blocker? | Result | Notes |
 |---|------|----------|--------|-------|
-| 7.1 | LURE sub-tab: Windows LNK options | Yes | | |
+| 7.1 | SNARF modal → LURE: Windows LNK options | Yes | | |
 | 7.2 | LURE: Linux README bash lure | No | | |
 | 7.3 | LURE: Linux .desktop entry | No | | |
 | 7.4 | Attach saved exfil or minimal test stub | Yes | | |
@@ -177,7 +177,7 @@ Optional for v1.0.0 but recommended: one HAK5 device flash (Bunny, Ducky, or Tur
 
 | # | Test | Blocker? | Result | Notes |
 |---|------|----------|--------|-------|
-| 8.1 | CATCH sub-tab shows live feed | Yes | | |
+| 8.1 | SNARF modal → CATCH shows live feed | Yes | | |
 | 8.2 | Upload appears after victim runs stub/exfil | Yes | | |
 | 8.3 | File tree lists session / hostname folders | Yes | | |
 | 8.4 | Preview file contents in UI | Yes | | |

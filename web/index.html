@@ -130,19 +130,15 @@ body[data-theme="flat"]{
 
 /* ── THEME SURFACE TWEAKS ─────────────────────────────────────────────────── */
 body[data-theme="light"] #theme-picker{background:rgba(160,168,180,0.5);}
-body[data-theme="light"] .header-title-backdrop{
-  border-left-color:rgba(184,16,16,0.40);
-  background:linear-gradient(90deg,rgba(184,16,16,0.12) 0%,transparent 100%);
-}
 body[data-theme="light"] #logo-area{
   background:
     radial-gradient(ellipse 80% 60% at 50% 30%, rgba(184,16,16,0.08) 0%, transparent 100%),
     linear-gradient(180deg, rgba(184,16,16,0.05) 0%, transparent 100%);
 }
-body[data-theme="light"] .nav-item.active[data-device="bunny"]  {background:rgba(50,58,72,0.14);color:#1a2030;border-color:#4a5870;}
-body[data-theme="light"] .nav-item.active[data-device="ducky"]  {color:#5a4200;border-color:#7a5500;}
-body[data-theme="light"] .nav-item.active[data-device="turtle"] {color:#004428;border-color:#006838;}
-body[data-theme="light"] .nav-item.active[data-device="usb"]    {color:#003d70;border-color:#0055aa;}
+body[data-theme="light"] .dev-card.active[data-device="bunny"]  {background:rgba(50,58,72,0.14);color:#1a2030;border-color:#4a5870;}
+body[data-theme="light"] .dev-card.active[data-device="ducky"]  {color:#5a4200;border-color:#7a5500;}
+body[data-theme="light"] .dev-card.active[data-device="turtle"] {color:#004428;border-color:#006838;}
+body[data-theme="light"] .dev-card.active[data-device="usb"]    {color:#003d70;border-color:#0055aa;}
 body[data-theme="light"] #cmd-input::placeholder{color:#5a6478;}
 /* light + flat: boost low-contrast UI text */
 body[data-theme="light"] .tab,
@@ -162,18 +158,14 @@ body[data-theme="light"] #preview-lang,
 body[data-theme="flat"] #preview-lang{color:var(--text-bright);}
 body[data-theme="light"] .p-cat,
 body[data-theme="flat"] .p-cat{color:var(--accent)!important;}
-body[data-theme="light"] .nav-item:not(.active),
-body[data-theme="flat"] .nav-item:not(.active){color:var(--text);}
-body[data-theme="light"] .nav-key--muted,
-body[data-theme="flat"] .nav-key--muted{color:#5a6478;}
-body[data-theme="light"] .nav-key--silver,
-body[data-theme="flat"] .nav-key--silver{color:#4a5870;}
+body[data-theme="light"] .sys-tile:not(.active),
+body[data-theme="flat"] .sys-tile:not(.active){opacity:0.92;}
+body[data-theme="light"] .dev-card:not(.active),
+body[data-theme="flat"] .dev-card:not(.active){color:var(--text);}
 body[data-theme="light"] .nav-section,
 body[data-theme="flat"] .nav-section{color:var(--accent);}
-body[data-theme="light"] #center-title span,
-body[data-theme="flat"] #center-title span{color:var(--text-bright);font-weight:700;}
 body[data-theme="light"] #center-source,
-body[data-theme="flat"] #center-source{color:var(--yellow);font-weight:700;}
+body[data-theme="flat"] #center-source{color:var(--text-bright);font-weight:700;}
 body[data-theme="light"] #center-source.live,
 body[data-theme="flat"] #center-source.live{color:var(--green);}
 /* flat: kill glow/animation noise */
@@ -182,14 +174,11 @@ body[data-theme="flat"] #btn-flash{animation:none;box-shadow:none;}
 body[data-theme="flat"] #btn-flash:hover{box-shadow:none;}
 body[data-theme="flat"] #tsk-logo{animation:none;text-shadow:none;}
 body[data-theme="flat"] #logo-edition{animation:none;text-shadow:none;}
-body[data-theme="flat"] #logo-usb-art{animation:none;text-shadow:none;}
-body[data-theme="flat"] .header-pulse{animation:none;}
 body[data-theme="flat"] #preview-header,
-body[data-theme="flat"] #center-header{background:var(--bg2);}
-body[data-theme="flat"] .nav-item.active[data-device="bunny"]  {color:#eceef4;border-color:#888ea0;}
-body[data-theme="flat"] .nav-item.active[data-device="ducky"]  {color:#e8c840;border-color:#c8a830;}
-body[data-theme="flat"] .nav-item.active[data-device="turtle"] {color:#60d898;border-color:#3aaa72;}
-body[data-theme="flat"] .nav-item.active[data-device="usb"]    {color:#70b8e8;border-color:#4a9fd8;}
+body[data-theme="flat"] .dev-card.active[data-device="bunny"]  {color:#eceef4;border-color:#888ea0;}
+body[data-theme="flat"] .dev-card.active[data-device="ducky"]  {color:#e8c840;border-color:#c8a830;}
+body[data-theme="flat"] .dev-card.active[data-device="turtle"] {color:#60d898;border-color:#3aaa72;}
+body[data-theme="flat"] .dev-card.active[data-device="usb"]    {color:#70b8e8;border-color:#4a9fd8;}
 body[data-theme="matrix"] .tag,
 body[data-theme="cinematic"] .tag{opacity:0.95;}
 body[data-theme="matrix"] #btn-edit,
@@ -357,9 +346,8 @@ body::after{
   #login-logo::after{
     animation:logo-glitch-bottom 6.5s linear 1.2s infinite alternate-reverse !important;
   }
-  #header-ticker-track{
-    animation:header-ticker-scroll 22s linear infinite !important;
-  }
+  #nav::before{animation:none;opacity:0;}
+  .sys-tile-key,.dev-card-key{animation:none;opacity:1;text-shadow:none;box-shadow:none;}
 }
 #login-subtitle{
   font-family:var(--display);font-size:10px;letter-spacing:3px;
@@ -479,70 +467,16 @@ body[data-theme="light"] #login-btn:disabled{background:#ddd;color:#aaa;}
 #boot-bar-fill{height:100%;background:var(--red);width:0;border-radius:1px;transition:width 0.1s;}
 
 /* ── LAYOUT ───────────────────────────────────────────────────────────────── */
-#app{display:none;flex-direction:column;height:100vh;}
+#app{display:none;flex-direction:column;height:100vh;--sidebar-w:280px;}
 #app.visible{display:flex;}
 
 /* Header */
 #header{
-  height:38px;display:flex;align-items:center;justify-content:space-between;
+  height:32px;display:flex;align-items:center;justify-content:flex-end;
   padding:0 20px;background:var(--bg2);border-bottom:1px solid var(--border-bright);
   box-shadow:0 1px 12px rgba(255,26,26,0.06);
   flex-shrink:0;
 }
-#header-left{
-  display:flex;align-items:center;gap:12px;
-  position:relative;padding:4px 0 4px 6px;min-width:0;
-}
-.header-title-backdrop{
-  position:absolute;left:-10px;top:1px;bottom:1px;
-  width:min(52vw, 520px);
-  transform:skewX(-10deg);transform-origin:left center;
-  pointer-events:none;z-index:0;
-  background:
-    repeating-linear-gradient(
-      -52deg,
-      transparent 0px,
-      transparent 5px,
-      rgba(255, 196, 60, 0.07) 5px,
-      rgba(255, 196, 60, 0.07) 6px
-    ),
-    linear-gradient(
-      90deg,
-      rgba(255, 170, 35, 0.28) 0%,
-      rgba(255, 200, 55, 0.14) 42%,
-      rgba(255, 210, 70, 0.04) 72%,
-      transparent 100%
-    );
-  border-left:2px solid rgba(255, 200, 60, 0.45);
-  box-shadow:4px 0 24px -8px rgba(255, 180, 40, 0.25);
-}
-#header-ticker-wrap{
-  position:relative;z-index:1;overflow:hidden;
-  width:min(48vw, 500px);min-width:180px;flex-shrink:1;
-  -webkit-mask-image:linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
-  mask-image:linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
-}
-#header-ticker-track{
-  display:flex;flex-shrink:0;width:max-content;will-change:transform;
-  animation:header-ticker-scroll 22s linear infinite;
-}
-.header-ticker-text{
-  font-family:var(--display);font-size:11px;font-weight:700;
-  letter-spacing:2px;color:var(--red);
-  text-shadow:0 0 10px rgba(255,26,26,0.35);
-  white-space:nowrap;flex-shrink:0;
-  padding-right:80px;
-}
-@keyframes header-ticker-scroll{
-  0%{transform:translate3d(0,0,0);}
-  100%{transform:translate3d(-50%,0,0);}
-}
-.header-pulse{
-  width:6px;height:6px;border-radius:50%;background:var(--red);
-  box-shadow:0 0 6px var(--red);animation:pulse 2s infinite;
-  position:relative;z-index:1;flex-shrink:0;
-}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
 /* ── THEME PICKER ─────────────────────────────────────────────────────────── */
 #theme-picker{
   display:flex;align-items:center;gap:5px;
@@ -583,43 +517,62 @@ body[data-theme="light"] #login-btn:disabled{background:#ddd;color:#aaa;}
 .hstat span{color:var(--text-bright);font-weight:bold;}
 .hstat span.ok{color:var(--green);}
 .hstat span.warn{color:var(--red);}
+.hstat.operator-stat{display:flex;align-items:center;gap:6px;}
+#h-user-link{cursor:pointer;text-decoration:underline;text-decoration-color:rgba(0,229,255,0.35);}
+#h-user-link:hover{color:var(--cyan)!important;}
+#h-logout-btn{
+  background:transparent;border:1px solid var(--border-bright);color:var(--text);
+  font-family:var(--display);font-size:9px;line-height:1;padding:2px 6px;
+  border-radius:3px;cursor:pointer;letter-spacing:1px;
+}
+#h-logout-btn:hover{border-color:var(--red);color:var(--red);}
 #clock{color:var(--text-bright);font-family:var(--display);font-size:11px;}
 
 /* Main row */
-#main{display:flex;flex:1;overflow:hidden;}
+#main{display:flex;flex:1;overflow:hidden;min-height:0;}
+#workbench{
+  flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;
+}
+#workbench-body{
+  flex:1;min-height:0;display:flex;overflow:hidden;
+}
 
 /* Sidebar */
 #sidebar{
-  width:260px;flex-shrink:0;display:flex;flex-direction:column;
+  width:var(--sidebar-w);flex-shrink:0;display:flex;flex-direction:column;
   background:var(--bg2);border-right:1px solid var(--border);
   overflow:hidden;
 }
 #logo-area{
-  padding:16px 14px 14px;border-bottom:1px solid var(--border);flex-shrink:0;
+  padding:32px 16px 28px;flex-shrink:0;text-align:center;
+  position:relative;
   background:
-    radial-gradient(ellipse 80% 60% at 50% 30%, rgba(255,26,26,0.08) 0%, transparent 100%),
-    linear-gradient(180deg, rgba(255,26,26,0.05) 0%, transparent 100%);
+    radial-gradient(ellipse 110% 90% at 50% -10%, rgba(255,26,26,0.16) 0%, transparent 58%),
+    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(0,229,255,0.05) 0%, transparent 65%),
+    linear-gradient(180deg, rgba(255,26,26,0.07) 0%, transparent 100%);
 }
-#logo-row{
-  display:flex;align-items:flex-start;gap:12px;
+#logo-area::after{
+  content:'';position:absolute;left:12%;right:12%;bottom:0;height:1px;
+  background:linear-gradient(90deg, transparent, rgba(255,26,26,0.25) 30%, rgba(255,26,26,0.25) 70%, transparent);
+  pointer-events:none;
 }
-#logo-usb-art{
-  font-family:var(--mono);font-size:8px;line-height:1.1;
-  color:var(--cyan);margin:2px 0 0;padding:0;
-  text-shadow:0 0 10px rgba(0,229,255,0.55);
-  flex-shrink:0;user-select:none;
-  animation:usb-glow 3s ease-in-out infinite;
+#logo-text{
+  display:flex;flex-direction:column;align-items:center;
 }
-@keyframes usb-glow{
-  0%,100%{opacity:0.8;filter:drop-shadow(0 0 3px rgba(0,229,255,0.35));}
-  50%{opacity:1;filter:drop-shadow(0 0 10px rgba(0,229,255,0.75));}
-}
-#logo-text{flex:1;min-width:0;}
 #tsk-logo{
-  font-family:var(--display);font-size:38px;font-weight:900;
-  letter-spacing:10px;color:var(--red);line-height:1;
-  text-shadow:0 0 20px rgba(255,26,26,0.5),0 0 40px rgba(255,26,26,0.2);
+  font-family:var(--display);font-size:48px;font-weight:900;
+  letter-spacing:14px;color:var(--red);line-height:1;
+  padding-left:14px;
+  text-shadow:0 0 24px rgba(255,26,26,0.55),0 0 48px rgba(255,26,26,0.22);
   animation:glitch 8s infinite,flicker 6s infinite;
+}
+.logo-divider{
+  width:min(200px, 78%);height:1px;margin:12px 0 0;
+  background:linear-gradient(90deg, transparent 0%, rgba(255,26,26,0.55) 25%, rgba(255,26,26,0.85) 50%, rgba(255,26,26,0.55) 75%, transparent 100%);
+}
+.logo-divider--dim{
+  margin-top:10px;
+  background:linear-gradient(90deg, transparent 0%, rgba(255,215,0,0.35) 30%, rgba(255,215,0,0.5) 50%, rgba(255,215,0,0.35) 70%, transparent 100%);
 }
 @keyframes flicker{0%,94%,96%,98%,100%{opacity:1;}95%{opacity:0.5;}97%{opacity:0.8;}99%{opacity:0.4;}}
 @keyframes glitch{
@@ -628,14 +581,11 @@ body[data-theme="light"] #login-btn:disabled{background:#ddd;color:#aaa;}
   91%{transform:translate(2px);clip-path:inset(60% 0 10% 0);}
   92%{transform:none;clip-path:none;}
 }
-#logo-tagline-row{
-  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
-  margin-top:6px;
-}
+#logo-tagline-row{display:none;}
 #logo-tagline{
-  font-family:var(--display);font-size:11px;letter-spacing:3px;
-  color:var(--red);
-  text-shadow:0 0 8px rgba(255,26,26,0.5);
+  font-family:var(--display);font-size:13px;letter-spacing:4px;
+  color:var(--red);margin-top:12px;
+  text-shadow:0 0 10px rgba(255,26,26,0.5);
   animation:tagline-glitch 6s infinite;
 }
 @keyframes tagline-glitch{
@@ -647,9 +597,9 @@ body[data-theme="light"] #login-btn:disabled{background:#ddd;color:#aaa;}
   91%{color:var(--red);transform:none;}
 }
 #logo-edition{
-  font-family:var(--display);font-size:11px;letter-spacing:3px;
-  color:var(--yellow);margin-top:14px;font-weight:700;
-  text-shadow:0 0 12px rgba(255,215,0,0.6);
+  font-family:var(--display);font-size:11px;letter-spacing:4px;
+  color:var(--yellow);margin-top:10px;font-weight:700;
+  text-shadow:0 0 14px rgba(255,215,0,0.65);
   animation:edition-pulse 2.5s ease-in-out infinite;
 }
 @keyframes edition-pulse{
@@ -659,54 +609,182 @@ body[data-theme="light"] #login-btn:disabled{background:#ddd;color:#aaa;}
 
 /* Logo sub2 - USB HID FRAMEWORK tagline (inline with tagline) */
 #logo-sub2{
-  font-family:var(--display);font-size:10px;letter-spacing:2px;
-  color:var(--cyan);font-weight:700;
-  text-shadow:0 0 10px rgba(0,229,255,0.5);
-  padding:2px 8px;
-  border:1px solid rgba(0,229,255,0.35);
+  font-family:var(--display);font-size:10px;letter-spacing:3px;
+  color:var(--cyan);font-weight:700;margin-top:8px;
+  text-shadow:0 0 12px rgba(0,229,255,0.55);
+  display:inline-block;padding:4px 12px;
+  border:1px solid rgba(0,229,255,0.4);
   border-radius:3px;
-  background:rgba(0,229,255,0.06);
+  background:rgba(0,229,255,0.07);
 }
 
-/* Device status in sidebar */
-#device-status{
-  padding:10px 16px;border-bottom:1px solid var(--border);flex-shrink:0;
+/* Sidebar nav */
+#nav{
+  flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;
+  padding:18px 0 10px;scrollbar-width:none;
+  position:relative;isolation:isolate;
 }
-.dev-row{
-  display:flex;align-items:center;gap:8px;padding:3px 0;font-size:11px;
-  cursor:default;
+#nav::-webkit-scrollbar{display:none;}
+#nav::after{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:1px;
+  background:linear-gradient(180deg,transparent 0%,rgba(255,26,26,0.18) 25%,rgba(255,26,26,0.28) 50%,rgba(255,26,26,0.18) 75%,transparent 100%);
+  pointer-events:none;z-index:0;
 }
-.dev-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;transition:all 0.3s;}
-.dev-dot.on{animation:pulse 2s infinite;}
-.dev-dot.off{background:var(--border-bright);}
-.dev-name{flex:1;color:var(--text-bright);}
+#nav::before{
+  content:'';position:absolute;left:0;width:56px;height:2px;
+  background:linear-gradient(90deg,rgba(255,26,26,0.75) 0%,rgba(255,26,26,0.2) 42%,transparent 100%);
+  box-shadow:0 0 10px rgba(255,26,26,0.45),0 0 22px rgba(255,26,26,0.12);
+  pointer-events:none;z-index:0;opacity:0.55;
+  animation:nav-side-scan 7s ease-in-out infinite alternate;
+}
+@keyframes nav-side-scan{
+  0%{top:12%;}
+  100%{top:88%;}
+}
+#nav > .nav-section,
+#nav > .sys-grid,
+#nav > #device-list{position:relative;z-index:1;}
+.nav-section{
+  font-size:14px;letter-spacing:3px;color:var(--red);
+  padding:12px 14px 6px;font-weight:700;font-family:var(--display);
+  position:relative;
+}
+.nav-section--gap{margin-top:12px;}
+.nav-section::after{
+  content:'';display:block;height:1px;
+  margin:6px 0 0;
+  background:linear-gradient(90deg,rgba(255,26,26,0.5) 0%,rgba(255,26,26,0.1) 60%,transparent 100%);
+}
+
+/* SYSTEM tile grid */
+.sys-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  padding:0 12px 10px;
+}
+.sys-grid--2{grid-template-columns:repeat(2,1fr);padding-top:0;}
+.sys-tile{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;min-height:68px;padding:8px 4px;
+  border:1px solid var(--border);border-radius:4px;
+  background:rgba(0,0,0,0.22);cursor:pointer;
+  transition:border-color 0.15s,box-shadow 0.15s,background 0.15s;
+  user-select:none;
+}
+.sys-tile:hover{
+  border-color:var(--border-bright);
+  background:rgba(255,255,255,0.04);
+}
+.sys-tile.active{
+  border-color:var(--tile-accent,var(--cyan));
+  box-shadow:0 0 14px color-mix(in srgb,var(--tile-accent,var(--cyan)) 22%,transparent);
+  background:color-mix(in srgb,var(--tile-accent,var(--cyan)) 8%, transparent);
+}
+.sys-tile-key{
+  font-family:var(--display);font-size:18px;font-weight:700;line-height:1;
+  color:var(--tile-accent,var(--text-bright));
+  animation:nav-key-pulse 3.2s ease-in-out infinite;
+}
+.sys-grid .sys-tile:nth-child(1) .sys-tile-key{animation-delay:0s;}
+.sys-grid .sys-tile:nth-child(2) .sys-tile-key{animation-delay:0.55s;}
+.sys-grid .sys-tile:nth-child(3) .sys-tile-key{animation-delay:1.1s;}
+.sys-grid--2 .sys-tile:nth-child(1) .sys-tile-key{animation-delay:1.65s;}
+.sys-grid--2 .sys-tile:nth-child(2) .sys-tile-key{animation-delay:2.2s;}
+.sys-tile-label{
+  font-family:var(--display);font-size:10px;letter-spacing:1px;
+  color:var(--text-bright);text-align:center;line-height:1.2;
+}
+.sys-tile--muted{--tile-accent:#aaa;}
+.sys-tile--red{--tile-accent:var(--red);}
+.sys-tile--cyan{--tile-accent:var(--cyan);}
+.sys-tile--green{--tile-accent:var(--green);}
+.sys-tile--yellow{--tile-accent:var(--yellow);}
+
+/* Unified device cards */
+#device-list{padding:0 0 4px;}
+.dev-card{
+  display:flex;align-items:center;gap:10px;
+  margin:0 12px 8px;padding:10px 12px;
+  border:1px solid var(--border);border-radius:4px;
+  background:rgba(0,0,0,0.18);cursor:pointer;
+  transition:border-color 0.15s,box-shadow 0.15s,background 0.15s;
+  user-select:none;
+}
+.dev-card:hover{border-color:var(--border-bright);background:rgba(255,255,255,0.03);}
+.dev-card.active{
+  border-left:2px solid var(--dev-accent,var(--yellow));
+  background:color-mix(in srgb,var(--dev-accent,var(--yellow)) 9%, transparent);
+  box-shadow:inset 0 0 18px color-mix(in srgb,var(--dev-accent,var(--yellow)) 6%, transparent);
+}
+.dev-card-key{
+  width:34px;height:34px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-size:15px;font-weight:700;
+  border:1px solid currentColor;border-radius:3px;
+  animation:nav-key-pulse 3.2s ease-in-out infinite;
+}
+#device-list .dev-card:nth-child(1) .dev-card-key{animation-delay:0.3s;}
+#device-list .dev-card:nth-child(2) .dev-card-key{animation-delay:0.85s;}
+#device-list .dev-card:nth-child(3) .dev-card-key{animation-delay:1.4s;}
+#device-list .dev-card:nth-child(4) .dev-card-key{animation-delay:1.95s;}
+#device-list .dev-card:nth-child(5) .dev-card-key{animation-delay:2.5s;}
+@keyframes nav-key-pulse{
+  0%,100%{
+    opacity:0.82;
+    text-shadow:0 0 4px color-mix(in srgb,currentColor 28%,transparent);
+    box-shadow:0 0 3px color-mix(in srgb,currentColor 12%,transparent);
+  }
+  50%{
+    opacity:1;
+    text-shadow:0 0 12px color-mix(in srgb,currentColor 58%,transparent),0 0 20px color-mix(in srgb,currentColor 22%,transparent);
+    box-shadow:0 0 10px color-mix(in srgb,currentColor 32%,transparent);
+  }
+}
+.sys-tile:hover .sys-tile-key,
+.dev-card:hover .dev-card-key{
+  animation-duration:2.4s;
+}
+.dev-card-body{flex:1;min-width:0;}
+.dev-card-name{
+  font-family:var(--display);font-size:13px;letter-spacing:0.5px;
+  color:var(--text-bright);line-height:1.2;
+}
+.dev-card-meta{
+  font-size:11px;color:var(--text);margin-top:3px;
+  white-space:nowrap;
+}
+.dev-card-meta span{font-family:var(--mono);color:var(--text-bright);font-weight:700;}
+.dev-card-status{flex-shrink:0;width:90px;display:flex;justify-content:flex-end;}
+.dev-card[data-device="bunny"]  {--dev-accent:#e8ecf8;}
+.dev-card[data-device="ducky"]  {--dev-accent:var(--yellow);}
+.dev-card[data-device="turtle"] {--dev-accent:var(--green);}
+.dev-card[data-device="teensy"] {--dev-accent:var(--magenta);}
+.dev-card[data-device="usb"]    {--dev-accent:var(--cyan);}
+.dev-card-key--silver{color:#ccc;}
+.dev-card-key--yellow{color:var(--yellow);}
+.dev-card-key--green{color:var(--green);}
+.dev-card-key--magenta{color:var(--magenta);}
+.dev-card-key--cyan{color:var(--cyan);}
+.dev-card.dev-online .dev-card-key{box-shadow:0 0 8px color-mix(in srgb,currentColor 45%,transparent);}
+
+.dev-dot{width:0;height:0;overflow:hidden;position:absolute;opacity:0;}
 .dev-badge{
-  display:inline-block;
-  width:70px;
-  font-size:10px;padding:2px 0;border-radius:2px;
-  font-family:var(--display);letter-spacing:1px;
-  text-align:center;flex-shrink:0;
-  box-sizing:border-box;
+  display:inline-block;width:90px;min-width:90px;
+  font-size:10px;padding:5px 3px;border-radius:3px;
+  font-family:var(--display);letter-spacing:0.5px;
+  text-align:center;flex-shrink:0;box-sizing:border-box;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .dev-badge.on{background:rgba(0,255,136,0.1);color:var(--green);border:1px solid var(--green);}
 .dev-badge.off{background:rgba(255,255,255,0.04);color:var(--text);border:1px solid var(--border);}
 .dev-badge.warn{background:rgba(255,200,0,0.08);color:#c8a800;border:1px solid #7a6400;}
 .dev-badge.info{background:rgba(0,229,255,0.06);color:var(--cyan);border:1px solid rgba(0,229,255,0.3);}
-/* ── DEVICE DOT COLORED GLOWS ─────────────────────────────────────────────── */
-#dev-bunny   .dev-dot.on{box-shadow:0 0 5px rgba(204,204,204,0.7),0 0 10px rgba(204,204,204,0.3);}
-#dev-ducky   .dev-dot.on{box-shadow:0 0 5px rgba(255,215,0,0.8),0 0 12px rgba(255,215,0,0.4);}
-#dev-turtle  .dev-dot.on{box-shadow:0 0 5px rgba(0,255,136,0.8),0 0 12px rgba(0,255,136,0.4);}
-#dev-teensy  .dev-dot.on{box-shadow:0 0 5px rgba(255,0,255,0.8),0 0 12px rgba(255,0,255,0.4);}
-#dev-usbdrive .dev-dot.on{box-shadow:0 0 5px rgba(0,229,255,0.8),0 0 12px rgba(0,229,255,0.4);}
-
-/* ── ARMED STATE ──────────────────────────────────────────────────────────── */
-#dev-armed .dev-dot{background:var(--red);}
-#dev-armed.armed .dev-dot.on{animation:armed-dot-pulse 1.5s ease-in-out infinite;}
-#dev-armed.armed .dev-badge{color:var(--red);font-weight:700;border-color:var(--red);}
-#dev-armed.armed .dev-badge.on{animation:armed-badge-pulse 1.5s ease-in-out infinite;}
-@keyframes armed-dot-pulse{
-  0%,100%{box-shadow:0 0 4px var(--red);}
-  50%{box-shadow:0 0 14px var(--red),0 0 24px rgba(255,26,26,0.55);}
+.dev-badge.armed{
+  background:rgba(255,26,26,0.12);color:var(--red);border:1px solid var(--red);
+  font-weight:700;animation:armed-badge-pulse 1.5s ease-in-out infinite;
+}
+.dev-card.dev-armed-card{
+  border-color:var(--red);
+  box-shadow:0 0 12px rgba(255,26,26,0.15);
 }
 @keyframes armed-badge-pulse{
   0%,100%{
@@ -741,126 +819,86 @@ body.defcon34-mode #tsk-logo{
   color:#ffd700!important;
   text-shadow:0 0 30px rgba(255,215,0,0.8)!important;
 }
-body.defcon34-mode .header-ticker-text{color:#ffd700;text-shadow:0 0 12px rgba(255,215,0,0.6);}
-body.defcon34-mode .header-title-backdrop{
-  border-left-color:rgba(255,215,0,0.5);
-  background:linear-gradient(90deg,rgba(255,215,0,0.2) 0%,transparent 100%);
-}
-
-/* Nav */
-#nav{flex:1;overflow-y:auto;padding:8px 0;}
-#nav::-webkit-scrollbar{width:2px;}
-#nav::-webkit-scrollbar-thumb{background:var(--border-bright);}
-.nav-section{
-  font-size:11px;letter-spacing:3px;color:var(--red);
-  padding:8px 16px 4px;font-weight:700;
-  position:relative;
-}
-.nav-section::after{
-  content:'';display:block;height:1px;
-  margin:5px 0 0;
-  background:linear-gradient(90deg,rgba(255,26,26,0.5) 0%,rgba(255,26,26,0.1) 60%,transparent 100%);
-}
-.nav-item{
-  display:flex;align-items:center;gap:10px;padding:7px 16px;
-  cursor:pointer;transition:all 0.15s;position:relative;font-size:12px;
-  color:var(--text-bright);user-select:none;
-}
-.nav-item:hover{background:rgba(255,26,26,0.04);color:var(--text-bright);}
-.nav-item.active{
-  background:rgba(255,26,26,0.09);color:var(--red);
-  border-left:2px solid var(--red);
-  box-shadow:inset 0 0 16px rgba(255,26,26,0.07);
-  font-weight:600;
-}
-.nav-item.active .nav-label,
-.nav-item.active .nav-key{font-weight:700;opacity:1;}
-.nav-item.active[data-device="bunny"]  {background:rgba(210,215,230,0.12);color:#e8ecf8;border-color:#a8b0c8;box-shadow:inset 0 0 16px rgba(200,210,230,0.10);}
-.nav-item.active[data-device="ducky"]  {background:rgba(255,215,0,0.10);color:#ffe040;border-color:var(--yellow);box-shadow:inset 0 0 16px rgba(255,215,0,0.08);}
-.nav-item.active[data-device="turtle"] {background:rgba(0,255,136,0.09);color:#40ffaa;border-color:var(--green);box-shadow:inset 0 0 16px rgba(0,255,136,0.07);}
-.nav-item.active[data-device="teensy"] {background:rgba(255,0,255,0.09);color:#ff88ff;border-color:var(--magenta);box-shadow:inset 0 0 16px rgba(255,0,255,0.07);}
-.nav-item.active[data-device="usb"]    {background:rgba(0,229,255,0.09);color:#60eeff;border-color:var(--cyan);box-shadow:inset 0 0 16px rgba(0,229,255,0.07);}
-.nav-key{
-  font-family:var(--display);font-size:11px;width:16px;
-  text-align:center;flex-shrink:0;opacity:0.85;
-}
-.nav-key--muted{color:#aaa;}
-.nav-key--silver{color:#ccc;}
-.nav-key--red{color:var(--red);}
-.nav-key--cyan{color:var(--cyan);}
-.nav-key--green{color:var(--green);}
-.nav-key--yellow{color:var(--yellow);}
-.nav-key--magenta{color:var(--magenta);}
-.nav-label{flex:1;letter-spacing:1px;font-weight:500;}
-.nav-badge-count{
-  font-size:10px;padding:2px 4px;border:1px solid currentColor;
-  opacity:0.85;border-radius:3px;font-family:var(--mono);font-weight:bold;
-  min-width:44px;width:44px;text-align:center;flex-shrink:0;
-  box-sizing:border-box;display:inline-block;
-}
-
 /* Center pane */
 #center{flex:1;display:flex;flex-direction:column;background:var(--bg);}
-#center-header{
-  height:36px;display:flex;align-items:center;justify-content:space-between;
-  padding:0 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;
-}
-#center-title{font-family:var(--display);font-size:12px;letter-spacing:3px;color:var(--text-bright);}
-#center-title span{color:var(--red);}
 #search-wrap{
   display:flex;align-items:center;gap:8px;
-  background:var(--bg3);border:1px solid var(--border);
-  border-radius:3px;padding:4px 10px;
+  background:var(--bg3);border:1px solid var(--border-bright);
+  border-radius:4px;padding:5px 12px;
+  margin-left:auto;
+  flex:0 1 220px;min-width:150px;max-width:300px;
+  transform:translateY(-1px);
 }
 #search-input{
   background:transparent;border:none;outline:none;
-  font-family:var(--mono);font-size:11px;color:var(--green);
-  width:160px;caret-color:var(--green);
+  font-family:var(--mono);font-size:12px;color:var(--green);
+  width:100%;min-width:0;caret-color:var(--green);
+  line-height:1;padding:0;margin:0;
 }
-#search-input::placeholder{color:#6a6a8a;font-style:italic;}
-.search-icon{color:var(--border-bright);font-size:11px;}
-#tabs{
-  display:flex;gap:1px;padding:0 16px;
-  background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;
-}
-.tab{
-  padding:6px 14px;font-size:11px;cursor:pointer;color:var(--text);
-  border-bottom:2px solid transparent;transition:all 0.15s;
-  letter-spacing:2px;font-family:var(--display);
-}
-.tab:hover{color:var(--text-bright);}
-.tab.active{color:var(--yellow);border-bottom-color:var(--yellow);font-weight:600;}
+#search-input::placeholder{color:#6a6a8a;font-style:italic;font-size:12px;}
+.search-icon{color:var(--border-bright);font-size:12px;flex-shrink:0;}
 #payload-scroll{flex:1;overflow-y:auto;}
+.panel-head{
+  min-height:56px;box-sizing:border-box;
+  display:flex;align-items:center;flex-shrink:0;
+  border-bottom:1px solid var(--border);
+  width:100%;
+}
+.browse-sticky-title{
+  position:sticky;top:0;z-index:5;
+  padding:0 20px;
+  background:var(--bg);
+}
+.browse-title-row{
+  display:flex;align-items:center;gap:16px;width:100%;
+}
+.browse-title-left{
+  display:flex;align-items:center;gap:12px;flex-shrink:0;
+}
+.center-device-icon{
+  width:30px;height:30px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-size:13px;font-weight:700;flex-shrink:0;
+  border:1px solid var(--device-accent);border-radius:4px;
+  color:var(--device-accent);background:rgba(255,255,255,0.03);
+}
+.snarf-header-btn{
+  font-family:var(--display);font-size:10px;letter-spacing:2px;
+  padding:5px 10px;border:1px solid var(--cyan);border-radius:3px;
+  background:rgba(0,229,255,0.08);color:var(--cyan);cursor:pointer;
+  flex-shrink:0;
+}
+.snarf-header-btn:hover{background:rgba(0,229,255,0.15);}
+.browse-sticky-title .cfg-title,
+.panel-head .cfg-title{margin-bottom:0;line-height:1;}
+#center-source{
+  font-size:12px;letter-spacing:2px;line-height:1;
+  color:var(--yellow);font-family:var(--display);font-weight:600;
+  white-space:nowrap;
+}
+#center-source.live{color:var(--green);}
 .payload-banner{
-  margin:12px 16px;padding:12px 14px;
+  margin:12px 20px;padding:14px 16px;
   background:color-mix(in srgb, var(--device-accent) 9%, var(--bg2));
   border:1px solid color-mix(in srgb, var(--device-accent) 38%, var(--border));
-  border-radius:4px;font-size:11px;line-height:1.7;
+  border-radius:4px;font-size:13px;line-height:1.7;
 }
 .payload-banner-title{
   color:var(--device-accent);font-family:var(--display);
-  font-size:10px;letter-spacing:2px;margin-bottom:6px;font-weight:700;
+  font-size:13px;letter-spacing:2px;margin-bottom:6px;font-weight:700;
 }
 .payload-banner-body{color:var(--text-bright);}
 .payload-banner-body a{color:var(--cyan);cursor:pointer;text-decoration:underline;}
 .payload-banner-link{
   display:inline-block;margin-top:8px;
   color:var(--device-accent);cursor:pointer;
-  text-decoration:underline;font-size:11px;font-weight:600;
+  text-decoration:underline;font-size:13px;font-weight:600;
 }
-#center-source{font-size:11px;margin-left:12px;letter-spacing:2px;
-  color:var(--yellow);font-family:var(--display);font-weight:600;}
-#center-source.live{color:var(--green);}
 #payload-scroll::-webkit-scrollbar{width:3px;}
 #payload-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
 #payload-list{padding:4px 0;}
-#snarf-panel{padding:12px 16px 20px;display:none;}
 .snarf-head{font-family:var(--display);font-size:11px;letter-spacing:3px;color:var(--cyan);margin-bottom:4px;font-weight:700;}
 .snarf-sub{font-size:11px;color:var(--text);margin-bottom:14px;line-height:1.5;}
 .snarf-mascot{float:right;height:158px;width:auto;margin:0 0 8px 20px;image-rendering:pixelated;opacity:0.92;pointer-events:none;}
-/* snarf PNGs have a baked-in black bg - screen blend hides it on lighter panels */
-body[data-theme="light"] .snarf-mascot,
-body[data-theme="flat"] .snarf-mascot{mix-blend-mode:screen;opacity:1;}
 .snarf-section{margin-bottom:16px;}
 .snarf-label{font-family:var(--display);font-size:10px;letter-spacing:2px;color:var(--text-bright);margin-bottom:8px;}
 .snarf-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;}
@@ -875,7 +913,7 @@ body[data-theme="flat"] .snarf-mascot{mix-blend-mode:screen;opacity:1;}
 }
 .snarf-select:focus,.snarf-input:focus{outline:none;border-color:var(--cyan);}
 .snarf-warn{font-size:11px;color:#ffaa00;margin-top:8px;line-height:1.4;}
-.snarf-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+.snarf-actions{display:flex;gap:8px;margin-top:0;flex-wrap:wrap;flex-shrink:0;}
 .snarf-btn{
   font-family:var(--display);font-size:11px;letter-spacing:2px;
   padding:8px 14px;border:1px solid var(--cyan);background:rgba(0,229,255,0.08);
@@ -884,16 +922,43 @@ body[data-theme="flat"] .snarf-mascot{mix-blend-mode:screen;opacity:1;}
 .snarf-btn:hover{background:rgba(0,229,255,0.15);}
 .snarf-btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);font-weight:700;}
 .snarf-btn.primary:hover{filter:brightness(1.1);}
+.snarf-intro-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:16px;}
+.snarf-intro-card{
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  min-width:0;min-height:152px;
+  padding:12px 8px;border:1px solid var(--border);border-radius:4px;
+  background:rgba(0,229,255,0.03);cursor:pointer;transition:border-color 0.15s,background 0.15s;
+}
+.snarf-intro-card:hover{border-color:rgba(0,229,255,0.35);}
+.snarf-intro-card.active{border-color:var(--cyan);background:rgba(0,229,255,0.1);}
+.snarf-intro-card img{height:72px;width:auto;max-width:100%;margin-bottom:8px;image-rendering:pixelated;opacity:0.95;object-fit:contain;}
+.snarf-intro-label{font-family:var(--display);font-size:11px;letter-spacing:2px;color:var(--cyan);font-weight:700;flex-shrink:0;}
+.snarf-intro-desc{
+  font-size:10px;color:var(--text);margin-top:6px;line-height:1.45;
+  min-height:44px;max-height:44px;overflow:hidden;
+}
+.snarf-mode-panel{
+  min-height:400px;display:flex;flex-direction:column;
+  border:1px solid var(--border);border-radius:4px;
+  background:rgba(0,0,0,0.18);padding:14px 16px;margin-bottom:14px;
+}
+.snarf-mode-panel .snarf-section:last-child{margin-bottom:0;}
+.snarf-mode-panel .snarf-catch-wrap{flex:1;min-height:0;margin-bottom:0;}
+.snarf-mode-spacer{flex:1;min-height:12px;}
+.snarf-build-preview{margin-top:14px;}
+.snarf-build-preview .snarf-preview-panel{max-height:220px;margin-top:6px;}
 .snarf-subtabs{display:flex;gap:6px;margin-bottom:14px;}
 .snarf-subtab{
   font-family:var(--display);font-size:10px;letter-spacing:2px;padding:6px 12px;
   border:1px solid var(--border);background:transparent;color:var(--text);cursor:pointer;border-radius:3px;
 }
 .snarf-subtab.active{border-color:var(--cyan);color:var(--cyan);background:rgba(0,229,255,0.08);}
-.snarf-catch-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px;min-height:200px;}
+.snarf-catch-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px;min-height:360px;}
+.snarf-catch-col{display:flex;flex-direction:column;min-height:0;min-width:0;}
 .snarf-catch-feed,.snarf-catch-tree{
   border:1px solid var(--border);border-radius:3px;background:rgba(0,0,0,0.25);
-  padding:8px;font-size:11px;line-height:1.45;overflow-y:auto;max-height:420px;
+  padding:8px;font-size:11px;line-height:1.45;overflow-y:auto;
+  flex:1;min-height:140px;
 }
 .snarf-catch-title{font-family:var(--display);font-size:10px;letter-spacing:2px;color:var(--text-bright);margin-bottom:6px;}
 .snarf-catch-line{padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
@@ -919,12 +984,12 @@ body[data-theme="flat"] .snarf-mascot{mix-blend-mode:screen;opacity:1;}
   max-height:120px;overflow:auto;white-space:pre-wrap;
 }
 .p-cat{
-  padding:8px 16px 4px;font-size:11px;letter-spacing:3px;
-  color:var(--red);font-weight:700;
+  padding:14px 20px 8px;font-size:14px;letter-spacing:3px;
+  color:var(--red);font-weight:700;font-family:var(--display);
 }
 .p-item{
-  display:flex;align-items:center;padding:6px 16px;
-  cursor:pointer;transition:all 0.12s;gap:10px;
+  display:flex;align-items:center;padding:8px 20px;
+  cursor:pointer;transition:all 0.12s;gap:12px;
 }
 .p-item:hover{background:rgba(255,255,255,0.04);}
 .p-item.selected{
@@ -933,15 +998,15 @@ body[data-theme="flat"] .snarf-mascot{mix-blend-mode:screen;opacity:1;}
   box-shadow:inset 2px 0 18px color-mix(in srgb, var(--device-accent,var(--yellow)) 7%, transparent),
              0 0 0 0 transparent;
 }
-.p-num{font-size:11px;color:var(--text);width:28px;flex-shrink:0;font-family:var(--display);}
-.p-icon{width:6px;height:6px;border:1px solid currentColor;border-radius:1px;flex-shrink:0;opacity:0.6;}
-.p-name{flex:1;color:var(--text-bright);font-size:12px;}
+.p-num{font-size:13px;color:var(--text);width:36px;flex-shrink:0;font-family:var(--display);}
+.p-icon{width:8px;height:8px;border:1px solid currentColor;border-radius:1px;flex-shrink:0;opacity:0.6;}
+.p-name{flex:1;color:var(--text-bright);font-size:14px;}
 .p-item.selected .p-name{
   color:var(--device-accent, var(--yellow));
   text-shadow:0 0 10px color-mix(in srgb,var(--device-accent,var(--yellow)) 55%,transparent);
 }
-.p-tags{display:flex;gap:4px;flex-shrink:0;}
-.tag{font-size:10px;padding:2px 6px;border-radius:2px;letter-spacing:1px;font-family:var(--display);}
+.p-tags{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;}
+.tag{font-size:12px;padding:3px 8px;border-radius:2px;letter-spacing:1px;font-family:var(--display);}
 .tag-CREDS{background:rgba(255,26,26,0.15);color:#ff6666;}
 .tag-EXFIL{background:rgba(255,0,255,0.1);color:var(--magenta);}
 .tag-RECON{background:rgba(0,229,255,0.1);color:var(--cyan);}
@@ -949,7 +1014,7 @@ body[data-theme="flat"] .snarf-mascot{mix-blend-mode:screen;opacity:1;}
 .tag-EXEC{background:rgba(0,255,136,0.1);color:var(--green);}
 .tag-HID{background:rgba(68,136,255,0.1);color:var(--blue);}
 .tag-NET{background:rgba(68,136,255,0.1);color:var(--blue);}
-.p-lang{font-size:11px;color:var(--text);width:32px;text-align:right;flex-shrink:0;}
+.p-lang{font-size:13px;color:var(--text);width:40px;text-align:right;flex-shrink:0;font-family:var(--display);}
 
 /* Panel resize divider */
 #panel-divider{
@@ -970,10 +1035,20 @@ body[data-theme="flat"] .snarf-mascot{mix-blend-mode:screen;opacity:1;}
   opacity:1;background:var(--red);
 }
 
+#panel-divider.resize-disabled{
+  cursor:default;opacity:0.45;pointer-events:none;
+}
+#panel-divider.resize-disabled:hover,#panel-divider.resize-disabled.dragging{
+  background:linear-gradient(180deg, var(--border) 0%, var(--border-bright) 50%, var(--border) 100%);
+  box-shadow:none;
+}
+#panel-divider.panel-locked{display:none;}
+
 /* Right pane */
 #right{
-  width:380px;min-width:260px;max-width:55vw;
+  width:455px;min-width:455px;max-width:455px;
   flex-shrink:0;display:flex;flex-direction:column;
+  align-self:stretch;
   background:var(--bg2);
   border-left:1px solid var(--border-bright);
   box-shadow:-8px 0 32px rgba(0,0,0,0.5), inset 1px 0 0 rgba(255,255,255,0.03);
@@ -986,12 +1061,10 @@ body[data-theme="flat"] .snarf-mascot{mix-blend-mode:screen;opacity:1;}
              inset 1px 0 0 color-mix(in srgb, var(--device-accent, var(--yellow)) 20%, transparent);
 }
 #preview-header{
-  height:36px;display:flex;align-items:center;justify-content:space-between;
   padding:0 16px;
   background:linear-gradient(90deg, rgba(255,26,26,0.07) 0%, var(--bg2) 45%);
-  border-bottom:1px solid var(--border);flex-shrink:0;
+  justify-content:space-between;
 }
-#preview-title{font-family:var(--display);font-size:11px;letter-spacing:2px;color:var(--text-bright);}
 #preview-lang{font-size:10px;color:var(--text);padding:2px 6px;border:1px solid var(--border-bright);border-radius:2px;}
 #preview-body{flex:1;overflow-y:auto;padding:12px 16px;}
 #preview-body::-webkit-scrollbar{width:2px;}
@@ -1011,8 +1084,9 @@ body[data-theme="flat"] .snarf-mascot{mix-blend-mode:screen;opacity:1;}
 
 /* Flash/actions */
 #action-area{
-  padding:12px 16px;border-top:1px solid var(--border);
+  padding:12px 16px 0;border-top:1px solid var(--border);
   display:flex;flex-direction:column;gap:8px;flex-shrink:0;
+  margin-top:auto;
 }
 #flash-status{
   font-size:12px;min-height:16px;color:var(--text-bright);
@@ -1020,7 +1094,12 @@ body[data-theme="flat"] .snarf-mascot{mix-blend-mode:screen;opacity:1;}
 }
 #flash-bar-wrap{flex:1;height:2px;background:var(--border);border-radius:1px;display:none;}
 #flash-bar-fill{height:100%;width:0;background:var(--red);border-radius:1px;transition:width 0.1s;}
-#action-btns{display:flex;gap:8px;}
+#action-btns{
+  display:flex;gap:8px;align-items:center;
+  height:44px;padding:0 16px;margin:4px -16px 0;
+  border-top:1px solid var(--border-bright);
+  background:var(--bg2);flex-shrink:0;
+}
 .action-btn{
   flex:1;padding:8px 12px;font-family:var(--display);font-size:11px;
   letter-spacing:2px;cursor:pointer;border-radius:3px;
@@ -1079,6 +1158,68 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
 }
 #usb-stick-refresh:hover{border-color:var(--cyan);color:var(--cyan);}
 .cfg-toggle-col{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:52px;flex-shrink:0;}
+.cfg-panel{padding:20px;}
+.cfg-title{
+  font-family:var(--display);font-size:20px;font-style:italic;letter-spacing:4px;
+  color:var(--red);margin-bottom:20px;font-weight:700;
+}
+.cfg-section-title{
+  font-family:var(--display);font-size:14px;letter-spacing:3px;font-weight:700;margin:22px 0 14px;
+}
+.cfg-field{margin-bottom:16px;}
+.cfg-field-label{
+  font-size:14px;letter-spacing:2px;color:var(--text-bright);margin-bottom:8px;font-family:var(--display);
+}
+.cfg-hint{font-size:13px;color:var(--text);margin-bottom:10px;line-height:1.45;}
+.cfg-hint-inline{font-size:13px;color:var(--text);margin:-2px 0 12px;line-height:1.45;}
+.cfg-input,.cfg-select{
+  box-sizing:border-box;background:var(--bg3);border:1px solid var(--border);color:var(--text-bright);
+  font-family:var(--mono);font-size:14px;padding:8px 12px;border-radius:3px;outline:none;
+}
+.cfg-input{width:100%;}
+.cfg-field-row{display:flex;gap:8px;align-items:stretch;}
+.cfg-field-row .cfg-input,.cfg-field-row .cfg-select{flex:1;}
+.cfg-btn-set{
+  padding:8px 16px;font-family:var(--display);font-size:12px;letter-spacing:1px;
+  background:var(--accent);border:none;color:var(--accent-fg);font-weight:700;cursor:pointer;border-radius:3px;min-width:56px;
+}
+.cfg-btn-icon{
+  padding:8px 12px;font-family:var(--display);font-size:12px;letter-spacing:1px;
+  border:1px solid var(--border);background:transparent;color:var(--cyan);cursor:pointer;border-radius:3px;
+}
+.cfg-btn-inline{
+  margin-left:8px;padding:4px 10px;font-size:12px;cursor:pointer;border:1px solid var(--cyan);
+  background:transparent;color:var(--cyan);border-radius:3px;font-family:var(--display);
+}
+.cfg-body-text{font-size:14px;color:var(--text-bright);line-height:1.45;}
+.cfg-body-hint{font-size:13px;color:var(--text);margin-top:4px;line-height:1.45;}
+.cfg-note{font-size:13px;color:var(--text);margin-top:6px;letter-spacing:1px;}
+.clock-format-row{display:flex;align-items:center;gap:12px;}
+.clock-format-label{font-family:var(--display);font-size:14px;letter-spacing:2px;color:var(--text-bright);}
+.cfg-deploy-header{display:flex;align-items:center;justify-content:space-between;margin:22px 0 14px;}
+.cfg-deploy-title{font-family:var(--display);font-size:14px;letter-spacing:3px;color:var(--cyan);font-weight:700;}
+.cfg-deploy-empty{color:var(--text);font-size:13px;}
+.cfg-deploy-row{padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.cfg-deploy-path{color:var(--text);font-size:12px;margin-top:3px;}
+.cfg-panel-op{max-width:640px;}
+.cfg-op-card{margin-bottom:20px;padding:14px 16px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;}
+.cfg-op-sublabel{font-size:13px;letter-spacing:2px;color:var(--text);margin-bottom:8px;font-family:var(--display);}
+.cfg-op-name{font-family:var(--display);font-size:22px;letter-spacing:3px;color:var(--cyan);font-weight:700;}
+.cfg-op-meta{font-size:13px;color:var(--text);margin-top:10px;line-height:1.5;}
+.cfg-op-meta code{color:var(--text-bright);font-size:13px;}
+.cfg-btn-outline{
+  padding:8px 16px;font-family:var(--display);font-size:12px;letter-spacing:2px;
+  background:transparent;border:1px solid var(--red-dim);color:var(--red);cursor:pointer;border-radius:3px;
+}
+.cfg-btn-outline-wide{width:100%;padding:10px 16px;font-size:12px;letter-spacing:2px;}
+.cfg-input-stack{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
+.cfg-warn-text{font-size:13px;color:var(--red);line-height:1.5;margin-bottom:10px;}
+.cfg-error-box{margin-top:10px;padding:10px 14px;background:rgba(255,26,26,0.08);border:1px solid var(--red-dim);border-radius:3px;font-size:13px;color:var(--red);display:none;text-align:center;}
+.cfg-btn-row{display:flex;gap:8px;}
+.cfg-btn-row button{flex:1;padding:10px 16px;font-family:var(--display);font-size:12px;letter-spacing:2px;border-radius:3px;cursor:pointer;}
+.cfg-btn-cancel{background:transparent;color:var(--text);border:1px solid var(--border);}
+.cfg-btn-confirm{background:var(--accent);color:var(--accent-fg);font-weight:700;border:none;}
+.cfg-section-divider{margin-top:28px;border-top:1px solid var(--border);padding-top:20px;}
 .cfg-toggle{position:relative;width:42px;height:22px;display:inline-block;flex-shrink:0;}
 .cfg-toggle input{opacity:0;width:0;height:0;position:absolute;}
 .cfg-toggle-slider{
@@ -1103,24 +1244,55 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
 }
 .sw-btn.active{background:rgba(255,26,26,0.15);border-color:var(--red);color:var(--red);}
 
-/* Bottom bar */
+/* Bottom command bar */
 #bottom{
-  height:36px;display:flex;align-items:center;padding:0 20px;
-  background:var(--bg2);border-top:1px solid var(--border-bright);
-  gap:20px;flex-shrink:0;
+  height:44px;display:flex;align-items:stretch;padding:0;
+  background:var(--bg2);flex-shrink:0;
 }
-.bstat{font-size:12px;color:var(--text-bright);display:flex;align-items:center;gap:6px;}
-.bstat .bkey{color:var(--text-bright);font-size:11px;opacity:0.65;font-weight:600;letter-spacing:1px;}
-.bstat .bval{font-family:var(--display);font-size:11px;font-weight:700;}
-.bsep{width:1px;height:20px;background:var(--border);}
-#cmd-area{flex:1;display:flex;align-items:center;gap:8px;}
-#cmd-prompt{color:var(--red);font-family:var(--display);font-size:10px;letter-spacing:1px;}
+#bottom-sidebar-spacer{
+  width:var(--sidebar-w,280px);flex-shrink:0;
+  background:var(--bg2);
+  border-right:1px solid var(--border);
+}
+#bottom-cmd-wrap{
+  flex:1;min-width:0;display:flex;align-items:center;
+  padding:6px 16px 6px 12px;
+  border-top:1px solid var(--border-bright);
+  gap:12px;
+}
+.cmd-shell{
+  flex:1;min-width:0;display:flex;align-items:center;gap:10px;
+  padding:7px 14px;
+  background:rgba(0,0,0,0.38);
+  border:1px solid var(--border);
+  border-radius:4px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+  transition:border-color 0.15s,box-shadow 0.15s;
+}
+.cmd-shell:focus-within{
+  border-color:rgba(0,255,136,0.45);
+  box-shadow:0 0 14px rgba(0,255,136,0.1),inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.cmd-label{
+  font-family:var(--display);font-size:9px;letter-spacing:2px;
+  color:var(--text);opacity:0.7;flex-shrink:0;
+}
+#cmd-prompt{
+  color:var(--red);font-family:var(--display);font-size:11px;
+  letter-spacing:2px;font-weight:700;flex-shrink:0;
+}
+.cmd-chevron{color:var(--green);font-family:var(--mono);font-size:12px;flex-shrink:0;}
 #cmd-input{
-  flex:1;background:transparent;border:none;outline:none;
-  font-family:var(--mono);font-size:12px;color:var(--green);
+  flex:1;min-width:0;background:transparent;border:none;outline:none;
+  font-family:var(--mono);font-size:13px;color:var(--green);
   caret-color:var(--green);
 }
-#cmd-input::placeholder{color:#5a6a5a;font-style:italic;}
+#cmd-input::placeholder{color:#4a6a4a;font-style:italic;opacity:0.85;}
+#music-ticker-wrap{
+  flex-shrink:0;display:none;align-items:center;
+  padding:0 12px;border-top:1px solid var(--border-bright);
+  font-size:10px;color:var(--cyan);
+}
 
 /* ── EDITOR MODAL ──────────────────────────────────────────────────── */
 #editor-overlay{
@@ -1132,49 +1304,7 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
 }
 #editor-overlay.visible{display:flex;}
 
-/* ── ABOUT MODAL ───────────────────────────────────────────────────── */
-#about-overlay{
-  display:none;position:fixed;inset:0;
-  background:rgba(0,0,0,0.82);
-  backdrop-filter:blur(4px);
-  z-index:480;
-  align-items:center;justify-content:center;
-  padding:24px;
-}
-#about-overlay.visible{display:flex;}
-#about-modal{
-  width:min(820px,96vw);
-  max-height:min(88vh,820px);
-  background:var(--bg2);
-  border:1px solid var(--border-bright);
-  border-radius:6px;
-  box-shadow:0 0 60px rgba(0,0,0,0.9), 0 0 0 1px var(--red-dim);
-  display:flex;flex-direction:column;
-  overflow:hidden;
-}
-#about-titlebar{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px 18px;
-  background:#0a0a18;
-  border-bottom:1px solid var(--border);
-  flex-shrink:0;
-}
-#about-title{
-  font-family:var(--display);font-size:12px;letter-spacing:3px;
-  color:var(--red);font-weight:700;
-}
-#about-close{
-  font-family:var(--display);font-size:10px;letter-spacing:2px;
-  color:var(--text);cursor:pointer;padding:4px 8px;
-  border:1px solid var(--border);border-radius:3px;
-  transition:color 0.15s,border-color 0.15s;
-}
-#about-close:hover{color:var(--red);border-color:var(--red-dim);}
-#about-body{
-  padding:22px 28px 26px;
-  overflow-y:auto;
-  flex:1;
-}
+/* ── ABOUT / HELP content (shell uses .sys-modal) ─────────────────── */
 .about-brand-row{
   display:flex;align-items:center;gap:14px;margin-bottom:14px;
 }
@@ -1184,24 +1314,24 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
   background:var(--bg3);
 }
 .about-title-main{
-  font-family:var(--display);font-size:16px;letter-spacing:3px;
-  color:var(--red);font-weight:700;line-height:1.4;
+  font-family:var(--display);font-size:22px;letter-spacing:3px;
+  color:var(--cyan);font-weight:700;line-height:1.35;
 }
 .about-creator{
-  font-size:14px;color:var(--cyan);margin-top:4px;font-weight:600;
+  font-size:14px;color:var(--text-bright);margin-top:6px;font-family:var(--display);letter-spacing:2px;
 }
 .about-lead{
-  color:var(--green);font-size:15px;line-height:1.65;margin-bottom:10px;
+  color:var(--green);font-size:14px;line-height:1.45;margin-bottom:10px;
 }
 .about-devices-line{
-  font-size:13px;color:var(--text-bright);letter-spacing:1px;line-height:1.6;
+  font-size:14px;color:var(--text-bright);letter-spacing:1px;line-height:1.45;
 }
 .about-github-link{
-  display:inline-block;margin-top:10px;font-size:13px;color:var(--cyan);
+  display:inline-block;margin-top:10px;font-size:14px;color:var(--cyan);
   text-decoration:none;letter-spacing:0.5px;
 }
 .about-meta-line{
-  font-size:12px;color:var(--text);margin-top:12px;line-height:1.5;
+  font-size:13px;color:var(--text);margin-top:12px;line-height:1.45;
 }
 .about-github-link:hover{text-decoration:underline;}
 .about-qr-row{
@@ -1216,11 +1346,11 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
   background:#fff;display:block;margin:0 auto;
 }
 .about-qr-label{
-  font-size:13px;color:var(--text);margin-top:10px;letter-spacing:1px;
+  font-family:var(--display);font-size:13px;color:var(--text);margin-top:10px;letter-spacing:2px;
 }
 .about-qr-url{
-  font-size:16px;font-weight:600;color:var(--cyan);margin-top:8px;
-  line-height:1.3;white-space:nowrap;display:inline-block;
+  font-size:14px;font-weight:600;color:var(--cyan);margin-top:8px;
+  line-height:1.45;white-space:nowrap;display:inline-block;
   text-decoration:none;letter-spacing:0.2px;
 }
 .about-qr-url:hover{text-decoration:underline;}
@@ -1235,31 +1365,24 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
 .about-kofi-banner-fallback{
   padding:28px 16px;text-align:center;
   background:linear-gradient(135deg,rgba(255,26,26,0.12) 0%,rgba(0,229,255,0.06) 100%);
-  font-family:var(--display);font-size:13px;letter-spacing:3px;color:var(--text-bright);
-}
-.about-support-head{
-  font-family:var(--display);font-size:13px;letter-spacing:3px;
-  color:var(--text-bright);font-weight:700;margin-bottom:10px;
-}
-.about-support-text{
-  font-size:14px;color:var(--text);line-height:1.65;margin-bottom:12px;
+  font-family:var(--display);font-size:14px;letter-spacing:3px;color:var(--text-bright);
 }
 .about-kofi-link{
   display:inline-block;font-size:14px;color:#ff5e5b;text-decoration:none;
-  font-weight:600;letter-spacing:0.5px;
+  font-weight:700;letter-spacing:1px;font-family:var(--display);
 }
 .about-kofi-link:hover{text-decoration:underline;}
 .about-footer-tag{
-  margin-top:18px;padding-top:14px;border-top:1px solid var(--border);
-  text-align:center;font-size:13px;color:var(--text-bright);letter-spacing:2px;
+  margin-top:22px;padding-top:18px;border-top:1px solid var(--border);
+  text-align:center;font-size:13px;color:var(--text);letter-spacing:2px;
 }
 @media (max-width:640px){
   .about-qr-row{gap:24px;overflow-x:auto;padding-bottom:4px;}
   .about-qr-url{font-size:15px;}
 }
 
-/* ── HELP MODAL (matches ABOUT pattern) ───────────────────────────── */
-#help-overlay{
+/* ── SYSTEM MODALS (CONFIG / ABOUT / HELP / REPOS / OPERATOR / SNARF) ─ */
+.sys-overlay{
   display:none;position:fixed;inset:0;
   background:rgba(0,0,0,0.82);
   backdrop-filter:blur(4px);
@@ -1267,9 +1390,9 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
   align-items:center;justify-content:center;
   padding:24px;
 }
-#help-overlay.visible{display:flex;}
-#help-modal{
-  width:min(720px,94vw);
+.sys-overlay.visible{display:flex;}
+.sys-modal{
+  width:min(820px,96vw);
   max-height:min(88vh,820px);
   background:var(--bg2);
   border:1px solid var(--border-bright);
@@ -1278,48 +1401,59 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
   display:flex;flex-direction:column;
   overflow:hidden;
 }
-#help-titlebar{
+.sys-modal--wide{width:min(900px,96vw);}
+.sys-modal-titlebar{
   display:flex;align-items:center;justify-content:space-between;
   padding:12px 18px;
   background:#0a0a18;
   border-bottom:1px solid var(--border);
   flex-shrink:0;
 }
-#help-title{
+.sys-modal-title{
   font-family:var(--display);font-size:12px;letter-spacing:3px;
   color:var(--red);font-weight:700;
 }
-#help-close{
-  font-family:var(--display);font-size:10px;letter-spacing:2px;
-  color:var(--text);cursor:pointer;padding:4px 8px;
+.sys-modal-close{
+  font-family:var(--display);font-size:12px;letter-spacing:2px;
+  color:var(--text);cursor:pointer;padding:8px 12px;
   border:1px solid var(--border);border-radius:3px;
+  transition:color 0.15s,border-color 0.15s;
 }
-#help-close:hover{color:var(--red);border-color:var(--red-dim);}
-#help-body{
-  padding:22px 28px 26px;
+.sys-modal-close:hover{color:var(--red);border-color:var(--red-dim);}
+.sys-modal-body{
+  padding:16px 20px 22px;
   overflow-y:auto;
   flex:1;
-  font-size:13px;line-height:1.65;color:var(--text);
+  font-size:14px;line-height:1.45;color:var(--text-bright);
 }
-.help-section-head{
-  font-family:var(--display);font-size:11px;letter-spacing:2px;
-  color:var(--text-bright);font-weight:700;margin:18px 0 8px;
+#snarf-overlay .sys-modal{
+  width:min(900px,96vw);
+  height:min(88vh,780px);
+  max-height:min(88vh,780px);
 }
-.help-section-head:first-child{margin-top:0;}
-.help-hr{color:var(--border);font-size:10px;margin-bottom:8px;}
+#snarf-modal-body{
+  padding:16px 20px 22px;
+  display:flex;flex-direction:column;
+  overflow-y:auto;
+}
 .help-k{color:var(--yellow);}
 .help-flow-step{
-  margin:8px 0;padding:10px 12px;border:1px solid var(--border);
+  margin:0 0 10px;padding:12px 14px;border:1px solid var(--border);
   border-radius:4px;background:rgba(0,229,255,0.04);
+  font-size:14px;line-height:1.45;color:var(--text-bright);
 }
-.help-flow-step strong{color:var(--cyan);}
+.help-flow-step strong{color:var(--cyan);font-family:var(--display);letter-spacing:1px;}
+.help-line{margin-bottom:8px;font-size:14px;line-height:1.45;color:var(--text-bright);}
+.help-line code{font-family:var(--mono);font-size:13px;color:var(--text-bright);}
 .help-tutorial-btn{
-  display:inline-block;padding:8px 14px;border:1px solid var(--cyan);
-  border-radius:4px;color:var(--cyan);font-family:var(--display);
-  font-size:11px;letter-spacing:1px;text-decoration:none;
-  background:rgba(0,229,255,0.06);transition:all 0.15s;
+  display:inline-block;padding:8px 16px;border:1px solid var(--cyan);
+  border-radius:3px;color:var(--cyan);font-family:var(--display);
+  font-size:12px;letter-spacing:2px;text-decoration:none;
+  background:transparent;transition:all 0.15s;
 }
-.help-tutorial-btn:hover{background:rgba(0,229,255,0.14);color:var(--text-bright);}
+.help-tutorial-btn:hover{background:rgba(0,229,255,0.1);color:var(--text-bright);border-color:var(--cyan);}
+.help-footer-note{font-size:13px;color:var(--text);line-height:1.45;}
+.help-footer-note code{font-family:var(--mono);font-size:13px;}
 #lhost-hint-banner{
   display:none;margin:0 16px 10px;padding:10px 14px;
   border:1px solid rgba(255,170,0,0.45);border-radius:4px;
@@ -1673,6 +1807,7 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
 /* Presentation mode (projector / live demo) */
 body.presentation-mode{font-size:15px;}
 body.presentation-mode #sidebar{display:none;}
+body.presentation-mode #bottom-sidebar-spacer{display:none;}
 body.presentation-mode #center{flex:1;}
 body.presentation-mode #right{min-width:min(42vw,520px);}
 body.presentation-mode .payload-item{font-size:14px;padding:10px 14px;}
@@ -1680,10 +1815,9 @@ body.presentation-mode .p-name{font-size:14px;}
 body.presentation-mode .snarf-head{font-size:18px;}
 body.presentation-mode .snarf-sub{font-size:13px;}
 body.presentation-mode #preview-code{font-size:13px;line-height:1.75;}
-body.presentation-mode #dev-armed.armed .dev-badge{
+body.presentation-mode .dev-badge.armed{
   font-size:13px;padding:4px 10px;letter-spacing:2px;
 }
-body.presentation-mode #header-ticker-wrap{display:none;}
 body.presentation-mode #theme-picker{display:none;}
 body.presentation-mode #cmd-input{font-size:14px;}
 
@@ -1736,12 +1870,24 @@ body.presentation-mode #cmd-input{font-size:14px;}
 .log-line.warn{color:var(--yellow);}
 
 /* Repo status badges */
-.repo-cloned{color:var(--green);font-size:10px;}
-.repo-missing{color:#6a6a8a;font-size:11px;}
+.repo-cloned{color:var(--green);font-size:13px;letter-spacing:1px;}
+.repo-missing{color:#6a6a8a;font-size:13px;letter-spacing:1px;}
+.repo-item{padding:14px 0;border-bottom:1px solid var(--border);}
+.repo-header{display:flex;align-items:center;flex-wrap:wrap;gap:10px 14px;margin-bottom:10px;}
+.repo-name{font-family:var(--display);font-size:14px;letter-spacing:2px;font-weight:700;}
+.repo-meta{font-size:13px;color:var(--text);}
+.repo-url{font-size:13px;color:#8a8aaa;margin-bottom:12px;line-height:1.45;word-break:break-all;}
+.repo-actions{display:flex;gap:8px;}
+.repo-footer{padding:8px 0 4px;display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
 
 /* Responsive */
-@media(max-width:1100px){#right{min-width:240px;}}
-@media(max-width:900px){#sidebar{width:220px;}#right{min-width:220px;}}
+@media(max-width:1100px){#right{min-width:300px;}}
+@media(max-width:900px){
+  #app{--sidebar-w:220px;}
+  #right{min-width:300px;}
+  #search-wrap{min-width:130px;max-width:260px;}
+  .browse-title-row{flex-wrap:wrap;}
+}
 </style>
 </head>
 <body>
@@ -1853,34 +1999,6 @@ body.presentation-mode #cmd-input{font-size:14px;}
         <button id="chpw-btn" onclick="doChangePassword()" style="margin-top:4px;width:100%;padding:10px;font-family:var(--display);font-size:11px;letter-spacing:3px;background:var(--accent);color:var(--accent-fg);font-weight:700;border:none;border-radius:3px;cursor:pointer;">UPDATE PASSWORD</button>
         <div id="chpw-error" style="margin-top:12px;padding:8px 12px;background:rgba(255,26,26,0.08);border:1px solid var(--red-dim);border-radius:3px;font-size:11px;color:var(--red);display:none;text-align:center;"></div>
         <div id="chpw-ok" style="margin-top:12px;padding:8px 12px;background:rgba(0,255,136,0.08);border:1px solid var(--green);border-radius:3px;font-size:11px;color:var(--green);display:none;text-align:center;"></div>
-
-        <!-- Delete operator -->
-        <div style="margin-top:20px;border-top:1px solid var(--border);padding-top:16px;">
-          <div style="font-family:var(--display);font-size:10px;letter-spacing:3px;color:var(--text);margin-bottom:12px;">DELETE OPERATOR</div>
-          <div id="del-step1">
-            <div class="login-field">
-              <label class="login-label">OPERATOR</label>
-              <input class="login-input" id="del-username" type="text" placeholder="username" autocomplete="off">
-            </div>
-            <div class="login-field">
-              <label class="login-label">PASSWORD</label>
-              <input class="login-input" id="del-password" type="password" placeholder="••••••••" autocomplete="current-password">
-            </div>
-            <button id="del-btn" onclick="showDeleteConfirm()" style="margin-top:4px;width:100%;padding:10px;font-family:var(--display);font-size:11px;letter-spacing:3px;background:transparent;color:var(--red);border:1px solid var(--red-dim);border-radius:3px;cursor:pointer;">DELETE OPERATOR</button>
-          </div>
-          <div id="del-step2" style="display:none">
-            <div style="margin-bottom:10px;font-size:11px;color:var(--red);line-height:1.5;">This will permanently delete all payloads and config for this operator. Type the operator name to confirm.</div>
-            <div class="login-field">
-              <label class="login-label">TYPE USERNAME TO CONFIRM</label>
-              <input class="login-input" id="del-confirm-name" type="text" placeholder="operator name" autocomplete="off" onkeydown="if(event.key==='Enter')doDeleteOperator()">
-            </div>
-            <div style="display:flex;gap:8px;margin-top:4px;">
-              <button onclick="hideDeleteConfirm()" style="flex:1;padding:10px;font-family:var(--display);font-size:11px;letter-spacing:2px;background:transparent;color:var(--text);border:1px solid var(--border);border-radius:3px;cursor:pointer;">CANCEL</button>
-              <button id="del-confirm-btn" onclick="doDeleteOperator()" style="flex:1;padding:10px;font-family:var(--display);font-size:11px;letter-spacing:2px;background:var(--accent);color:var(--accent-fg);font-weight:700;border:none;border-radius:3px;cursor:pointer;">CONFIRM DELETE</button>
-            </div>
-          </div>
-          <div id="del-error" style="margin-top:10px;padding:8px 12px;background:rgba(255,26,26,0.08);border:1px solid var(--red-dim);border-radius:3px;font-size:11px;color:var(--red);display:none;text-align:center;"></div>
-        </div>
       </div>
     </div>
     <div id="login-footer">
@@ -1894,22 +2012,13 @@ body.presentation-mode #cmd-input{font-size:14px;}
 
   <!-- HEADER -->
   <div id="header">
-    <div id="header-left">
-      <div class="header-title-backdrop" aria-hidden="true"></div>
-      <div class="header-pulse"></div>
-      <div id="header-ticker-wrap" aria-label="TSK status ticker">
-        <div id="header-ticker-track">
-          <span class="header-ticker-text" id="header-ticker-a"></span>
-          <span class="header-ticker-text" id="header-ticker-b" aria-hidden="true"></span>
-        </div>
-      </div>
-    </div>
     <div id="header-right">
-      <div class="hstat">OPERATOR <span id="h-user" style="color:var(--cyan)">-</span></div>
-      <div class="hstat">LHOST <span id="h-lhost" class="warn">NOT SET</span></div>
-      <div class="hstat">PAYLOADS <span id="h-payloads" style="color:var(--green)">-</span></div>
-      <div class="hstat">DEVICE <span id="h-device" style="color:var(--yellow)">-</span></div>
-      <div id="clock" style="font-family:var(--display);font-size:11px;color:var(--text-bright);letter-spacing:2px">--:--:--</div>
+      <div class="hstat operator-stat">
+        OPERATOR
+        <span id="h-user-link" onclick="showOperator()" title="Open operator settings"><span id="h-user" style="color:var(--cyan)">-</span></span>
+        <button type="button" id="h-logout-btn" onclick="doLogout()" title="Log out">LOG OUT</button>
+      </div>
+      <div id="clock" style="font-family:var(--display);font-size:11px;color:var(--text-bright);letter-spacing:2px">--:--</div>
       <div id="theme-picker">
         <span class="theme-sw active" data-theme="default"   data-label="DEFAULT"   title="DEFAULT"   onclick="applyTheme('default')"></span>
         <span class="theme-sw"        data-theme="pushed"    data-label="PUSHED"    title="PUSHED"    onclick="applyTheme('pushed')"></span>
@@ -1924,144 +2033,163 @@ body.presentation-mode #cmd-input{font-size:14px;}
   <!-- MAIN ROW -->
   <div id="main">
 
+    <div id="workbench">
+    <div id="workbench-body">
+
     <!-- SIDEBAR -->
     <div id="sidebar">
       <div id="logo-area">
-        <div id="logo-row">
-          <pre id="logo-usb-art" aria-hidden="true">╔══╗
-║██║
-║██║
-╠══╣
-║░░║
-╚══╝
- ││</pre>
-          <div id="logo-text">
-            <div id="tsk-logo">TSK</div>
-            <div id="logo-tagline-row">
-              <div id="logo-tagline">THE SKELETON KEY</div>
-              <div id="logo-sub2">USB HID FRAMEWORK</div>
-            </div>
-            <div id="logo-edition">DEF CON 34 EDITION</div>
-          </div>
-        </div>
-      </div>
-
-      <div id="device-status">
-        <div class="dev-row" id="dev-bunny">
-          <div class="dev-dot off" style="background:#cccccc"></div>
-          <span class="dev-name">BASH BUNNY</span>
-          <span class="dev-badge off">OFFLINE</span>
-        </div>
-        <div class="dev-row" id="dev-ducky">
-          <div class="dev-dot off" style="background:#ffd700"></div>
-          <span class="dev-name">RUBBER DUCKY</span>
-          <span class="dev-badge off">OFFLINE</span>
-        </div>
-        <div class="dev-row" id="dev-turtle">
-          <div class="dev-dot off" style="background:#00ff88"></div>
-          <span class="dev-name">LAN TURTLE</span>
-          <span class="dev-badge off">OFFLINE</span>
-        </div>
-        <div class="dev-row" id="dev-teensy" style="display:none">
-          <div class="dev-dot off" style="background:#ff00ff"></div>
-          <span class="dev-name">TEENSY</span>
-          <span class="dev-badge off">OFFLINE</span>
-        </div>
-        <div class="dev-row" id="dev-usbdrive">
-          <div class="dev-dot off" style="background:#00e5ff"></div>
-          <span class="dev-name">USB DRIVE</span>
-          <span class="dev-badge off">OFFLINE</span>
-        </div>
-        <div class="dev-row" id="dev-armed">
-          <div class="dev-dot off"></div>
-          <span class="dev-name">ARMED</span>
-          <span class="dev-badge off" id="armed-badge">STANDBY</span>
+        <div id="logo-text">
+          <div id="tsk-logo">TSK</div>
+          <div class="logo-divider" aria-hidden="true"></div>
+          <div id="logo-tagline">THE SKELETON KEY</div>
+          <div id="logo-sub2">USB HID FRAMEWORK</div>
+          <div class="logo-divider logo-divider--dim" aria-hidden="true"></div>
+          <div id="logo-edition">DEF CON 34 EDITION</div>
         </div>
       </div>
 
       <div id="nav">
         <div class="nav-section">SYSTEM</div>
-        <div class="nav-item" data-nav="about" onclick="navigate('about')">
-          <span class="nav-key nav-key--muted">A</span>
-          <span class="nav-label">ABOUT</span>
+        <div class="sys-grid">
+          <button type="button" class="sys-tile sys-tile--muted" data-nav="about" onclick="navigate('about')">
+            <span class="sys-tile-key">A</span>
+            <span class="sys-tile-label">ABOUT</span>
+          </button>
+          <button type="button" class="sys-tile sys-tile--red" data-nav="help" onclick="navigate('help')">
+            <span class="sys-tile-key">H</span>
+            <span class="sys-tile-label">HELP</span>
+          </button>
+          <button type="button" class="sys-tile sys-tile--cyan" data-nav="config" onclick="navigate('config')">
+            <span class="sys-tile-key">C</span>
+            <span class="sys-tile-label">CONFIG</span>
+          </button>
         </div>
-        <div class="nav-item" data-nav="help" onclick="navigate('help')">
-          <span class="nav-key nav-key--red">H</span>
-          <span class="nav-label">HELP</span>
-        </div>
-        <div class="nav-item" data-nav="config" onclick="navigate('config')">
-          <span class="nav-key nav-key--cyan">C</span>
-          <span class="nav-label">CONFIG</span>
-        </div>
-        <div class="nav-item" data-nav="repos" onclick="navigate('repos')">
-          <span class="nav-key nav-key--green">P</span>
-          <span class="nav-label">PAYLOAD REPOS</span>
+        <div class="sys-grid sys-grid--2">
+          <button type="button" class="sys-tile sys-tile--green" data-nav="repos" onclick="navigate('repos')">
+            <span class="sys-tile-key">R</span>
+            <span class="sys-tile-label">REPOS</span>
+          </button>
+          <button type="button" class="sys-tile sys-tile--yellow" data-nav="operator" onclick="navigate('operator')">
+            <span class="sys-tile-key">O</span>
+            <span class="sys-tile-label">OPERATOR</span>
+          </button>
         </div>
 
-        <div class="nav-section" style="margin-top:8px">DEVICES</div>
-        <div class="nav-item" data-nav="bunny" data-device="bunny" onclick="navigate('bunny')">
-          <span class="nav-key nav-key--silver">B</span>
-          <span class="nav-label">BASH BUNNY</span>
-          <span class="nav-badge-count" id="cnt-bunny">-</span>
-        </div>
-        <div class="nav-item active" data-nav="ducky" data-device="ducky" onclick="navigate('ducky')">
-          <span class="nav-key nav-key--yellow">R</span>
-          <span class="nav-label">RUBBER DUCKY</span>
-          <span class="nav-badge-count" id="cnt-ducky">-</span>
-        </div>
-        <div class="nav-item" data-nav="turtle" data-device="turtle" onclick="navigate('turtle')">
-          <span class="nav-key nav-key--green">L</span>
-          <span class="nav-label">LAN TURTLE</span>
-          <span class="nav-badge-count" id="cnt-turtle">-</span>
-        </div>
-        <div class="nav-item" data-nav="teensy" data-device="teensy" onclick="navigate('teensy')" style="display:none">
-          <span class="nav-key nav-key--magenta">T</span>
-          <span class="nav-label">TEENSY</span>
-          <span class="nav-badge-count" id="cnt-teensy">-</span>
-        </div>
-        <div class="nav-item" data-nav="usb" data-device="usb" onclick="navigate('usb')">
-          <span class="nav-key nav-key--cyan">U</span>
-          <span class="nav-label">USB DROPPER</span>
-          <span class="nav-badge-count" id="cnt-usb">-</span>
+        <div class="nav-section nav-section--gap">DEVICES</div>
+        <div id="device-list">
+          <div class="dev-card" id="dev-bunny" data-nav="bunny" data-device="bunny" onclick="navigate('bunny')">
+            <div class="dev-card-key dev-card-key--silver">B</div>
+            <div class="dev-card-body">
+              <div class="dev-card-name">BASH BUNNY</div>
+              <div class="dev-card-meta"><span id="cnt-bunny">-</span>&nbsp;payloads</div>
+            </div>
+            <div class="dev-card-status">
+              <div class="dev-dot off"></div>
+              <span class="dev-badge off">OFFLINE</span>
+            </div>
+          </div>
+          <div class="dev-card active" id="dev-ducky" data-nav="ducky" data-device="ducky" onclick="navigate('ducky')">
+            <div class="dev-card-key dev-card-key--yellow">D</div>
+            <div class="dev-card-body">
+              <div class="dev-card-name">RUBBER DUCKY</div>
+              <div class="dev-card-meta"><span id="cnt-ducky">-</span>&nbsp;payloads</div>
+            </div>
+            <div class="dev-card-status">
+              <div class="dev-dot off"></div>
+              <span class="dev-badge off">OFFLINE</span>
+            </div>
+          </div>
+          <div class="dev-card" id="dev-turtle" data-nav="turtle" data-device="turtle" onclick="navigate('turtle')">
+            <div class="dev-card-key dev-card-key--green">L</div>
+            <div class="dev-card-body">
+              <div class="dev-card-name">LAN TURTLE</div>
+              <div class="dev-card-meta"><span id="cnt-turtle">-</span>&nbsp;payloads</div>
+            </div>
+            <div class="dev-card-status">
+              <div class="dev-dot off"></div>
+              <span class="dev-badge off">OFFLINE</span>
+            </div>
+          </div>
+          <div class="dev-card" id="dev-teensy" data-nav="teensy" data-device="teensy" onclick="navigate('teensy')" style="display:none">
+            <div class="dev-card-key dev-card-key--magenta">T</div>
+            <div class="dev-card-body">
+              <div class="dev-card-name">TEENSY</div>
+              <div class="dev-card-meta"><span id="cnt-teensy">-</span>&nbsp;payloads</div>
+            </div>
+            <div class="dev-card-status">
+              <div class="dev-dot off"></div>
+              <span class="dev-badge off">OFFLINE</span>
+            </div>
+          </div>
+          <div class="dev-card" id="dev-usbdrive" data-nav="usb" data-device="usb" onclick="navigate('usb')">
+            <div class="dev-card-key dev-card-key--cyan">U</div>
+            <div class="dev-card-body">
+              <div class="dev-card-name">USB DROPPER</div>
+              <div class="dev-card-meta"><span id="cnt-usb">-</span>&nbsp;payloads</div>
+            </div>
+            <div class="dev-card-status">
+              <div class="dev-dot off"></div>
+              <span class="dev-badge off">OFFLINE</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- CENTER -->
     <div id="center">
-      <div id="center-header">
-        <div id="center-title">PAYLOADS / <span id="center-device">RUBBER DUCKY</span>
-        <span id="center-source">○ PREVIEW</span>
-      </div>
-        <div id="search-wrap">
-          <span class="search-icon">⌕</span>
-          <input id="search-input" type="text" placeholder="search payloads..." autocomplete="off">
-        </div>
-      </div>
-      <div id="tabs">
-        <div class="tab active" id="tab-browse" onclick="setTab('browse')">BROWSE</div>
-        <div class="tab" id="tab-snarf" onclick="setTab('snarf')" style="display:none">SNARF</div>
-        <div class="tab" id="tab-config" onclick="setTab('config')">CONFIG</div>
-        <div class="tab" id="tab-repos" onclick="setTab('repos')">REPOS</div>
-      </div>
       <div id="lhost-hint-banner">
         <span class="hint-dismiss" onclick="dismissLhostHint()" title="Dismiss">✕</span>
         <strong>LHOST not set.</strong> Phone-home exfil, lure stubs, and callbacks need your LAN IP -
-        open <a onclick="setTab('config')">CONFIG</a> and set LHOST (use the LAN IP helper).
+        open <a onclick="showConfig()">CONFIG</a> and set LHOST (use the LAN IP helper).
         New here? Start with <a href="/tutorial#mission-1" target="_blank" rel="noopener">Mission 1 in the Tutorial</a>.
       </div>
       <div id="payload-scroll">
+        <div id="browse-sticky-title" class="browse-sticky-title panel-head">
+          <div class="browse-title-row">
+            <div class="browse-title-left">
+              <div id="center-device-icon" class="center-device-icon" aria-hidden="true">D</div>
+              <div class="cfg-title">PAYLOADS</div>
+              <span id="center-source">○ PREVIEW</span>
+            </div>
+            <button type="button" id="btn-snarf" class="snarf-header-btn" onclick="showSnarf()" style="display:none" title="SNARF builder (S)">SNARF</button>
+            <div id="search-wrap">
+              <span class="search-icon">⌕</span>
+              <input id="search-input" type="text" placeholder="search payloads..." autocomplete="off">
+            </div>
+          </div>
+        </div>
         <div id="payload-list"></div>
-        <div id="snarf-panel"></div>
       </div>
     </div>
 
-    <div id="panel-divider" title="Drag to resize preview panel" aria-label="Resize preview panel"></div>
+    </div><!-- /workbench-body -->
+
+    <!-- BOTTOM BAR (sidebar + center only) -->
+    <div id="bottom">
+      <div id="bottom-sidebar-spacer" aria-hidden="true"></div>
+      <div id="bottom-cmd-wrap">
+        <label id="cmd-area" class="cmd-shell" for="cmd-input">
+          <span class="cmd-label">COMMAND</span>
+          <span id="cmd-prompt">TSK</span>
+          <span class="cmd-chevron" aria-hidden="true">❯</span>
+          <input id="cmd-input" type="text" placeholder="type a command..." autocomplete="off">
+        </label>
+      </div>
+      <div id="music-ticker-wrap">
+        <span id="music-ticker"></span>
+      </div>
+    </div>
+
+    </div><!-- /workbench -->
+
+    <div id="panel-divider" class="panel-locked" title="Preview panel width locked" aria-hidden="true"></div>
 
     <!-- RIGHT PANEL -->
     <div id="right">
-      <div id="preview-header">
-        <div id="preview-title">PREVIEW</div>
+      <div id="preview-header" class="panel-head">
+        <div id="preview-title" class="cfg-title">PREVIEW</div>
         <div id="preview-lang">DS1</div>
       </div>
       <div id="preview-body">
@@ -2111,55 +2239,71 @@ body.presentation-mode #cmd-input{font-size:14px;}
 
   </div>
 
-  <!-- BOTTOM BAR -->
-  <div id="bottom">
-    <div class="bstat">
-      <span class="bkey">DEVICE</span>
-      <span class="bval" id="b-device" style="color:var(--yellow)">DUCKY</span>
-    </div>
-    <div class="bsep"></div>
-    <div class="bstat">
-      <span class="bkey">PAYLOADS</span>
-      <span class="bval" id="b-payloads" style="color:var(--text-bright)">-</span>
-    </div>
-    <div class="bsep"></div>
-    <div class="bstat">
-      <span class="bkey">LHOST</span>
-      <span class="bval" id="b-lhost" style="color:var(--red)">NOT SET</span>
-    </div>
-    <div class="bsep"></div>
-    <div class="bstat" id="music-ticker-wrap" style="display:none">
-      <span id="music-ticker"></span>
-    </div>
-    <div id="cmd-area">
-      <span id="cmd-prompt">TSK ❯</span>
-      <input id="cmd-input" type="text" placeholder="type a command..." autocomplete="off">
-    </div>
-    <div class="bsep"></div>
-    <div class="bstat" style="color:var(--green);font-size:10px;" id="b-status">READY</div>
-  </div>
-
 </div>
 
 <!-- ABOUT MODAL -->
-<div id="about-overlay" onclick="aboutOverlayClick(event)">
-  <div id="about-modal">
-    <div id="about-titlebar">
-      <div id="about-title">ABOUT · THE SKELETON KEY</div>
-      <div id="about-close" onclick="closeAbout()">✕ CLOSE</div>
+<div id="about-overlay" class="sys-overlay" onclick="aboutOverlayClick(event)">
+  <div class="sys-modal sys-modal--wide">
+    <div class="sys-modal-titlebar">
+      <div class="sys-modal-title">ABOUT · THE SKELETON KEY</div>
+      <div class="sys-modal-close" onclick="closeAbout()">✕ CLOSE</div>
     </div>
-    <div id="about-body"></div>
+    <div id="about-body" class="sys-modal-body"></div>
   </div>
 </div>
 
 <!-- HELP MODAL -->
-<div id="help-overlay" onclick="helpOverlayClick(event)">
-  <div id="help-modal">
-    <div id="help-titlebar">
-      <div id="help-title">HELP · OPERATOR GUIDE</div>
-      <div id="help-close" onclick="closeHelp()">✕ CLOSE</div>
+<div id="help-overlay" class="sys-overlay" onclick="helpOverlayClick(event)">
+  <div class="sys-modal sys-modal--wide">
+    <div class="sys-modal-titlebar">
+      <div class="sys-modal-title">HELP · OPERATOR GUIDE</div>
+      <div class="sys-modal-close" onclick="closeHelp()">✕ CLOSE</div>
     </div>
-    <div id="help-body"></div>
+    <div id="help-body" class="sys-modal-body"></div>
+  </div>
+</div>
+
+<!-- CONFIG MODAL -->
+<div id="config-overlay" class="sys-overlay" onclick="configOverlayClick(event)">
+  <div class="sys-modal sys-modal--wide">
+    <div class="sys-modal-titlebar">
+      <div class="sys-modal-title">CONFIG · OPERATOR SETTINGS</div>
+      <div class="sys-modal-close" onclick="closeConfig()">✕ CLOSE</div>
+    </div>
+    <div id="config-modal-body" class="sys-modal-body"></div>
+  </div>
+</div>
+
+<!-- REPOS MODAL -->
+<div id="repos-overlay" class="sys-overlay" onclick="reposOverlayClick(event)">
+  <div class="sys-modal">
+    <div class="sys-modal-titlebar">
+      <div class="sys-modal-title">REPOS · PAYLOAD LIBRARIES</div>
+      <div class="sys-modal-close" onclick="closeRepos()">✕ CLOSE</div>
+    </div>
+    <div id="repos-modal-body" class="sys-modal-body"></div>
+  </div>
+</div>
+
+<!-- OPERATOR MODAL -->
+<div id="operator-overlay" class="sys-overlay" onclick="operatorOverlayClick(event)">
+  <div class="sys-modal">
+    <div class="sys-modal-titlebar">
+      <div class="sys-modal-title">OPERATOR · ACCOUNT</div>
+      <div class="sys-modal-close" onclick="closeOperator()">✕ CLOSE</div>
+    </div>
+    <div id="operator-modal-body" class="sys-modal-body"></div>
+  </div>
+</div>
+
+<!-- SNARF MODAL -->
+<div id="snarf-overlay" class="sys-overlay" onclick="snarfOverlayClick(event)">
+  <div class="sys-modal sys-modal--wide">
+    <div class="sys-modal-titlebar">
+      <div class="sys-modal-title">SNARF · USB DROPPER BUILDER</div>
+      <div class="sys-modal-close" onclick="closeSnarf()">✕ CLOSE</div>
+    </div>
+    <div id="snarf-modal-body" class="sys-modal-body"></div>
   </div>
 </div>
 
@@ -2279,6 +2423,7 @@ const S = {
   usbMountPath: '',
   usbMounts: [],
   tab: 'browse',
+  openOverlay: null,
   ws: null,
   flashing: false,
   flashTimeoutId: null,
@@ -2386,6 +2531,11 @@ window.tskGlitchFire = function tskGlitchFire() {
   tskGlitchDebug();
 };
 
+function clearLoginFields() {
+  const pw = document.getElementById('login-password');
+  if (pw) pw.value = '';
+}
+
 async function showLogin() {
   document.getElementById('login-screen').classList.add('visible');
   // After logo fade-in (~1s); rAF pass helps Firefox measure layout
@@ -2449,12 +2599,8 @@ function switchLoginTab(tab) {
     const u = getLoginUsername();
     const ch = document.getElementById('chpw-username');
     if (ch && u) ch.value = u;
-    const du = document.getElementById('del-username');
-    if (du && u) du.value = u;
     document.getElementById('chpw-error').style.display = 'none';
     document.getElementById('chpw-ok').style.display = 'none';
-    document.getElementById('del-error').style.display = 'none';
-    hideDeleteConfirm();
   }
   setTimeout(() => {
     const focusId = tab==='login' ? 'login-username' : tab==='register' ? 'reg-username' : 'chpw-current';
@@ -2499,6 +2645,8 @@ async function doChangePassword() {
   document.getElementById('chpw-ok').style.display = 'none';
 
   try {
+    S.authToken = '';
+    sessionStorage.removeItem('tsk_token');
     const r = await fetch('/api/auth/change-password', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -2526,11 +2674,11 @@ async function doChangePassword() {
 }
 
 function showDeleteConfirm() {
-  const username = (document.getElementById('del-username')?.value || '').trim();
+  const username = S.currentUser || '';
   const password = document.getElementById('del-password')?.value || '';
   const errEl = document.getElementById('del-error');
   errEl.style.display = 'none';
-  if (!username) { errEl.textContent = 'Enter operator name'; errEl.style.display = 'block'; return; }
+  if (!username) { errEl.textContent = 'Not signed in'; errEl.style.display = 'block'; return; }
   if (!password) { errEl.textContent = 'Enter password'; errEl.style.display = 'block'; return; }
   document.getElementById('del-step1').style.display = 'none';
   document.getElementById('del-step2').style.display = 'block';
@@ -2545,7 +2693,7 @@ function hideDeleteConfirm() {
 }
 
 async function doDeleteOperator() {
-  const username = (document.getElementById('del-username')?.value || '').trim();
+  const username = S.currentUser || '';
   const password = document.getElementById('del-password')?.value || '';
   const confirmName = (document.getElementById('del-confirm-name')?.value || '').trim();
   const errEl = document.getElementById('del-error');
@@ -2573,7 +2721,6 @@ async function doDeleteOperator() {
       S.authToken = '';
       sessionStorage.removeItem('tsk_token');
       hideDeleteConfirm();
-      document.getElementById('del-username').value = '';
       document.getElementById('del-password').value = '';
       await showLogin();
     } else {
@@ -2614,6 +2761,7 @@ async function doLogin() {
     });
     const data = await r.json();
     if (data.ok) {
+      clearLoginFields();
       localStorage.setItem('tsk_last_user', username);
       S.currentUser = username;
       S.authToken = data.token || '';
@@ -2800,32 +2948,46 @@ async function init() {
   refreshUsbMounts();
   // Show app
   document.getElementById('app').classList.add('visible');
-  // Set initial device in header
-  const color = getDeviceColor(S.device) || '#fff';
-  document.getElementById('h-device').textContent  = S.device.toUpperCase();
-  document.getElementById('h-device').style.color  = color;
-  document.getElementById('b-device').textContent  = S.device.toUpperCase();
-  document.getElementById('b-device').style.color  = color;
+  if (typeof window._tskInitPanelWidth === 'function') {
+    requestAnimationFrame(() => window._tskInitPanelWidth());
+  }
   applyDeviceTheme(S.device);
   updateTurtleActions();
+  updatePayloadHeader();
   await loadDevicePayloads(S.device);
   loadDeviceCounts();
   document.getElementById('search-input').addEventListener('input', onSearch);
   document.getElementById('cmd-input').addEventListener('keydown', onCmd);
   document.addEventListener('keydown', onGlobalKey);
-  updateSourceIndicator(S.device);
-  updateHeaderTicker();
+  updateSidebarHighlight();
 }
 
 // ── CLOCK ─────────────────────────────────────────────────────────────────────
-function startClock() {
-  function tick() {
-    const n = new Date();
-    const t = [n.getHours(),n.getMinutes(),n.getSeconds()]
-              .map(x=>String(x).padStart(2,'0')).join(':');
-    document.getElementById('clock').textContent = t;
+let _clockTimer = null;
+
+function formatClockTime(date) {
+  const use24 = S.config?.clock_24h !== false;
+  const h = date.getHours();
+  const m = date.getMinutes();
+  const mm = String(m).padStart(2, '0');
+  if (use24) {
+    return `${String(h).padStart(2, '0')}:${mm}`;
   }
-  tick(); setInterval(tick, 1000);
+  const ap = h >= 12 ? 'PM' : 'AM';
+  let h12 = h % 12;
+  if (h12 === 0) h12 = 12;
+  return `${String(h12).padStart(2, '0')}:${mm} ${ap}`;
+}
+
+function updateClockDisplay() {
+  const el = document.getElementById('clock');
+  if (el) el.textContent = formatClockTime(new Date());
+}
+
+function startClock() {
+  if (_clockTimer) clearInterval(_clockTimer);
+  updateClockDisplay();
+  _clockTimer = setInterval(updateClockDisplay, 1000);
 }
 
 // ── WEBSOCKET ─────────────────────────────────────────────────────────────────
@@ -2885,37 +3047,18 @@ function applyConfig(cfg) {
 
   // LHOST
   const lhost = cfg.lhost || '';
-  document.getElementById('h-lhost').textContent = lhost || 'NOT SET';
-  document.getElementById('h-lhost').className   = lhost ? 'ok' : 'warn';
-  document.getElementById('b-lhost').textContent = lhost || 'NOT SET';
-  document.getElementById('b-lhost').style.color = lhost ? 'var(--green)' : 'var(--red)';
 
   // Operator name
   const user = S.currentUser || cfg._user || cfg.username || '-';
   document.getElementById('h-user').textContent = user;
 
-  updateHeaderTicker();
+  updateClockDisplay();
 
-  // If config tab is open, refresh it so values show
-  if (S.tab === 'config') renderConfigTab();
+  // If config modal is open, refresh it so values show
+  if (S.openOverlay === 'config') renderConfigTab();
   updateArmedState();
   updateFlashPreview();
   updateLhostHint();
-}
-
-function updateHeaderTicker() {
-  const op = (S.currentUser || S.config?._user || S.config?.username || 'operator').trim();
-  const msg = `// TSK | THE SKELETON KEY // PAYLOAD DELIVERY SYSTEM // DEF CON 34 EDITION // WELCOME ${op} //`;
-  const a = document.getElementById('header-ticker-a');
-  const b = document.getElementById('header-ticker-b');
-  if (a) a.textContent = msg;
-  if (b) b.textContent = msg;
-  const track = document.getElementById('header-ticker-track');
-  if (track) {
-    track.style.animation = 'none';
-    void track.offsetWidth;
-    track.style.animation = '';
-  }
 }
 
 function dismissLhostHint() {
@@ -2931,9 +3074,126 @@ function updateLhostHint() {
   el.classList.toggle('visible', missing && !dismissed);
 }
 
+// ── SIDEBAR HIGHLIGHT ─────────────────────────────────────────────────────────
+function updateSidebarHighlight() {
+  document.querySelectorAll('.sys-tile, .dev-card').forEach(el => el.classList.remove('active'));
+  const sysMap = { config: 'config', repos: 'repos', operator: 'operator', about: 'about', help: 'help' };
+  if (S.openOverlay && sysMap[S.openOverlay]) {
+    const el = document.querySelector(`.sys-tile[data-nav="${sysMap[S.openOverlay]}"]`);
+    if (el) el.classList.add('active');
+    return;
+  }
+  const el = document.querySelector(`.dev-card[data-nav="${S.device}"]`);
+  if (el) el.classList.add('active');
+}
+
+const DEVICE_ICON_KEYS = { ducky: 'D', bunny: 'B', teensy: 'T', usb: 'U', turtle: 'L' };
+
+function updatePayloadHeader() {
+  const icon = document.getElementById('center-device-icon');
+  const src = document.getElementById('center-source');
+  const snarfBtn = document.getElementById('btn-snarf');
+  const color = getDeviceColor(S.device) || '#fff';
+  if (icon) {
+    icon.textContent = DEVICE_ICON_KEYS[S.device] || '?';
+    icon.style.color = color;
+    icon.style.borderColor = color;
+  }
+  if (src) src.style.display = S.device === 'usb' ? 'none' : '';
+  if (snarfBtn) snarfBtn.style.display = S.device === 'usb' ? '' : 'none';
+  updateSourceIndicator(S.device);
+}
+
+function closeAllOverlays() {
+  ['config', 'repos', 'operator', 'snarf', 'about', 'help'].forEach(which => {
+    const id = which === 'about' ? 'about-overlay'
+      : which === 'help' ? 'help-overlay'
+      : `${which}-overlay`;
+    document.getElementById(id)?.classList.remove('visible');
+  });
+  S.openOverlay = null;
+}
+
+function restoreDeviceNavHighlight() {
+  document.querySelectorAll('.sys-tile, .dev-card').forEach(el => el.classList.remove('active'));
+  const deviceNav = document.querySelector(`[data-nav="${S.device}"]`);
+  if (deviceNav) deviceNav.classList.add('active');
+}
+
+function showConfig() {
+  closeAllOverlays();
+  renderConfigTab();
+  document.getElementById('config-overlay')?.classList.add('visible');
+  S.openOverlay = 'config';
+  updateSidebarHighlight();
+}
+
+function closeConfig() {
+  document.getElementById('config-overlay')?.classList.remove('visible');
+  if (S.openOverlay === 'config') S.openOverlay = null;
+  restoreDeviceNavHighlight();
+}
+
+function configOverlayClick(e) {
+  if (e.target === document.getElementById('config-overlay')) closeConfig();
+}
+
+function showRepos() {
+  closeAllOverlays();
+  renderReposTab();
+  document.getElementById('repos-overlay')?.classList.add('visible');
+  S.openOverlay = 'repos';
+  updateSidebarHighlight();
+}
+
+function closeRepos() {
+  document.getElementById('repos-overlay')?.classList.remove('visible');
+  if (S.openOverlay === 'repos') S.openOverlay = null;
+  restoreDeviceNavHighlight();
+}
+
+function reposOverlayClick(e) {
+  if (e.target === document.getElementById('repos-overlay')) closeRepos();
+}
+
+function showOperator() {
+  closeAllOverlays();
+  renderOperatorTab();
+  document.getElementById('operator-overlay')?.classList.add('visible');
+  S.openOverlay = 'operator';
+  updateSidebarHighlight();
+}
+
+function closeOperator() {
+  document.getElementById('operator-overlay')?.classList.remove('visible');
+  if (S.openOverlay === 'operator') S.openOverlay = null;
+  restoreDeviceNavHighlight();
+}
+
+function operatorOverlayClick(e) {
+  if (e.target === document.getElementById('operator-overlay')) closeOperator();
+}
+
+function showSnarf() {
+  if (S.device !== 'usb') return;
+  closeAllOverlays();
+  renderSnarfPanel();
+  document.getElementById('snarf-overlay')?.classList.add('visible');
+  S.openOverlay = 'snarf';
+}
+
+function closeSnarf() {
+  document.getElementById('snarf-overlay')?.classList.remove('visible');
+  if (S.openOverlay === 'snarf') S.openOverlay = null;
+  restoreDeviceNavHighlight();
+}
+
+function snarfOverlayClick(e) {
+  if (e.target === document.getElementById('snarf-overlay')) closeSnarf();
+}
+
 // ── DEVICES ───────────────────────────────────────────────────────────────────
 function updateDevices(data) {
-  const map = {ducky:'dev-ducky',bunny:'dev-bunny',turtle:'dev-turtle',teensy:'dev-teensy'};
   S.deviceConnected = {};
   S.deviceMountPath = S.deviceMountPath || {};
   let bunnyMountChanged = false;
@@ -2941,7 +3201,6 @@ function updateDevices(data) {
     S.deviceConnected[dev] = info.connected;
     const prevMount = S.deviceMountPath[dev];
     S.deviceMountPath[dev] = info.mount_path || null;
-    // When Bunny is auto-detected, sync its mount path into config
     if (dev === 'bunny') {
       if (info.mount_path && info.mount_path !== S.config.bunny_mount) {
         S.config.bunny_mount = info.mount_path;
@@ -2949,44 +3208,21 @@ function updateDevices(data) {
       }
       if (prevMount !== S.deviceMountPath[dev]) bunnyMountChanged = true;
     }
-    const row = document.getElementById(map[dev]);
-    if (!row) continue;
-    const dot = row.querySelector('.dev-dot');
-    const badge = row.querySelector('.dev-badge');
-    if (info.connected) {
-      dot.classList.replace('off','on');
-      badge.textContent = 'READY';
-      badge.className = 'dev-badge on';
-    } else {
-      dot.classList.replace('on','off');
-      badge.textContent = 'OFFLINE';
-      badge.className = 'dev-badge off';
-    }
   }
   if (bunnyMountChanged) updateBunnyMountField();
-  updateArmedState();
+  refreshDeviceBadges();
 }
 
 // ── NAVIGATION ────────────────────────────────────────────────────────────────
 async function navigate(target) {
-  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-  const navEl = document.querySelector(`[data-nav="${target}"]`);
-  if (navEl) navEl.classList.add('active');
+  closeAllOverlays();
 
   const devicePages = ['ducky','bunny','teensy','usb','turtle'];
   if (devicePages.includes(target)) {
     S.device = target;
-    const color = getDeviceColor(target) || '#fff';
-    document.getElementById('center-device').textContent = DEVICE_LABELS[target];
-    document.getElementById('center-device').style.color = color;
-    document.getElementById('b-device').textContent = target.toUpperCase();
-    document.getElementById('b-device').style.color = color;
-    document.getElementById('h-device').textContent = target.toUpperCase();
-    document.getElementById('h-device').style.color = color;
     applyDeviceTheme(target);
     updateTurtleActions();
-    updateUsbTabs();
-    // Show switch selector for Bunny; USB deploy target for dropper sticks
+    updatePayloadHeader();
     document.getElementById('switch-wrap').style.display =
       target === 'bunny' ? 'flex' : 'none';
     const usbDeploy = document.getElementById('usb-deploy-wrap');
@@ -2995,20 +3231,15 @@ async function navigate(target) {
     if (usbStick) usbStick.style.display = target === 'usb' ? 'flex' : 'none';
     if (target === 'usb') refreshUsbMounts();
     await loadDevicePayloads(target);
-    setTab('browse');
     updateLhostHint();
-    updateSourceIndicator(target);
-    // Re-color active tab for new device
-    const activeTab = document.getElementById(`tab-${S.tab}`);
-    if (activeTab) {
-      const dc = getDeviceColor(target) || 'var(--yellow)';
-      activeTab.style.color = dc;
-      activeTab.style.borderBottomColor = dc;
-    }
+    updateSidebarHighlight();
+    refreshDeviceBadges();
   } else if (target === 'config') {
-    setTab('config');
+    showConfig();
   } else if (target === 'repos') {
-    setTab('repos');
+    showRepos();
+  } else if (target === 'operator') {
+    showOperator();
   } else if (target === 'about') {
     showAbout();
   } else if (target === 'help') {
@@ -3016,52 +3247,16 @@ async function navigate(target) {
   }
 }
 
-// ── TABS ──────────────────────────────────────────────────────────────────────
-function setTab(tab) {
-  S.tab = tab;
-  document.querySelectorAll('.tab').forEach(t => {
-    t.classList.remove('active');
-    t.style.color = '';
-    t.style.borderBottomColor = '';
-  });
-  const tabEl = document.getElementById(`tab-${tab}`);
-  if (tabEl) {
-    tabEl.classList.add('active');
-    // Color active tab by current device
-    const dc = getDeviceColor(S.device) || 'var(--yellow)';
-    tabEl.style.color = dc;
-    tabEl.style.borderBottomColor = dc;
-  }
-  if (tab === 'browse') {
-    document.getElementById('payload-list').style.display = '';
-    document.getElementById('snarf-panel').style.display = 'none';
-    renderPayloads(S.payloads[S.device] || []);
-  } else if (tab === 'snarf') {
-    document.getElementById('payload-list').style.display = 'none';
-    document.getElementById('snarf-panel').style.display = 'block';
-    updateLhostHint();
-    renderSnarfPanel();
-  } else {
-    document.getElementById('payload-list').style.display = '';
-    document.getElementById('snarf-panel').style.display = 'none';
-    if (tab === 'repos') renderReposTab();
-    else if (tab === 'config') renderConfigTab();
-  }
-  updateLhostHint();
-  updateActionButtons();
-}
-
-/** FLASH / EDIT / SAVE only apply on BROWSE with a real payload path. */
+/** FLASH / EDIT / SAVE require a real payload path. */
 function updateActionButtons() {
   const flash = document.getElementById('btn-flash');
   const edit = document.getElementById('btn-edit');
   const save = document.getElementById('btn-save');
   if (!flash || !edit || !save) return;
 
-  const onBrowse = S.tab === 'browse';
   const p = S.selectedPayload || S.payload;
   const hasPath = !!(p && p.path);
-  const enabled = onBrowse && hasPath;
+  const enabled = hasPath;
 
   flash.disabled = !enabled;
   edit.disabled = !enabled;
@@ -3080,7 +3275,7 @@ async function loadDevicePayloads(device) {
   document.getElementById(`cnt-${device}`).textContent =
     data.repo_exists ? data.total : `${data.total}*`;
   updateTotalCount();
-  if (S.tab === 'browse') renderPayloads(S.payloads[device]);
+  renderPayloads(S.payloads[device]);
 }
 
 function updateSourceIndicator(device) {
@@ -3107,8 +3302,6 @@ function loadDeviceCounts() {
 
 function updateTotalCount() {
   const total = Object.values(S.counts).reduce((a,b)=>a+b,0);
-  document.getElementById('h-payloads').textContent = total || '-';
-  document.getElementById('b-payloads').textContent = total || '-';
 }
 
 let _flatPayloads = [];
@@ -3120,22 +3313,18 @@ function renderPayloads(groups) {
   const isReal = (S.repoExists || {})[S.device];
   let html = '';
 
-  if (!isReal) {
-    const usbHint = S.device === 'usb'
-      ? 'Use <a onclick="setTab(\'snarf\')">SNARF</a> → EXFIL to build scripts, or LURE for Windows/Linux deception files. Saved items appear under SNARFSNARF / LURES.'
-      : 'Placeholder payloads only. FLASH and SAVE FILE will not work until repo is cloned.';
-    const usbRepos = S.device !== 'usb'
-      ? `<div class="payload-banner-link" onclick="setTab('repos')">→ Go to REPOS tab to clone</div>`
-      : '';
+  if (!isReal && S.device !== 'usb') {
+    const usbHint = 'Placeholder payloads only. FLASH and SAVE FILE will not work until repo is cloned.';
+    const usbRepos = `<div class="payload-banner-link" onclick="showRepos()">→ Go to REPOS to clone</div>`;
     html += `<div class="payload-banner">
-      <div class="payload-banner-title">⚠ ${S.device === 'usb' ? 'BUILTIN PREVIEW PAYLOADS' : 'PREVIEW PAYLOADS - REPO NOT CLONED'}</div>
+      <div class="payload-banner-title">⚠ PREVIEW PAYLOADS - REPO NOT CLONED</div>
       <div class="payload-banner-body">${usbHint}</div>
       ${usbRepos}
     </div>`;
   }
   let idx = 0;
   for (const group of groups) {
-    html += `<div class="p-cat" style="color:var(--red);letter-spacing:3px;font-size:11px">${group.cat}</div>`;
+    html += `<div class="p-cat">${group.cat}</div>`;
     for (const p of group.payloads) {
       _flatPayloads.push(p);
       const n = idx++;
@@ -3151,7 +3340,7 @@ function renderPayloads(groups) {
       </div>`;
     }
   }
-  list.innerHTML = html || '<div style="padding:20px;color:#8a8aaa">No payloads found.</div>';
+  list.innerHTML = html || '<div class="cfg-hint" style="padding:20px">No payloads found.</div>';
 }
 
 async function selectPayload(idx) {
@@ -3265,32 +3454,33 @@ async function onSearch(e) {
 async function renderReposTab() {
   const r = await fetch('/api/repos');
   const repos = await r.json();
-  let html = '';
+  let html = `<div class="cfg-panel" style="padding-bottom:0">
+    <div class="cfg-title">REPOSITORIES</div>`;
   const devs = {ducky:'RUBBER DUCKY',bunny:'BASH BUNNY',turtle:'LAN TURTLE'};
   for (const [dev, label] of Object.entries(devs)) {
     const st = repos[dev] || {};
     const color = getDeviceColor(dev);
     const cloned = st.cloned;
-    html += `<div style="padding:16px;border-bottom:1px solid var(--border)">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
-        <div style="font-family:var(--display);font-size:11px;letter-spacing:2px;color:${color}">${label}</div>
+    html += `<div class="repo-item">
+      <div class="repo-header">
+        <div class="repo-name" style="color:${color}">${label}</div>
         <div class="${cloned?'repo-cloned':'repo-missing'}">${cloned?'● CLONED':'○ NOT CLONED'}</div>
-        ${cloned?`<div style="font-size:10px;color:var(--text)">${st.payload_count} payloads · ${st.branch}</div>`:''}
+        ${cloned?`<div class="repo-meta">${st.payload_count} payloads · ${st.branch}</div>`:''}
       </div>
-      <div style="font-size:12px;color:#8a8aaa;margin-bottom:10px">${(S.config.repos||{})[dev]||''}</div>
-      <div style="display:flex;gap:8px">
+      <div class="repo-url">${(S.config.repos||{})[dev]||''}</div>
+      <div class="repo-actions">
         ${cloned
-          ? `<button onclick="repoUpdate('${dev}')" style="padding:6px 14px;font-family:var(--display);font-size:10px;letter-spacing:1px;background:transparent;border:1px solid var(--border-bright);color:var(--text-bright);cursor:pointer;border-radius:2px">UPDATE</button>`
-          : `<button onclick="repoClone('${dev}')" style="padding:6px 14px;font-family:var(--display);font-size:10px;letter-spacing:1px;background:var(--accent);border:none;color:var(--accent-fg);font-weight:700;cursor:pointer;border-radius:2px">CLONE</button>`
+          ? `<button type="button" class="cfg-btn-icon" onclick="repoUpdate('${dev}')">UPDATE</button>`
+          : `<button type="button" class="cfg-btn-set" onclick="repoClone('${dev}')">CLONE</button>`
         }
       </div>
     </div>`;
   }
-  html += `<div style="padding:16px">
-    <button onclick="repoClone('all')" style="padding:7px 20px;font-family:var(--display);font-size:10px;letter-spacing:2px;background:transparent;border:1px solid var(--red);color:var(--red);cursor:pointer;border-radius:2px;margin-right:8px">CLONE ALL</button>
-    <button onclick="repoUpdate()" style="padding:7px 20px;font-family:var(--display);font-size:10px;letter-spacing:2px;background:transparent;border:1px solid var(--border-bright);color:var(--text-bright);cursor:pointer;border-radius:2px">UPDATE ALL</button>
-  </div>`;
-  document.getElementById('payload-list').innerHTML = html;
+  html += `<div class="repo-footer">
+    <button type="button" class="cfg-btn-outline" onclick="repoClone('all')">CLONE ALL</button>
+    <button type="button" class="cfg-btn-icon" onclick="repoUpdate()">UPDATE ALL</button>
+  </div></div>`;
+  document.getElementById('repos-modal-body').innerHTML = html;
 }
 
 async function repoClone(device) {
@@ -3319,7 +3509,7 @@ function onRepoDone(dev, status) {
   termLine(`✓ ${dev} ready - ${status.payload_count} payloads indexed`, 'ok');
   toast(`${dev.toUpperCase()} ready - ${status.payload_count} payloads`, 'ok');
   loadDevicePayloads(dev);
-  if (S.tab === 'repos') renderReposTab();
+  if (S.openOverlay === 'repos') renderReposTab();
 }
 
 // ── CONFIG TAB ────────────────────────────────────────────────────────────────
@@ -3334,9 +3524,12 @@ function renderConfigTab() {
       ],
     },
     {
+      title: 'DISPLAY',
+      fields: [],
+    },
+    {
       title: 'TOOLS',
       fields: [
-        ['editor',      'EDITOR',                  'e.g. nano, vim, micro'],
         ['encoder_jar', 'ENCODER.JAR PATH',        'e.g. /path/to/encoder.jar'],
       ],
     },
@@ -3360,7 +3553,7 @@ function renderConfigTab() {
   ];
 
   const allKeys = CONFIG_SECTIONS.flatMap(s => s.fields.map(f => f[0]));
-  const list = document.getElementById('payload-list');
+  const list = document.getElementById('config-modal-body');
 
   // If already rendered, just update values without destroying DOM
   if (list.querySelector('#cfg-lhost')) {
@@ -3373,6 +3566,8 @@ function renderConfigTab() {
     });
     const ejectCb = document.getElementById('cfg-usb_auto_eject');
     if (ejectCb) ejectCb.checked = !!S.config.usb_auto_eject;
+    const clock24Cb = document.getElementById('cfg-clock_24h');
+    if (clock24Cb) clock24Cb.checked = S.config.clock_24h !== false;
     populateUsbMountConfigSelect();
     loadLanIpHint();
     loadDeployments();
@@ -3381,26 +3576,37 @@ function renderConfigTab() {
   }
 
   // First render
-  let html = `<div style="padding:20px">
-    <div style="font-family:var(--display);font-size:12px;letter-spacing:3px;color:var(--red);margin-bottom:16px;font-weight:700">CONFIGURATION</div>`;
+  let html = `<div class="cfg-panel">
+    <div class="cfg-title">CONFIGURATION</div>`;
 
   CONFIG_SECTIONS.forEach((section, si) => {
     const headColor = section.color || 'var(--red)';
-    html += `<div style="font-family:var(--display);font-size:11px;letter-spacing:3px;color:${headColor};
-                         font-weight:700;margin:${si ? '22px' : '8px'} 0 12px">${section.title}</div>`;
+    html += `<div class="cfg-section-title" style="color:${headColor};margin-top:${si ? '22px' : '8px'}">${section.title}</div>`;
+    if (section.title === 'DISPLAY') {
+      html += `
+      <div class="cfg-field">
+        <div class="cfg-field-label">CLOCK FORMAT</div>
+        <div class="clock-format-row">
+          <span class="clock-format-label">12H</span>
+          <label class="cfg-toggle">
+            <input type="checkbox" id="cfg-clock_24h" ${c.clock_24h !== false ? 'checked' : ''}
+              onchange="saveClockFormat()">
+            <span class="cfg-toggle-slider"></span>
+          </label>
+          <span class="clock-format-label">24H</span>
+        </div>
+      </div>`;
+      return;
+    }
     section.fields.forEach(([key, label, placeholder]) => {
       if (key === 'bunny_mount') {
-        // Bunny mount is always auto-detected - render as read-only display row
         html += `
-      <div style="margin-bottom:14px">
-        <div style="font-size:12px;letter-spacing:2px;color:var(--text-bright);margin-bottom:6px;font-family:var(--display)">${label}</div>
+      <div class="cfg-field">
+        <div class="cfg-field-label">${label}</div>
         <div id="cfg-bunny_mount-wrap">
-          <input id="cfg-bunny_mount" type="text" value="${c.bunny_mount || ''}" placeholder="Plug in Bunny to auto-detect"
-            style="width:100%;box-sizing:border-box;background:var(--bg3);border:1px solid var(--border);color:var(--text);
-                   font-family:var(--mono);font-size:12px;padding:6px 10px;border-radius:3px;outline:none;"
-            readonly>
+          <input id="cfg-bunny_mount" type="text" class="cfg-input" value="${c.bunny_mount || ''}" placeholder="Plug in Bunny to auto-detect" readonly>
         </div>
-        <div class="bunny-mount-note" style="font-size:10px;color:var(--text);margin-top:4px;letter-spacing:1px"></div>
+        <div class="bunny-mount-note cfg-note"></div>
       </div>`;
         return;
       }
@@ -3410,57 +3616,41 @@ function renderConfigTab() {
       const ph = isSecret && setFlag ? '••••••••  (set - enter new to change)' : placeholder;
       const val = isSecret ? '' : (c[key] || '');
       html += `
-      <div style="margin-bottom:14px">
-        <div style="font-size:12px;letter-spacing:2px;color:var(--text-bright);margin-bottom:6px;font-family:var(--display)">${label}</div>
-        <div style="display:flex;gap:8px">
-          <input id="cfg-${key}" type="${inpType}" value="${val}" placeholder="${ph}"
-            style="flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text-bright);
-                   font-family:var(--mono);font-size:12px;padding:6px 10px;border-radius:3px;outline:none;"
-            class="config-input"
+      <div class="cfg-field">
+        <div class="cfg-field-label">${label}</div>
+        <div class="cfg-field-row">
+          <input id="cfg-${key}" type="${inpType}" class="cfg-input config-input" value="${val}" placeholder="${ph}"
             onkeydown="if(event.key==='Enter') saveField('${key}')">
-          <button onclick="saveField('${key}')"
-            style="padding:6px 14px;font-family:var(--display);font-size:10px;letter-spacing:1px;
-                   background:var(--accent);border:none;color:var(--accent-fg);font-weight:700;cursor:pointer;border-radius:3px;min-width:52px">SET</button>
+          <button type="button" class="cfg-btn-set" onclick="saveField('${key}')">SET</button>
         </div>
       </div>`;
       if (key === 'lhost') {
-        html += `<div id="lan-ip-hint" style="font-size:10px;color:var(--text);margin:-4px 0 10px">Detecting LAN IP…</div>`;
+        html += `<div id="lan-ip-hint" class="cfg-hint-inline">Detecting LAN IP…</div>`;
       }
     });
     if (section.title === 'DEVICE MOUNTS') {
       html += `
-      <div style="margin-bottom:14px" id="usb-dropper-config">
-        <div style="font-size:12px;letter-spacing:2px;color:var(--text-bright);margin-bottom:6px;font-family:var(--display)">USB STICK MOUNT</div>
-        <div style="font-size:10px;color:var(--text);margin-bottom:8px;line-height:1.4">
+      <div class="cfg-field" id="usb-dropper-config">
+        <div class="cfg-field-label">USB STICK MOUNT</div>
+        <div class="cfg-hint">
           Pin flash to a specific stick, or leave Auto to use the USB STICK picker on flash.
         </div>
-        <div style="display:flex;gap:8px;margin-bottom:8px">
-          <select id="cfg-usb_mount_select"
-            style="flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text-bright);
-                   font-family:var(--mono);font-size:11px;padding:6px 8px;border-radius:3px;"
-            onchange="onUsbMountSelectChange()">
+        <div class="cfg-field-row" style="margin-bottom:8px">
+          <select id="cfg-usb_mount_select" class="cfg-select" onchange="onUsbMountSelectChange()">
             <option value="">Auto - detect writable stick on flash</option>
           </select>
-          <button type="button" onclick="populateUsbMountConfigSelect(true)"
-            style="padding:6px 10px;font-family:var(--display);font-size:10px;letter-spacing:1px;
-                   border:1px solid var(--border);background:transparent;color:var(--cyan);cursor:pointer;border-radius:3px">↻</button>
+          <button type="button" class="cfg-btn-icon" onclick="populateUsbMountConfigSelect(true)">↻</button>
         </div>
-        <div style="display:flex;gap:8px;margin-bottom:8px">
-          <input id="cfg-usb_mount" type="text" value="${c.usb_mount || ''}"
+        <div class="cfg-field-row" style="margin-bottom:8px">
+          <input id="cfg-usb_mount" type="text" class="cfg-input" value="${c.usb_mount || ''}"
             placeholder="Or type mount path manually, e.g. /media/user/USB STICK"
-            style="flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text-bright);
-                   font-family:var(--mono);font-size:12px;padding:6px 10px;border-radius:3px;outline:none;"
             onkeydown="if(event.key==='Enter') saveField('usb_mount')">
-          <button onclick="saveField('usb_mount')"
-            style="padding:6px 14px;font-family:var(--display);font-size:10px;letter-spacing:1px;
-                   background:var(--accent);border:none;color:var(--accent-fg);font-weight:700;cursor:pointer;border-radius:3px;min-width:52px">SET</button>
+          <button type="button" class="cfg-btn-set" onclick="saveField('usb_mount')">SET</button>
         </div>
-        <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px">
+        <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:8px">
           <div style="flex:1">
-            <div style="font-size:12px;color:var(--text-bright)">Auto eject USB device after successful flash</div>
-            <div style="font-size:10px;color:var(--text);margin-top:4px;line-height:1.4">
-              Uses udisksctl to unmount and power-off the stick.
-            </div>
+            <div class="cfg-body-text">Auto eject USB device after successful flash</div>
+            <div class="cfg-body-hint">Uses udisksctl to unmount and power-off the stick.</div>
           </div>
           <div class="cfg-toggle-col">
             <label class="cfg-toggle">
@@ -3475,29 +3665,10 @@ function renderConfigTab() {
   });
 
   html += `
-    <div style="font-family:var(--display);font-size:11px;letter-spacing:3px;color:var(--red);
-                font-weight:700;margin:22px 0 12px">OPERATOR ACCOUNT</div>
-    <div style="margin-bottom:14px">
-      <div style="font-size:12px;letter-spacing:2px;color:var(--text-bright);margin-bottom:6px;font-family:var(--display)">CHANGE PASSWORD</div>
-      <div style="display:flex;gap:8px;margin-bottom:8px">
-        <input id="cfg-chpw-current" type="password" placeholder="current password"
-          style="flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text-bright);
-                 font-family:var(--mono);font-size:12px;padding:6px 10px;border-radius:3px;">
-        <input id="cfg-chpw-new" type="password" placeholder="new (min 8)"
-          style="flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text-bright);
-                 font-family:var(--mono);font-size:12px;padding:6px 10px;border-radius:3px;">
-        <input id="cfg-chpw-confirm" type="password" placeholder="confirm"
-          style="flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text-bright);
-                 font-family:var(--mono);font-size:12px;padding:6px 10px;border-radius:3px;">
-      </div>
-      <button type="button" onclick="doConfigChangePassword()"
-        style="padding:6px 14px;font-family:var(--display);font-size:10px;letter-spacing:1px;
-               background:var(--accent);border:none;color:var(--accent-fg);font-weight:700;cursor:pointer;border-radius:3px">UPDATE PASSWORD</button>
-    </div>
-    <div style="display:flex;align-items:center;justify-content:space-between;margin:22px 0 12px">
-      <div style="font-family:var(--display);font-size:11px;letter-spacing:3px;color:var(--cyan);font-weight:700">RECENT DEPLOYMENTS</div>
+    <div class="cfg-deploy-header">
+      <div class="cfg-deploy-title">RECENT DEPLOYMENTS</div>
       <button onclick="exportDeployments()" disabled style="
-        padding:4px 12px;font-family:var(--display);font-size:9px;letter-spacing:1px;
+        padding:6px 14px;font-family:var(--display);font-size:11px;letter-spacing:1px;
         background:transparent;border:1px solid var(--border-bright);color:var(--text-bright);
         cursor:default;border-radius:3px;transition:all 0.15s;opacity:0.35"
         onmouseover="if(!this.disabled){this.style.borderColor='var(--cyan)';this.style.color='var(--cyan)'}"
@@ -3515,11 +3686,66 @@ function renderConfigTab() {
   updateBunnyMountField();
 }
 
+function renderOperatorTab() {
+  const list = document.getElementById('operator-modal-body');
+  const user = S.currentUser || S.config?._user || '-';
+  if (list.querySelector('#op-current-name')) {
+    const nameEl = document.getElementById('op-current-name');
+    if (nameEl) nameEl.textContent = user;
+    return;
+  }
+  list.innerHTML = `<div class="cfg-panel cfg-panel-op">
+    <div class="cfg-title">OPERATOR</div>
+    <div class="cfg-op-card">
+      <div class="cfg-op-sublabel">SIGNED IN AS</div>
+      <div id="op-current-name" class="cfg-op-name">${user}</div>
+      <div class="cfg-op-meta">Per-operator config, payloads, and catches stay under <code>users/${user}/</code> and <code>snarfed/${user}/</code>.</div>
+    </div>
+    <button type="button" class="cfg-btn-outline" style="margin-bottom:22px" onclick="doLogout()">LOG OUT</button>
+
+    <div class="cfg-section-title" style="color:var(--red);margin-top:0">RENAME OPERATOR</div>
+    <div class="cfg-hint">2-32 characters: letters, numbers, underscore, hyphen. Renames your user folder and catch directory.</div>
+    <div class="cfg-field">
+      <div class="cfg-field-label">NEW OPERATOR NAME</div>
+      <input id="op-rename-new" type="text" class="cfg-input" placeholder="new operator name" autocomplete="off" style="margin-bottom:8px">
+      <input id="op-rename-password" type="password" class="cfg-input" placeholder="current password to confirm">
+      <button type="button" class="cfg-btn-set" style="margin-top:10px" onclick="doOperatorRename()">RENAME OPERATOR</button>
+    </div>
+
+    <div class="cfg-section-title" style="color:var(--red)">CHANGE PASSWORD</div>
+    <div class="cfg-input-stack">
+      <input id="op-chpw-current" type="password" class="cfg-input" placeholder="current password">
+      <input id="op-chpw-new" type="password" class="cfg-input" placeholder="new password (min 8)">
+      <input id="op-chpw-confirm" type="password" class="cfg-input" placeholder="confirm new password">
+    </div>
+    <button type="button" class="cfg-btn-set" onclick="doOperatorChangePassword()">UPDATE PASSWORD</button>
+
+    <div class="cfg-section-divider">
+      <div class="cfg-section-title" style="color:var(--red);margin-top:0">DELETE OPERATOR</div>
+      <div id="del-step1">
+        <div class="cfg-hint">Permanently removes this operator, saved payloads, and config.</div>
+        <input id="del-password" type="password" class="cfg-input" placeholder="current password" style="margin-bottom:8px">
+        <button id="del-btn" type="button" class="cfg-btn-outline cfg-btn-outline-wide" onclick="showDeleteConfirm()">DELETE OPERATOR</button>
+      </div>
+      <div id="del-step2" style="display:none">
+        <div class="cfg-warn-text">Type <strong>${user}</strong> to confirm deletion.</div>
+        <input id="del-confirm-name" type="text" class="cfg-input" placeholder="operator name" autocomplete="off"
+          style="margin-bottom:8px" onkeydown="if(event.key==='Enter')doDeleteOperator()">
+        <div class="cfg-btn-row">
+          <button type="button" class="cfg-btn-cancel" onclick="hideDeleteConfirm()">CANCEL</button>
+          <button type="button" id="del-confirm-btn" class="cfg-btn-confirm" onclick="doDeleteOperator()">CONFIRM DELETE</button>
+        </div>
+      </div>
+      <div id="del-error" class="cfg-error-box"></div>
+    </div>
+  </div>`;
+}
+
 function updateBunnyMountField() {
   const field = document.getElementById('cfg-bunny_mount');
   if (!field) return;
   const detectedPath = S.deviceMountPath?.['bunny'];
-  const note = field.closest('div[style*="margin-bottom"]')?.querySelector('.bunny-mount-note');
+  const note = field.closest('.cfg-field')?.querySelector('.bunny-mount-note');
   if (detectedPath) {
     field.value = detectedPath;
     field.style.color = 'var(--green)';
@@ -3592,6 +3818,29 @@ async function saveUsbAutoEject() {
   }
 }
 
+async function saveClockFormat() {
+  const cb = document.getElementById('cfg-clock_24h');
+  if (!cb) return;
+  try {
+    const r = await fetch('/api/config', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-TSK-User': S.currentUser || '' },
+      body: JSON.stringify({ clock_24h: cb.checked }),
+    });
+    const data = await r.json();
+    if (data.ok) {
+      S.config = data.config || S.config;
+      S.config.clock_24h = cb.checked;
+      updateClockDisplay();
+      toast(cb.checked ? '✓ 24-hour clock' : '✓ 12-hour clock', 'ok');
+    } else {
+      toast(`✗ ${data.error || 'Save failed'}`, 'err');
+    }
+  } catch (e) {
+    toast(`✗ ${e}`, 'err');
+  }
+}
+
 async function saveField(key) {
   // Try multiple selectors to find the input
   const inp = document.getElementById(`cfg-${key}`) ||
@@ -3613,14 +3862,6 @@ async function saveField(key) {
     S.config[key] = val;
     // Apply full config from server response
     if (data.config) applyConfig(data.config);
-    // Force direct DOM update regardless
-    if (key === 'lhost') {
-      const lhost = val || '';
-      document.getElementById('h-lhost').textContent = lhost || 'NOT SET';
-      document.getElementById('h-lhost').className   = lhost ? 'ok' : 'warn';
-      document.getElementById('b-lhost').textContent = lhost || 'NOT SET';
-      document.getElementById('b-lhost').style.color = lhost ? 'var(--green)' : 'var(--red)';
-    }
     if (key === 'usb_mount') {
       populateUsbMountConfigSelect();
       refreshUsbMounts();
@@ -3662,67 +3903,70 @@ async function showAbout() {
   const qr2Qr = `https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=${encodeURIComponent(qr2Url)}`;
 
   body.innerHTML = `
-    <div class="about-brand-row">
-      <img class="about-avatar" src="${BRAND_AVATAR_URL}" alt="TSK | The Skeleton Key">
-      <div>
-        <div class="about-title-main">TSK | THE SKELETON KEY v1.0</div>
-        <div class="about-creator">Built by Neur0Sp1cy</div>
+    <div class="cfg-panel">
+      <div class="cfg-title">ABOUT</div>
+      <div class="about-brand-row">
+        <img class="about-avatar" src="${BRAND_AVATAR_URL}" alt="TSK | The Skeleton Key">
+        <div>
+          <div class="about-title-main">TSK | THE SKELETON KEY v1.0</div>
+          <div class="about-creator">Built by Neur0Sp1cy</div>
+        </div>
       </div>
-    </div>
-    <div class="about-lead">
-      A free, open source USB payload management platform for HAK5 hardware.
-    </div>
-    <div class="about-devices-line">
-      Rubber Ducky · Bash Bunny · LAN Turtle · Teensy · USB Dropper
-    </div>
-    <a class="about-github-link" href="${GITHUB_REPO_URL}" target="_blank" rel="noopener">github.com/neur0sp1cy/TSK2</a>
-    <div class="about-meta-line">
-      DEF CON 34 · Las Vegas 2026 · ${total} payloads loaded
-    </div>
-
-    <div class="about-qr-row">
-      <div class="about-qr-cell">
-        <a href="${GITHUB_REPO_URL}" target="_blank" rel="noopener">
-          <img src="${githubQr}" width="110" height="110" alt="GitHub QR">
-        </a>
-        <div class="about-qr-label">GITHUB</div>
-        <a class="about-qr-url" href="${GITHUB_REPO_URL}" target="_blank" rel="noopener">github.com/neur0sp1cy/TSK2</a>
+      <div class="cfg-body-text about-lead">
+        A free, open source USB payload management platform for HAK5 hardware.
       </div>
-      <div class="about-qr-cell">
-        <a href="${qr2Url}" target="_blank" rel="noopener">
-          <img src="${qr2Qr}" width="110" height="110" alt="${qr2Label} QR">
-        </a>
-        <div class="about-qr-label">${qr2Label}</div>
-        <a class="about-qr-url" href="${qr2Url}" target="_blank" rel="noopener">${qr2Url.replace(/^https?:\/\//, '')}</a>
+      <div class="cfg-body-text about-devices-line">
+        Rubber Ducky · Bash Bunny · LAN Turtle · Teensy · USB Dropper
       </div>
-    </div>
+      <a class="about-github-link" href="${GITHUB_REPO_URL}" target="_blank" rel="noopener">github.com/neur0sp1cy/TSK2</a>
+      <div class="cfg-note about-meta-line">
+        DEF CON 34 · Las Vegas 2026 · ${total} payloads loaded
+      </div>
 
-    <div class="about-kofi-banner">
-      <img src="${BRAND_HEADER_URL}" alt="Support TSK on Ko-fi">
-    </div>
+      <div class="about-qr-row">
+        <div class="about-qr-cell">
+          <a href="${GITHUB_REPO_URL}" target="_blank" rel="noopener">
+            <img src="${githubQr}" width="110" height="110" alt="GitHub QR">
+          </a>
+          <div class="about-qr-label">GITHUB</div>
+          <a class="about-qr-url" href="${GITHUB_REPO_URL}" target="_blank" rel="noopener">github.com/neur0sp1cy/TSK2</a>
+        </div>
+        <div class="about-qr-cell">
+          <a href="${qr2Url}" target="_blank" rel="noopener">
+            <img src="${qr2Qr}" width="110" height="110" alt="${qr2Label} QR">
+          </a>
+          <div class="about-qr-label">${qr2Label}</div>
+          <a class="about-qr-url" href="${qr2Url}" target="_blank" rel="noopener">${qr2Url.replace(/^https?:\/\//, '')}</a>
+        </div>
+      </div>
 
-    <div class="about-support-head">SUPPORT THE PROJECT</div>
-    <div class="about-support-text">
-      TSK is free forever. If it's been useful in the field, consider buying me a coffee -
-      it goes straight back into hardware and development.
-    </div>
-    <a class="about-kofi-link" href="${KOFI_URL}" target="_blank" rel="noopener">☕ ko-fi.com/neur0sp1cy</a>
-    <div class="about-support-text" style="margin-top:12px">
-      Questions or concerns: <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a>
-    </div>
+      <div class="about-kofi-banner">
+        <img src="${BRAND_HEADER_URL}" alt="Support TSK on Ko-fi">
+      </div>
 
-    <div class="about-footer-tag">All tools free. Always. 🔑</div>`;
+      <div class="cfg-section-title" style="color:var(--red);margin-top:8px">SUPPORT THE PROJECT</div>
+      <div class="cfg-body-text" style="margin-bottom:12px">
+        TSK is free forever. If it's been useful in the field, consider buying me a coffee -
+        it goes straight back into hardware and development.
+      </div>
+      <a class="about-kofi-link" href="${KOFI_URL}" target="_blank" rel="noopener">☕ ko-fi.com/neur0sp1cy</a>
+      <div class="cfg-body-hint" style="margin-top:12px">
+        Questions or concerns: <a href="mailto:${CONTACT_EMAIL}" style="color:var(--cyan)">${CONTACT_EMAIL}</a>
+      </div>
+
+      <div class="about-footer-tag">All tools free. Always. 🔑</div>
+    </div>`;
 
   overlay.classList.add('visible');
+  S.openOverlay = 'about';
+  updateSidebarHighlight();
 }
 
 function closeAbout() {
   const overlay = document.getElementById('about-overlay');
   if (overlay) overlay.classList.remove('visible');
-  const aboutNav = document.querySelector('[data-nav="about"]');
-  if (aboutNav) aboutNav.classList.remove('active');
-  const deviceNav = document.querySelector(`[data-nav="${S.device}"]`);
-  if (deviceNav) deviceNav.classList.add('active');
+  if (S.openOverlay === 'about') S.openOverlay = null;
+  restoreDeviceNavHighlight();
 }
 
 function aboutOverlayClick(e) {
@@ -3736,62 +3980,62 @@ function showHelp() {
   if (!overlay || !body) return;
 
   body.innerHTML = `
-    <div class="help-section-head">USB DROPPER | HOW IT FITS TOGETHER</div>
-    <div class="help-hr">────────────────────────</div>
-    <div class="help-flow-step"><strong>1 · CONFIG</strong> - Set <span class="help-k">LHOST</span> / <span class="help-k">LPORT</span> (CONFIG tab or command bar).
-      LHOST is your machine's LAN IP; LPORT is this TSK server (default 1337). Required for phone-home and test stubs.</div>
-    <div class="help-flow-step"><strong>2 · SNARF → EXFIL</strong> - Pick what to steal (Windows PowerShell / Linux Bash).
-      <em>BUILD</em> generates a script → <em>SAVE</em> (or <em>SAVE + FLASH</em>) → script appears under BROWSE → SNARFSNARF.</div>
-    <div class="help-flow-step"><strong>3 · SNARF → LURE</strong> - Windows: <span class="help-k">LNK</span> shortcut · Linux: <span class="help-k">README</span> script or <span class="help-k">.desktop</span> entry.
-      Attach a saved exfil script or use a test stub. <em>SAVE PACKAGE</em> writes lure + payload to your library → <em>FLASH PACKAGE</em> copies all files to the stick.</div>
-    <div class="help-flow-step"><strong>4 · FLASH</strong> - Plug a <em>plain USB stick</em> (not Bunny/Ducky). Right panel: scan stick, pick deploy (root or hidden <code>.tsk/</code>), preview, then FLASH.
-      Scripts get <code>RUN_PAYLOAD.bat</code> / <code>.sh</code> launchers on Windows/Linux.</div>
-    <div class="help-flow-step"><strong>5 · SNARF → CATCH</strong> - If exfil uses phone-home, uploads hit <code>POST /api/snarf</code>.
-      Catches are scoped to your operator account under <code>snarfed/&lt;operator&gt;/</code>.
-      Watch the live feed, preview files, export ZIP. URL: <code>http://&lt;LHOST&gt;:&lt;LPORT&gt;/api/snarf</code></div>
-    <div class="help-flow-step"><strong>HTTPS</strong> - Start with <code>python server.py --ssl</code> for LAN access over TLS.
-      Browser will warn on self-signed cert (Advanced → Proceed). Phone-home scripts still use plain HTTP.</div>
+    <div class="cfg-panel">
+      <div class="cfg-title">HELP</div>
 
-    <div class="help-section-head">NAVIGATION</div>
-    <div class="help-hr">────────────────────────</div>
-    <div><span class="help-k">R</span> Ducky · <span class="help-k">B</span> Bunny · <span class="help-k">U</span> USB Dropper · <span class="help-k">L</span> Turtle</div>
-    <div><span class="help-k">C</span> Config · <span class="help-k">P</span> Repos · <span class="help-k">A</span> About · <span class="help-k">H</span> Help</div>
-    <div>Center tabs: <span class="help-k">1</span> Browse · <span class="help-k">2</span> Snarf (USB) · <span class="help-k">3</span> Config · <span class="help-k">4</span> Repos</div>
+      <div class="cfg-section-title" style="color:var(--cyan);margin-top:8px">USB DROPPER | HOW IT FITS TOGETHER</div>
+      <div class="help-flow-step"><strong>1 · CONFIG</strong> - Set <span class="help-k">LHOST</span> / <span class="help-k">LPORT</span> (CONFIG modal or command bar).
+        LHOST is your machine's LAN IP; LPORT is this TSK server (default 1337). Required for phone-home and test stubs.</div>
+      <div class="help-flow-step"><strong>2 · SNARF → EXFIL</strong> - Pick what to steal (Windows PowerShell / Linux Bash).
+        <em>BUILD</em> generates a script → <em>SAVE</em> (or <em>SAVE + FLASH</em>) → script appears in the payload list under SNARFSNARF.</div>
+      <div class="help-flow-step"><strong>3 · SNARF → LURE</strong> - Windows: <span class="help-k">LNK</span> shortcut · Linux: <span class="help-k">README</span> script or <span class="help-k">.desktop</span> entry.
+        Attach a saved exfil script or use a test stub. <em>SAVE PACKAGE</em> writes lure + payload to your library → <em>FLASH PACKAGE</em> copies all files to the stick.</div>
+      <div class="help-flow-step"><strong>4 · FLASH</strong> - Plug a <em>plain USB stick</em> (not Bunny/Ducky). Right panel: scan stick, pick deploy (root or hidden <code>.tsk/</code>), preview, then FLASH.
+        Scripts get <code>RUN_PAYLOAD.bat</code> / <code>.sh</code> launchers on Windows/Linux.</div>
+      <div class="help-flow-step"><strong>5 · SNARF → CATCH</strong> - If exfil uses phone-home, uploads hit <code>POST /api/snarf</code>.
+        Catches are scoped to your operator account under <code>snarfed/&lt;operator&gt;/</code>.
+        Watch the live feed, preview files, export ZIP. URL: <code>http://&lt;LHOST&gt;:&lt;LPORT&gt;/api/snarf</code></div>
+      <div class="help-flow-step"><strong>HTTPS</strong> - Start with <code>python server.py --ssl</code> for LAN access over TLS.
+        Browser will warn on self-signed cert (Advanced → Proceed). Phone-home scripts still use plain HTTP.</div>
 
-    <div class="help-section-head">PAYLOADS & FLASH</div>
-    <div class="help-hr">────────────────────────</div>
-    <div><span class="help-k">1–99</span> Select payload · <span class="help-k">f</span> / <span class="help-k">Ctrl+Enter</span> Flash · <span class="help-k">e</span> Edit</div>
-    <div><span class="help-k">flash 1</span> / <span class="help-k">flash 2</span> - Bash Bunny switch position</div>
+      <div class="cfg-section-title" style="color:var(--red)">NAVIGATION</div>
+      <div class="help-line"><span class="help-k">D</span> Ducky · <span class="help-k">B</span> Bunny · <span class="help-k">U</span> USB Dropper · <span class="help-k">L</span> Turtle</div>
+      <div class="help-line"><span class="help-k">C</span> Config · <span class="help-k">R</span> Repos · <span class="help-k">O</span> Operator · <span class="help-k">A</span> About · <span class="help-k">H</span> Help</div>
+      <div class="help-line"><span class="help-k">S</span> SNARF builder (USB only) · <span class="help-k">Esc</span> close modals</div>
+      <div class="help-line">Device cards: <span class="help-k">OFFLINE</span> · <span class="help-k">READY</span> (detected) · <span class="help-k">ARMED</span> (LHOST + payload + device ready on selected card)</div>
 
-    <div class="help-section-head">COMMAND BAR</div>
-    <div class="help-hr">────────────────────────</div>
-    <div><span class="help-k">set lhost</span> 10.0.0.5 · <span class="help-k">set lport</span> 1337 · <span class="help-k">clone ducky</span> · <span class="help-k">devices</span></div>
-    <div><span class="help-k">turtle connect</span> - SSH terminal · <span class="help-k">Esc</span> - Close modals</div>
+      <div class="cfg-section-title" style="color:var(--red)">PAYLOADS &amp; FLASH</div>
+      <div class="help-line"><span class="help-k">1–99</span> Select payload · <span class="help-k">f</span> / <span class="help-k">Ctrl+Enter</span> Flash · <span class="help-k">e</span> Edit</div>
+      <div class="help-line"><span class="help-k">flash 1</span> / <span class="help-k">flash 2</span> - Bash Bunny switch position</div>
 
-    <div class="help-section-head">FUN &amp; EASTER EGGS</div>
-    <div class="help-hr">────────────────────────</div>
-    <div><span class="help-k">quote</span> · <span class="help-k">joke</span> - Random hacker quotes and groaners</div>
-    <div><span class="help-k">hack the planet</span> · <span class="help-k">htp</span> · <span class="help-k">hackers</span> - Classic overlay</div>
-    <div><span class="help-k">defcon</span> · Konami code - DEF CON flash + <a href="https://defcon.org/" target="_blank" rel="noopener">defcon.org</a></div>
-    <div><span class="help-k">play</span> · <span class="help-k">pause</span> · <span class="help-k">stop</span> · <span class="help-k">next</span> · <span class="help-k">back</span> · <span class="help-k">np</span> - Music player (<code>web/static/music/</code>)</div>
-    <div><span class="help-k">present</span> · <span class="help-k">present off</span> - Projector / demo layout</div>
-    <div><span class="help-k">theme &lt;name&gt;</span> - default · pushed · matrix · cinematic · light · flat</div>
-    <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-      <a class="help-tutorial-btn" href="/tutorial" target="_blank" rel="noopener">◈ OPEN TUTORIAL</a>
-      <span style="font-size:12px;color:var(--text)">Step-by-step missions for every device workflow.</span>
+      <div class="cfg-section-title" style="color:var(--red)">COMMAND BAR</div>
+      <div class="help-line"><span class="help-k">set lhost</span> 10.0.0.5 · <span class="help-k">set lport</span> 1337 · <span class="help-k">clone ducky</span> · <span class="help-k">devices</span></div>
+      <div class="help-line"><span class="help-k">turtle connect</span> - SSH terminal · <span class="help-k">Esc</span> - Close modals · Operator modal / header - password, rename, log out</div>
+
+      <div class="cfg-section-title" style="color:var(--red)">FUN &amp; EASTER EGGS</div>
+      <div class="help-line"><span class="help-k">quote</span> · <span class="help-k">joke</span> - Random hacker quotes and groaners</div>
+      <div class="help-line"><span class="help-k">hack the planet</span> · <span class="help-k">htp</span> · <span class="help-k">hackers</span> - Classic overlay</div>
+      <div class="help-line"><span class="help-k">defcon</span> · Konami code - DEF CON flash + <a href="https://defcon.org/" target="_blank" rel="noopener" style="color:var(--cyan)">defcon.org</a></div>
+      <div class="help-line"><span class="help-k">play</span> · <span class="help-k">pause</span> · <span class="help-k">stop</span> · <span class="help-k">next</span> · <span class="help-k">back</span> · <span class="help-k">np</span> - Music player (<code>web/static/music/</code>)</div>
+      <div class="help-line"><span class="help-k">present</span> · <span class="help-k">present off</span> - Projector / demo layout</div>
+      <div class="help-line"><span class="help-k">theme &lt;name&gt;</span> - default · pushed · matrix · cinematic · light · flat</div>
+      <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+        <a class="help-tutorial-btn" href="/tutorial" target="_blank" rel="noopener">◈ OPEN TUTORIAL</a>
+        <span class="cfg-body-hint" style="margin:0">Step-by-step missions for every device workflow.</span>
+      </div>
+      <div class="help-footer-note" style="margin-top:14px">Full lab scenarios: see <code>TESTING.md</code> in the repo.</div>
     </div>
-    <div style="margin-top:14px;font-size:12px;color:var(--text)">Full lab scenarios: see <code>TESTING.md</code> in the repo.</div>
   `;
   overlay.classList.add('visible');
+  S.openOverlay = 'help';
+  updateSidebarHighlight();
 }
 
 function closeHelp() {
   const overlay = document.getElementById('help-overlay');
   if (overlay) overlay.classList.remove('visible');
-  const helpNav = document.querySelector('[data-nav="help"]');
-  if (helpNav) helpNav.classList.remove('active');
-  const deviceNav = document.querySelector(`[data-nav="${S.device}"]`);
-  if (deviceNav) deviceNav.classList.add('active');
+  if (S.openOverlay === 'help') S.openOverlay = null;
+  restoreDeviceNavHighlight();
 }
 
 function helpOverlayClick(e) {
@@ -4297,6 +4541,32 @@ function setSnarfMode(mode) {
   renderSnarfPanel();
 }
 
+function snarfIntroCards(active) {
+  const cards = [
+    { id: 'build', label: 'EXFIL', img: '/static/snarf.png',
+      desc: 'Build phone-home exfil scripts for Windows PowerShell and Linux Bash.' },
+    { id: 'lure', label: 'LURE', img: '/static/snarf2.png',
+      desc: 'Deception files (LNK, README, .desktop) that run a payload on the stick.' },
+    { id: 'catch', label: 'CATCH', img: '/static/snarf3.png',
+      desc: 'Live feed and file browser for uploads to POST /api/snarf.' },
+  ];
+  return `<div class="snarf-intro-row">${cards.map(c => `
+    <button type="button" class="snarf-intro-card ${c.id === active ? 'active' : ''}"
+      onclick="setSnarfMode('${c.id}')">
+      <img src="${c.img}" alt="">
+      <div class="snarf-intro-label">${c.label}</div>
+      <div class="snarf-intro-desc">${c.desc}</div>
+    </button>`).join('')}</div>`;
+}
+
+function snarfBuildPreviewBlock() {
+  return `<div id="snarf-build-preview" class="snarf-build-preview" style="display:none">
+    <div class="snarf-label">BUILD PREVIEW</div>
+    <div id="snarf-preview-file" style="font-size:12px;color:var(--yellow);margin-bottom:4px"></div>
+    <pre class="snarf-preview-panel" id="snarf-preview-code"></pre>
+  </div>`;
+}
+
 function formatBytes(n) {
   const b = Number(n) || 0;
   if (b < 1024) return `${b} B`;
@@ -4315,7 +4585,7 @@ function onSnarfCatch(msg) {
     original_filepath: msg.original_filepath || msg.filename || '',
   });
   if (_snarfFeed.length > 100) _snarfFeed.length = 100;
-  if (S.tab === 'snarf' && _snarfMode === 'catch') {
+  if (S.openOverlay === 'snarf' && _snarfMode === 'catch') {
     renderSnarfCatchFeed();
     loadSnarfCatches();
   }
@@ -4418,74 +4688,85 @@ async function snarfDeleteSession(timestamp, hostname) {
   }
 }
 
-function updateArmedState() {
-  const row = document.getElementById('dev-armed');
-  const badge = document.getElementById('armed-badge');
-  const bStatus = document.getElementById('b-status');
-  if (!row || !badge) return;
-  const dot = row.querySelector('.dev-dot');
+function deviceFlashReady(dev) {
+  const mounts = S.deviceMountPath || {};
+  if (dev === 'usb') return !!S.usbMountPath;
+  if (dev === 'ducky') return false;
+  if (dev === 'bunny') return !!(S.deviceConnected['bunny'] && (mounts['bunny'] || S._bunnyMountValid));
+  if (dev === 'turtle') {
+    const ip = (S.config.turtle_ip || '').trim();
+    return !!(S.deviceConnected['turtle'] && ip);
+  }
+  if (dev === 'teensy') return !!S.deviceConnected['teensy'];
+  return false;
+}
+
+function computeDeviceBadge(dev) {
   const lhost = (S.config.lhost || '').trim();
   const hasPayload = !!(S.payload && S.payload.path);
+  const isSelected = S.device === dev;
   const mounts = S.deviceMountPath || {};
 
-  let deviceReady = false;
-  let warnLabel = null;  // non-null = connected but not in flashable state (amber warning)
-  let infoLabel = null;  // non-null = connected, informational status (cyan info)
-
-  if (S.device === 'usb') {
-    deviceReady = !!S.usbMountPath;
-  } else if (S.device === 'ducky') {
-    // Ducky is HID - flash via SD card reader, not the device itself
-    deviceReady = false;
-    if (S.deviceConnected['ducky']) infoLabel = 'HID DEVICE';
-  } else if (S.device === 'bunny') {
-    // Bunny: device must be physically connected to ever be ARMED
-    if (S.deviceConnected['bunny'] && (mounts['bunny'] || S._bunnyMountValid)) {
-      deviceReady = true;
+  if (dev === 'usb') {
+    const writable = (S.usbMounts || []).filter(m => m.writable);
+    const readOnly = (S.usbMounts || []).filter(m => m.read_only);
+    if (!writable.length && !readOnly.length) {
+      return { text: 'OFFLINE', cls: 'off', online: false };
     }
-  } else if (S.device === 'turtle') {
-    // Turtle flash: device must be detected AND IP must be configured
-    const turtleIp = (S.config.turtle_ip || '').trim();
-    if (S.deviceConnected['turtle'] && turtleIp) {
-      deviceReady = true;
-    } else if (S.deviceConnected['turtle'] && !turtleIp) {
-      warnLabel = 'NO IP';
+    if (!writable.length && readOnly.length) {
+      return { text: 'READ-ONLY', cls: 'warn', online: true };
     }
-  } else if (S.device === 'teensy') {
-    deviceReady = !!S.deviceConnected['teensy'];
+    if (isSelected && lhost && hasPayload && deviceFlashReady('usb')) {
+      return { text: 'ARMED', cls: 'armed', online: true };
+    }
+    const label = writable.length > 1 ? `READY (${writable.length})` : 'READY';
+    return { text: label, cls: 'on', online: true };
   }
 
-  const armed = lhost && hasPayload && deviceReady;
-  row.classList.toggle('armed', armed);
-
-  if (armed) {
-    dot.classList.replace('off', 'on');
-    badge.textContent = 'ARMED';
-    badge.className = 'dev-badge on';
-    if (bStatus) { bStatus.textContent = 'ARMED'; bStatus.style.color = 'var(--red)'; }
-  } else if (warnLabel) {
-    dot.classList.replace('off', 'on');
-    badge.textContent = warnLabel;
-    badge.className = 'dev-badge warn';
-    if (bStatus) { bStatus.textContent = 'READY'; bStatus.style.color = 'var(--green)'; }
-  } else if (infoLabel) {
-    dot.classList.replace('off', 'on');
-    badge.textContent = infoLabel;
-    badge.className = 'dev-badge info';
-    if (bStatus) { bStatus.textContent = 'READY'; bStatus.style.color = 'var(--green)'; }
-  } else {
-    dot.classList.replace('on', 'off');
-    badge.textContent = 'STANDBY';
-    badge.className = 'dev-badge off';
-    if (bStatus) { bStatus.textContent = 'READY'; bStatus.style.color = 'var(--green)'; }
+  if (!S.deviceConnected[dev]) {
+    return { text: 'OFFLINE', cls: 'off', online: false };
   }
+
+  if (dev === 'ducky') {
+    return { text: 'HID DEVICE', cls: 'info', online: true };
+  }
+
+  if (dev === 'turtle') {
+    const ip = (S.config.turtle_ip || '').trim();
+    if (!ip) return { text: 'NO IP', cls: 'warn', online: true };
+  }
+
+  if (isSelected && lhost && hasPayload && deviceFlashReady(dev)) {
+    return { text: 'ARMED', cls: 'armed', online: true };
+  }
+  return { text: 'READY', cls: 'on', online: true };
+}
+
+function refreshDeviceBadges() {
+  const map = { bunny:'dev-bunny', ducky:'dev-ducky', turtle:'dev-turtle', teensy:'dev-teensy', usb:'dev-usbdrive' };
+  for (const [dev, id] of Object.entries(map)) {
+    const row = document.getElementById(id);
+    if (!row) continue;
+    const badge = row.querySelector('.dev-badge');
+    const st = computeDeviceBadge(dev);
+    row.classList.toggle('dev-online', st.online);
+    row.classList.toggle('dev-armed-card', st.cls === 'armed');
+    if (badge) {
+      badge.textContent = st.text;
+      badge.className = 'dev-badge ' + st.cls;
+    }
+  }
+}
+
+function updateArmedState() {
+  refreshDeviceBadges();
 }
 
 async function updateFlashPreview() {
   const wrap = document.getElementById('flash-preview-wrap');
   if (!wrap) return;
   const p = S.payload;
-  if (!p || !p.path || S.tab !== 'browse') {
+  if (!p || !p.path) {
     wrap.style.display = 'none';
     return;
   }
@@ -4536,9 +4817,7 @@ async function loadLanIpHint() {
     const data = await r.json();
     if (data.ip) {
       el.innerHTML = `Detected LAN IP: <span style="color:var(--green)">${data.ip}</span>
-        <button type="button" onclick="applyLanIp('${data.ip}')"
-          style="margin-left:8px;padding:2px 8px;font-size:10px;cursor:pointer;border:1px solid var(--cyan);
-          background:transparent;color:var(--cyan);border-radius:3px">USE THIS</button>`;
+        <button type="button" class="cfg-btn-inline" onclick="applyLanIp('${data.ip}')">USE THIS</button>`;
     } else {
       el.textContent = 'Could not detect LAN IP - set LHOST manually';
     }
@@ -4553,10 +4832,25 @@ function applyLanIp(ip) {
   saveField('lhost');
 }
 
-async function doConfigChangePassword() {
-  const current = document.getElementById('cfg-chpw-current')?.value || '';
-  const newPw = document.getElementById('cfg-chpw-new')?.value || '';
-  const confirm = document.getElementById('cfg-chpw-confirm')?.value || '';
+async function doLogout() {
+  try {
+    await fetch('/api/auth/logout', { method: 'POST' });
+  } catch (e) { /* ignore */ }
+  S.authToken = '';
+  S.currentUser = '';
+  sessionStorage.removeItem('tsk_token');
+  clearLoginFields();
+  document.getElementById('app').classList.remove('visible');
+  document.getElementById('login-screen').classList.add('visible');
+  startLoginLogoGlitch();
+  switchLoginTab('login');
+  toast('Logged out', 'ok');
+}
+
+async function doOperatorChangePassword() {
+  const current = document.getElementById('op-chpw-current')?.value || '';
+  const newPw = document.getElementById('op-chpw-new')?.value || '';
+  const confirm = document.getElementById('op-chpw-confirm')?.value || '';
   const username = S.currentUser || '';
   if (!username) { toast('Not logged in', 'err'); return; }
   if (!current || !newPw) { toast('Enter current and new password', 'err'); return; }
@@ -4566,23 +4860,52 @@ async function doConfigChangePassword() {
     const r = await fetch('/api/auth/change-password', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username,
-        current_password: current,
-        new_password: newPw,
-      }),
+      body: JSON.stringify({ username, current_password: current, new_password: newPw }),
     });
     const data = await r.json();
     if (data.ok) {
-      toast('✓ Password updated', 'ok');
-      document.getElementById('cfg-chpw-current').value = '';
-      document.getElementById('cfg-chpw-new').value = '';
-      document.getElementById('cfg-chpw-confirm').value = '';
+      toast('Password updated', 'ok');
+      document.getElementById('op-chpw-current').value = '';
+      document.getElementById('op-chpw-new').value = '';
+      document.getElementById('op-chpw-confirm').value = '';
     } else {
       toast(data.error || 'Password change failed', 'err');
     }
   } catch (e) {
-    toast(`✗ ${e}`, 'err');
+    toast(`Error: ${e}`, 'err');
+  }
+}
+
+async function doOperatorRename() {
+  const newName = (document.getElementById('op-rename-new')?.value || '').trim();
+  const password = document.getElementById('op-rename-password')?.value || '';
+  if (!newName) { toast('Enter a new operator name', 'err'); return; }
+  if (!password) { toast('Enter current password to confirm', 'err'); return; }
+  try {
+    const r = await fetch('/api/auth/rename', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ new_username: newName, password }),
+    });
+    const data = await r.json();
+    if (data.ok) {
+      S.currentUser = data.username;
+      S.authToken = data.token || '';
+      if (S.authToken) sessionStorage.setItem('tsk_token', S.authToken);
+      localStorage.setItem('tsk_last_user', data.username);
+      if (data.config) applyConfig(data.config);
+      document.getElementById('h-user').textContent = data.username;
+      document.getElementById('op-rename-new').value = '';
+      document.getElementById('op-rename-password').value = '';
+      const opBody = document.getElementById('operator-modal-body');
+      if (opBody?.querySelector('#op-current-name')) opBody.innerHTML = '';
+      renderOperatorTab();
+      toast(`Renamed to ${data.username}`, 'ok');
+    } else {
+      toast(data.error || 'Rename failed', 'err');
+    }
+  } catch (e) {
+    toast(`Error: ${e}`, 'err');
   }
 }
 
@@ -4617,15 +4940,15 @@ async function loadDeployments() {
       btn.style.cursor  = entries.length ? 'pointer' : 'default';
     }
     if (!entries.length) {
-      el.innerHTML = '<div style="color:var(--text);font-size:11px">No deployments yet.</div>';
+      el.innerHTML = '<div class="cfg-deploy-empty">No deployments yet.</div>';
       return;
     }
     el.innerHTML = entries.slice(0, 15).map(e => `
-      <div style="padding:6px 0;border-bottom:1px solid var(--border);font-size:11px">
+      <div class="cfg-deploy-row">
         <span style="color:var(--cyan)">${e.time || ''}</span>
         · <span style="color:var(--yellow)">${(e.device || '').toUpperCase()}</span>
         · ${e.payload || ''}
-        ${e.deploy_path ? `<div style="color:var(--text);font-size:10px;margin-top:2px">${e.deploy_path}</div>` : ''}
+        ${e.deploy_path ? `<div class="cfg-deploy-path">${e.deploy_path}</div>` : ''}
       </div>`).join('');
   } catch (e) {
     el.textContent = 'Failed to load deployments';
@@ -4655,29 +4978,26 @@ function triggerDefconEasterEgg() {
 }
 
 async function renderSnarfCatchPanel() {
-  const panel = document.getElementById('snarf-panel');
+  const panel = document.getElementById('snarf-modal-body');
   if (!panel) return;
   panel.innerHTML = `
-    <img class="snarf-mascot" src="/static/snarf3.png" alt="Snarf">
-    <div class="snarf-head">SNARFSNARF - CATCH</div>
     <div class="snarf-sub">Phone-home exfil lands at <code style="color:var(--cyan)">POST /api/snarf</code>
-      → <code>snarfed/&lt;operator&gt;/&lt;timestamp&gt;/&lt;hostname&gt;/</code></div>
-    <div class="snarf-subtabs">
-      <button class="snarf-subtab" onclick="setSnarfMode('build')">EXFIL</button>
-      <button class="snarf-subtab" onclick="setSnarfMode('lure')">LURE</button>
-      <button class="snarf-subtab active" onclick="setSnarfMode('catch')">CATCH</button>
-    </div>
+      → <code>snarfed/&lt;operator&gt;/&lt;timestamp&gt;/&lt;hostname&gt;/</code>
+      · Set LHOST in <a onclick="closeSnarf();showConfig()" style="color:var(--cyan);cursor:pointer">CONFIG</a></div>
+    ${snarfIntroCards('catch')}
+    <div class="snarf-mode-panel">
     <div class="snarf-catch-wrap">
-      <div>
+      <div class="snarf-catch-col">
         <div class="snarf-catch-title">LIVE FEED</div>
         <div class="snarf-catch-feed" id="snarf-catch-feed"></div>
       </div>
-      <div>
+      <div class="snarf-catch-col">
         <div class="snarf-catch-title">SNARFED FILES</div>
         <div class="snarf-catch-tree" id="snarf-catch-tree"></div>
         <div class="snarf-catch-title" style="margin-top:12px">PREVIEW</div>
         <pre class="snarf-preview-panel" id="snarf-preview-panel">Select 👁 on a file to preview</pre>
       </div>
+    </div>
     </div>
     <div class="snarf-actions">
       <button class="snarf-btn" onclick="loadSnarfCatches()">↻ REFRESH</button>
@@ -4691,12 +5011,6 @@ async function renderSnarfCatchPanel() {
   } catch (e) { /* ignore */ }
   renderSnarfCatchFeed();
   await loadSnarfCatches();
-}
-
-function updateUsbTabs() {
-  const tab = document.getElementById('tab-snarf');
-  if (tab) tab.style.display = S.device === 'usb' ? '' : 'none';
-  if (S.device !== 'usb' && S.tab === 'snarf') setTab('browse');
 }
 
 let _lastUsbMountsSig = '';
@@ -4716,29 +5030,6 @@ async function refreshUsbMounts() {
 }
 
 function updateUsbStickSidebar(mounts) {
-  const row = document.getElementById('dev-usbdrive');
-  if (!row) return;
-  const dot = row.querySelector('.dev-dot');
-  const badge = row.querySelector('.dev-badge');
-  const writable = (mounts || []).filter(m => m.writable);
-  const readOnly = (mounts || []).filter(m => m.read_only);
-
-  if (writable.length) {
-    dot.classList.replace('off', 'on');
-    badge.textContent = writable.length > 1 ? `READY (${writable.length})` : 'READY';
-    badge.className = 'dev-badge on';
-    badge.style.color = 'var(--green)';
-  } else if (readOnly.length) {
-    dot.classList.replace('off', 'on');
-    badge.textContent = 'READ-ONLY';
-    badge.className = 'dev-badge on';
-    badge.style.color = '#ffaa00';
-  } else {
-    dot.classList.replace('on', 'off');
-    badge.textContent = 'OFFLINE';
-    badge.className = 'dev-badge off';
-    badge.style.color = '';
-  }
   updateArmedState();
 }
 
@@ -4850,7 +5141,7 @@ async function renderSnarfPanel() {
     await renderLurePanel();
     return;
   }
-  const panel = document.getElementById('snarf-panel');
+  const panel = document.getElementById('snarf-modal-body');
   if (!panel) return;
   const opts = await loadSnarfOptions();
   const targetHtml = (opts.targets || []).map(t => `
@@ -4864,14 +5155,10 @@ async function renderSnarfPanel() {
     `<option value="${f.id}">${f.label}</option>`).join('');
 
   panel.innerHTML = `
-    <img class="snarf-mascot" src="/static/snarf.png" alt="Snarf">
-    <div class="snarf-head">SNARFSNARF - EXFIL BUILDER</div>
-    <div class="snarf-sub">Windows PowerShell + Linux Bash exfil scripts. Save then flash from BROWSE, or use SAVE + FLASH.</div>
-    <div class="snarf-subtabs">
-      <button class="snarf-subtab active" onclick="setSnarfMode('build')">EXFIL</button>
-      <button class="snarf-subtab" onclick="setSnarfMode('lure')">LURE</button>
-      <button class="snarf-subtab" onclick="setSnarfMode('catch')">CATCH</button>
-    </div>
+    <div class="snarf-sub">Build exfil scripts, save to your payload library, then flash from the list.
+      Set LHOST in <a onclick="closeSnarf();showConfig()" style="color:var(--cyan);cursor:pointer">CONFIG</a> first.</div>
+    ${snarfIntroCards('build')}
+    <div class="snarf-mode-panel">
     <div class="snarf-section">
       <div class="snarf-label">EXFIL TARGETS</div>
       <div class="snarf-grid">${targetHtml}</div>
@@ -4893,9 +5180,11 @@ async function renderSnarfPanel() {
           <input type="checkbox" id="snarf-zip"> Zip archive
         </label>
       </div>
-      <div class="snarf-sub" style="margin-top:6px">LHOST: <span style="color:var(--red)">${S.config?.lhost || 'not set'}</span>
+      <div class="snarf-sub" style="margin-top:6px;margin-bottom:0">LHOST: <span style="color:var(--red)">${S.config?.lhost || 'not set'}</span>
         · LPORT: <span style="color:var(--red)">${S.config?.lport || '1337'}</span></div>
     </div>
+    </div>
+    ${snarfBuildPreviewBlock()}
     <div class="snarf-actions">
       <button class="snarf-btn primary" onclick="buildSnarfPreview()">⚡ BUILD PREVIEW</button>
       <button class="snarf-btn" onclick="saveSnarfScript(false)">⬇ SAVE TO PAYLOADS</button>
@@ -4923,11 +5212,11 @@ async function buildSnarfPreview() {
       toast('✗ No script generated', 'err');
       return;
     }
-    document.getElementById('preview-file').textContent = script.filename;
-    document.getElementById('preview-lang').textContent = script.lang;
-    document.getElementById('preview-desc').textContent =
-      `SnarfSnarf · ${data.output_mode} · ${data.format}`;
-    document.getElementById('preview-code').textContent = script.content;
+    document.getElementById('snarf-preview-file').textContent =
+      `${script.filename} · ${script.lang} · ${data.output_mode} · ${data.format}`;
+    document.getElementById('snarf-preview-code').textContent = script.content;
+    const previewWrap = document.getElementById('snarf-build-preview');
+    if (previewWrap) previewWrap.style.display = '';
     const warnEl = document.getElementById('snarf-warnings');
     if (warnEl && data.warnings?.length) {
       warnEl.innerHTML = data.warnings.map(w =>
@@ -4966,7 +5255,10 @@ async function saveSnarfScript(andFlash) {
       toast(`✗ Save failed: ${e}`, 'err');
     }
   }
-  if (S.device === 'usb') await loadDevicePayloads('usb');
+  if (savedNames.length) {
+    if (S.device === 'usb') await loadDevicePayloads('usb');
+    closeSnarf();
+  }
   if (andFlash && savedNames.length) {
     const picked = await selectUsbPayloadByFilename(savedNames[0]);
     if (picked) await doFlash();
@@ -5031,7 +5323,7 @@ function onLureTypeChange() {
 }
 
 async function renderLurePanel() {
-  const panel = document.getElementById('snarf-panel');
+  const panel = document.getElementById('snarf-modal-body');
   const opts = await loadLureOptions();
   const typeHtml = (opts.lure_types || []).map(t =>
     `<option value="${t.id}">${t.label} (${t.platform})</option>`).join('');
@@ -5043,14 +5335,9 @@ async function renderLurePanel() {
     `<option value="${s.filename}">${s.filename}</option>`).join('');
 
   panel.innerHTML = `
-    <img class="snarf-mascot" src="/static/snarf2.png" alt="Snarf">
-    <div class="snarf-head">USB LURE BUILDER</div>
     <div class="snarf-sub" id="lure-platform-hint">Windows LNK or Linux README/.desktop - pairs with a payload script on the same USB folder.</div>
-    <div class="snarf-subtabs">
-      <button class="snarf-subtab" onclick="setSnarfMode('build')">EXFIL</button>
-      <button class="snarf-subtab active" onclick="setSnarfMode('lure')">LURE</button>
-      <button class="snarf-subtab" onclick="setSnarfMode('catch')">CATCH</button>
-    </div>
+    ${snarfIntroCards('lure')}
+    <div class="snarf-mode-panel">
     <div class="snarf-section">
       <div class="snarf-label">LURE TYPE</div>
       <div class="snarf-row">
@@ -5073,8 +5360,11 @@ async function renderLurePanel() {
       </div>
       <input class="snarf-input" id="lure-inline-cmd" type="text" placeholder="inline command (if custom inline selected)" style="width:100%;margin-top:8px">
     </div>
-    <div class="snarf-sub" style="margin-top:6px">LHOST: <span style="color:var(--red)">${S.config?.lhost || 'not set'}</span>
+    <div class="snarf-sub" style="margin-top:6px;margin-bottom:0">LHOST: <span style="color:var(--red)">${S.config?.lhost || 'not set'}</span>
       · LPORT: <span style="color:var(--red)">${S.config?.lport || '1337'}</span></div>
+    <div class="snarf-mode-spacer" aria-hidden="true"></div>
+    </div>
+    ${snarfBuildPreviewBlock()}
     <div class="snarf-actions">
       <button class="snarf-btn primary" onclick="buildLurePreview()">⚡ BUILD PREVIEW</button>
       <button class="snarf-btn" onclick="saveLurePackage(false)">⬇ SAVE PACKAGE</button>
@@ -5101,8 +5391,11 @@ async function buildLurePreview() {
       if (a.binary) return `# ${a.filename} (binary ${a.lang})\n[${a.filename} - ${a.lang} lure file]`;
       return `# ${a.filename}\n${(a.content || '').slice(0, 4000)}`;
     }).join('\n\n---\n\n');
-    document.getElementById('preview-code').textContent = preview;
-    document.getElementById('preview-lang').textContent = (data.platform || 'LURE').toUpperCase();
+    document.getElementById('snarf-preview-code').textContent = preview;
+    document.getElementById('snarf-preview-file').textContent =
+      `LURE package · ${(data.platform || 'LURE').toUpperCase()} · ${data.artifacts?.length || 0} file(s)`;
+    const previewWrap = document.getElementById('snarf-build-preview');
+    if (previewWrap) previewWrap.style.display = '';
     const warnEl = document.getElementById('lure-warnings');
     if (warnEl && data.warnings?.length) {
       warnEl.innerHTML = data.warnings.map(w => `<div class="snarf-warn">⚠ ${w}</div>`).join('');
@@ -5136,6 +5429,7 @@ async function saveLurePackage(andFlash) {
     toast(`✓ Saved lure package (${data.filenames?.length || 0} files)`, 'ok');
     _lureOptions = null;
     if (S.device === 'usb') await loadDevicePayloads('usb');
+    closeSnarf();
     if (andFlash) {
       const toFlash = _lureBuilt?.package_files || data.filenames || [];
       if (toFlash.length) await flashLurePackage(toFlash);
@@ -5442,6 +5736,7 @@ function closeHtpOverlay() {
 function togglePresentationMode(on) {
   S.presentationMode = on !== undefined ? on : !S.presentationMode;
   document.body.classList.toggle('presentation-mode', S.presentationMode);
+  if (typeof window._tskClampPanelWidth === 'function') window._tskClampPanelWidth();
   toast(S.presentationMode ? 'Presentation mode ON' : 'Presentation mode OFF', 'info');
 }
 
@@ -5455,7 +5750,7 @@ function updateMusicTicker(name) {
   if (!el || !wrap) return;
   if (name) {
     el.textContent = `♫ ${name}`;
-    wrap.style.display = '';
+    wrap.style.display = 'flex';
   } else {
     el.textContent = '';
     wrap.style.display = 'none';
@@ -5533,7 +5828,7 @@ function musicNp() {
 
 // ── COMMAND INPUT ─────────────────────────────────────────────────────────────
 const CMD_MAP = {
-  r:'ducky', ducky:'ducky', rubber:'ducky',
+  d:'ducky', ducky:'ducky', rubber:'ducky',
   b:'bunny', bunny:'bunny', bash:'bunny',
   t:'teensy', teensy:'teensy',
   u:'usb', usb:'usb',
@@ -5541,7 +5836,8 @@ const CMD_MAP = {
   a:'about', about:'about',
   h:'help', help:'help',
   c:'config', config:'config',
-  p:'repos', repos:'repos',
+  r:'repos', repos:'repos', p:'repos',
+  o:'operator', operator:'operator',
 };
 
 function onCmd(e) {
@@ -5700,9 +5996,7 @@ function applyTheme(name, opts = {}) {
   if (name === 'matrix' && animate) triggerMatrixBurst();
   // Re-apply device accent colors for new theme
   applyDeviceTheme(S.device);
-  const devEl = document.getElementById('center-device');
-  if (devEl) devEl.style.color = getDeviceColor(S.device);
-  if (S.tab === 'browse') renderPayloads(S.payloads[S.device] || []);
+  renderPayloads(S.payloads[S.device] || []);
 }
 
 function loadSavedTheme() {
@@ -5720,6 +6014,22 @@ function onGlobalKey(e) {
   }
   if (e.key === 'Escape' && document.getElementById('help-overlay')?.classList.contains('visible')) {
     closeHelp();
+    return;
+  }
+  if (e.key === 'Escape' && document.getElementById('config-overlay')?.classList.contains('visible')) {
+    closeConfig();
+    return;
+  }
+  if (e.key === 'Escape' && document.getElementById('repos-overlay')?.classList.contains('visible')) {
+    closeRepos();
+    return;
+  }
+  if (e.key === 'Escape' && document.getElementById('operator-overlay')?.classList.contains('visible')) {
+    closeOperator();
+    return;
+  }
+  if (e.key === 'Escape' && document.getElementById('snarf-overlay')?.classList.contains('visible')) {
+    closeSnarf();
     return;
   }
   if (e.key === 'Escape' && document.getElementById('htp-overlay')?.classList.contains('visible')) {
@@ -5744,16 +6054,14 @@ function onGlobalKey(e) {
     return;
   }
 
-  const centerTabMap = { '1': 'browse', '2': 'snarf', '3': 'config', '4': 'repos' };
-  if (centerTabMap[e.key] && !e.ctrlKey && !e.metaKey && !e.altKey) {
-    if (centerTabMap[e.key] === 'snarf' && S.device !== 'usb') return;
-    setTab(centerTabMap[e.key]);
+  if (e.key === 's' && S.device === 'usb' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+    showSnarf();
     return;
   }
 
   const map = {
-    r:'ducky',b:'bunny',u:'usb',l:'turtle',
-    a:'about',c:'config',p:'repos',h:'help'
+    d:'ducky',b:'bunny',u:'usb',l:'turtle',
+    a:'about',c:'config',r:'repos',p:'repos',o:'operator',h:'help'
   };
   if (map[e.key]) navigate(map[e.key]);
 }
@@ -5764,45 +6072,146 @@ let _konamiIdx = 0;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 // ── RESIZABLE PREVIEW PANEL ───────────────────────────────────────────────────
+const PANEL_DEFAULT = 455;
+const PANEL_MAX = 455;
+const PANEL_RESIZE_ENABLED = false;
+const PANEL_PRESENT_MAX = 520;
+const CENTER_MIN = 480;
+const DIVIDER_W = 6;
+
 (function initPanelResize() {
   const divider = document.getElementById('panel-divider');
   const right = document.getElementById('right');
   const main = document.getElementById('main');
   if (!divider || !right || !main) return;
 
-  const saved = localStorage.getItem('tsk-right-width');
-  if (saved) {
-    const w = parseInt(saved, 10);
-    if (w >= 260) right.style.width = w + 'px';
+  function isLayoutReady() {
+    const app = document.getElementById('app');
+    return app && app.classList.contains('visible') && main.getBoundingClientRect().width > 400;
+  }
+
+  function getSidebarWidth() {
+    if (document.body.classList.contains('presentation-mode')) return 0;
+    const app = document.getElementById('app');
+    const raw = app ? getComputedStyle(app).getPropertyValue('--sidebar-w') : '';
+    return parseInt(raw, 10) || 280;
+  }
+
+  function getPanelMaxCap() {
+    if (document.body.classList.contains('presentation-mode')) {
+      const rect = main.getBoundingClientRect();
+      return Math.min(rect.width * 0.42, PANEL_PRESENT_MAX);
+    }
+    return PANEL_MAX;
+  }
+
+  function getMaxRightWidth() {
+    if (!isLayoutReady()) return PANEL_MAX;
+    const rect = main.getBoundingClientRect();
+    return rect.width - getSidebarWidth() - CENTER_MIN - DIVIDER_W;
+  }
+
+  function clampPanelWidth(w) {
+    if (!isLayoutReady()) return PANEL_DEFAULT;
+    const maxRight = getMaxRightWidth();
+    const cap = Math.min(getPanelMaxCap(), maxRight);
+    const floor = cap < PANEL_DEFAULT ? Math.max(0, cap) : PANEL_DEFAULT;
+    const ceiling = Math.max(floor, Math.min(PANEL_MAX, cap));
+    return Math.max(floor, Math.min(w, ceiling));
+  }
+
+  function updateDividerState() {
+    if (!PANEL_RESIZE_ENABLED) {
+      divider.classList.add('panel-locked', 'resize-disabled');
+      return;
+    }
+    if (!isLayoutReady()) {
+      divider.classList.remove('resize-disabled', 'panel-locked');
+      return;
+    }
+    const canResize = getMaxRightWidth() > PANEL_DEFAULT;
+    divider.classList.toggle('resize-disabled', !canResize);
+    divider.classList.remove('panel-locked');
+  }
+
+  function applyPanelWidth(w, persist) {
+    const width = PANEL_RESIZE_ENABLED ? clampPanelWidth(w) : PANEL_DEFAULT;
+    if (!isLayoutReady() && !PANEL_RESIZE_ENABLED) {
+      right.style.width = PANEL_DEFAULT + 'px';
+      return PANEL_DEFAULT;
+    }
+    if (!isLayoutReady()) return PANEL_DEFAULT;
+    const narrow = getMaxRightWidth() < PANEL_DEFAULT;
+    right.style.minWidth = PANEL_RESIZE_ENABLED && narrow ? '0' : '';
+    right.style.width = width + 'px';
+    updateDividerState();
+    if (PANEL_RESIZE_ENABLED && persist && width >= PANEL_DEFAULT) {
+      localStorage.setItem('tsk-right-width', String(width));
+    }
+    return width;
+  }
+
+  function loadPanelWidth() {
+    if (!PANEL_RESIZE_ENABLED) {
+      divider.classList.add('panel-locked', 'resize-disabled');
+      return applyPanelWidth(PANEL_DEFAULT, false);
+    }
+    const saved = localStorage.getItem('tsk-right-width');
+    let w = PANEL_DEFAULT;
+    if (saved) {
+      const parsed = parseInt(saved, 10);
+      if (Number.isFinite(parsed)) {
+        if (parsed < PANEL_DEFAULT) w = PANEL_DEFAULT;
+        else if (parsed > PANEL_MAX) w = PANEL_MAX;
+        else w = parsed;
+      } else {
+        localStorage.removeItem('tsk-right-width');
+      }
+    }
+    return applyPanelWidth(w, false);
   }
 
   let dragging = false;
 
-  divider.addEventListener('mousedown', e => {
-    dragging = true;
-    divider.classList.add('dragging');
-    document.body.style.cursor = 'col-resize';
-    document.body.style.userSelect = 'none';
-    e.preventDefault();
+  if (PANEL_RESIZE_ENABLED) {
+    divider.addEventListener('mousedown', e => {
+      if (divider.classList.contains('resize-disabled')) return;
+      dragging = true;
+      divider.classList.add('dragging');
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none';
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      const rect = main.getBoundingClientRect();
+      const w = rect.right - e.clientX;
+      applyPanelWidth(w, false);
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (!dragging) return;
+      dragging = false;
+      divider.classList.remove('dragging');
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+      const w = parseInt(right.style.width, 10);
+      if (w >= PANEL_DEFAULT) applyPanelWidth(w, true);
+    });
+  }
+
+  window.addEventListener('resize', () => {
+    if (!isLayoutReady()) return;
+    applyPanelWidth(PANEL_DEFAULT, PANEL_RESIZE_ENABLED);
   });
 
-  document.addEventListener('mousemove', e => {
-    if (!dragging) return;
-    const rect = main.getBoundingClientRect();
-    let w = rect.right - e.clientX;
-    w = Math.max(260, Math.min(w, rect.width * 0.55));
-    right.style.width = w + 'px';
-  });
+  window._tskClampPanelWidth = () => {
+    if (!isLayoutReady()) return PANEL_DEFAULT;
+    return applyPanelWidth(PANEL_RESIZE_ENABLED ? (parseInt(right.style.width, 10) || PANEL_DEFAULT) : PANEL_DEFAULT, PANEL_RESIZE_ENABLED);
+  };
 
-  document.addEventListener('mouseup', () => {
-    if (!dragging) return;
-    dragging = false;
-    divider.classList.remove('dragging');
-    document.body.style.cursor = '';
-    document.body.style.userSelect = '';
-    const w = parseInt(right.style.width, 10);
-    if (w) localStorage.setItem('tsk-right-width', String(w));
-  });
+  window._tskInitPanelWidth = loadPanelWidth;
 })();
 
 // ── BOOT ──────────────────────────────────────────────────────────────────────

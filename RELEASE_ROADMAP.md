@@ -178,7 +178,7 @@ Items **not** already on your list. Pick what resonates; none are blockers for l
 | **Post-register checklist modal** | "Set LHOST → pick USB → Mission 1" reduces first-login confusion | Medium |
 | **Snarf upload size / rate guard** | Soft limits on `/api/snarf` so a rogue victim cannot fill disk in shared lab | Medium |
 | **`/api/health` endpoint** | `{"ok":true,"version":"2.0.0"}` for sanity checks before demo | Tiny |
-| **Export operator config backup** | Download `config.json` + payload list from CONFIG tab | Medium |
+| **Export operator config backup** | Download `config.json` + payload list from CONFIG modal | Medium |
 
 ### CHANGE (adjust existing behavior)
 

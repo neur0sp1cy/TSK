@@ -160,7 +160,7 @@ footer{
     <div class="step">
       <div class="step-title">STEP 3 · SET LHOST &amp; LPORT</div>
       <div class="step-block"><strong>What to do:</strong> Open <em>CONFIG</em> (sidebar or <kbd>C</kbd>). Click the LAN IP helper next to LHOST, or type your machine's LAN IP manually. Set LPORT to <code>1337</code> unless you changed the server port.</div>
-      <div class="step-block"><strong>Expected result:</strong> Bottom bar and header show your LAN IP in green instead of <code>NOT SET</code>.</div>
+      <div class="step-block"><strong>Expected result:</strong> CONFIG modal shows LHOST/LPORT; dismissible hint banner clears when LHOST is set.</div>
       <div class="pass"><strong>Pass if:</strong> <code>set lhost</code> in the command bar reflects the saved value after reload.</div>
       <div class="fail"><strong>Troubleshooting:</strong> Phone-home will fail if LHOST is <code>127.0.0.1</code> and the target is another machine on the LAN - use your real LAN IP.</div>
     </div>
@@ -169,7 +169,7 @@ footer{
       <div class="step-title">STEP 4 · CLONE A PAYLOAD REPO (OPTIONAL)</div>
       <div class="step-block"><strong>What to do:</strong> Open <em>PAYLOAD REPOS</em>, click <em>CLONE</em> on Rubber Ducky (or any device you plan to use).</div>
       <div class="step-block"><strong>Expected result:</strong> Toast confirms clone; payload counts update in the sidebar badges.</div>
-      <div class="pass"><strong>Pass if:</strong> BROWSE tab lists payloads for that device.</div>
+      <div class="pass"><strong>Pass if:</strong> Payload list shows entries for that device.</div>
     </div>
   </section>
 
@@ -182,9 +182,9 @@ footer{
 
     <div class="step">
       <div class="step-title">STEP 1 · OPEN SNARF BUILDER</div>
-      <div class="step-block"><strong>What to do:</strong> Sidebar → <em>USB DROPPER</em>. Center tab → <em>SNARF</em>. Confirm <em>EXFIL</em> sub-tab is active.</div>
-      <div class="step-block"><strong>Expected result:</strong> Exfil targets checklist, output/format dropdowns, and <em>BUILD PREVIEW</em> button visible.</div>
-      <div class="pass"><strong>Pass if:</strong> Right preview panel shows generated script after clicking <em>BUILD PREVIEW</em>.</div>
+      <div class="step-block"><strong>What to do:</strong> Sidebar → <em>USB DROPPER</em>. Click <em>SNARF</em> in the PAYLOADS header (or press <kbd>S</kbd>). Confirm <em>EXFIL</em> intro card is active.</div>
+      <div class="step-block"><strong>Expected result:</strong> Exfil targets checklist, output/format dropdowns, and <em>BUILD PREVIEW</em> button visible in the SNARF modal.</div>
+      <div class="pass"><strong>Pass if:</strong> SNARF modal shows generated script in the in-modal preview after clicking <em>BUILD PREVIEW</em>.</div>
     </div>
 
     <div class="step">
@@ -192,7 +192,7 @@ footer{
       <div class="step-block"><strong>What to do:</strong>
         <ul class="compact">
           <li>Check exfil targets (e.g. Documents, Credentials, Clipboard).</li>
-          <li>Pick <em>Phone home - HTTP POST</em> for CATCH tab testing, or <em>Copy to USB root</em> for offline exfil.</li>
+          <li>Pick <em>Phone home - HTTP POST</em> for CATCH testing, or <em>Copy to USB root</em> for offline exfil.</li>
           <li>Choose <em>PowerShell [Windows]</em> or <em>Bash [Linux]</em> format.</li>
           <li>Set filename (default <code>snarf_exfil</code>).</li>
         </ul>
@@ -205,7 +205,7 @@ footer{
     <div class="step">
       <div class="step-title">STEP 3 · SAVE TO PAYLOAD LIBRARY</div>
       <div class="step-block"><strong>What to do:</strong> Click <em>SAVE TO PAYLOADS</em> (or <em>SAVE + FLASH</em> if stick is already plugged in).</div>
-      <div class="step-block"><strong>Expected result:</strong> Toast confirms save. Switch to <em>BROWSE</em> tab - script appears under <code>SNARFSNARF</code> category.</div>
+      <div class="step-block"><strong>Expected result:</strong> Toast confirms save. Modal closes; script appears under <code>SNARFSNARF</code> in the payload list.</div>
       <div class="pass"><strong>Pass if:</strong> Selecting the saved payload shows its content in the right preview panel.</div>
     </div>
 
@@ -215,7 +215,7 @@ footer{
         <ul class="compact">
           <li>Plug a writable USB stick. Wait for <em>USB DRIVE</em> status → <code>READY</code> in sidebar.</li>
           <li>Right panel: confirm stick is detected. Pick deploy target (<code>USB root</code> or hidden <code>.tsk/</code>).</li>
-          <li>Select your saved SNARF payload in BROWSE, then click <em>FLASH</em> (or <kbd>f</kbd>).</li>
+          <li>Select your saved SNARF payload in the list, then click <em>FLASH</em> (or <kbd>f</kbd>).</li>
         </ul>
       </div>
       <div class="step-block"><strong>Expected result:</strong> Flash log shows copy progress. Stick contains script + <code>RUN_PAYLOAD.bat</code> (Windows) or <code>RUN_PAYLOAD.sh</code> (Linux).</div>
@@ -234,13 +234,13 @@ footer{
   <!-- MISSION 3 -->
   <section class="mission" id="mission-3">
     <div class="mission-head">MISSION 03 · USB EXFIL - CATCH &amp; REVIEW</div>
-    <div class="mission-sub">Watch phone-home uploads land in the CATCH tab, preview files, export</div>
+    <div class="mission-sub">Watch phone-home uploads land in SNARF CATCH, preview files, export</div>
 
     <div class="step">
-      <div class="step-title">STEP 1 · OPEN CATCH TAB</div>
-      <div class="step-block"><strong>What to do:</strong> <em>USB DROPPER</em> → <em>SNARF</em> tab → click <em>CATCH</em> sub-tab.</div>
+      <div class="step-title">STEP 1 · OPEN CATCH</div>
+      <div class="step-block"><strong>What to do:</strong> <em>USB DROPPER</em> → <em>SNARF</em> (header button or <kbd>S</kbd>) → click <em>CATCH</em> intro card.</div>
       <div class="step-block"><strong>Expected result:</strong> <em>LIVE FEED</em> and <em>SNARFED FILES</em> panels visible. Feed may say "Waiting for phone-home uploads..."</div>
-      <div class="pass"><strong>Pass if:</strong> CATCH tab loads without errors while logged in as the operator who built the script.</div>
+      <div class="pass"><strong>Pass if:</strong> CATCH view loads without errors while logged in as the operator who built the script.</div>
     </div>
 
     <div class="step">
@@ -266,7 +266,7 @@ footer{
 
     <div class="step">
       <div class="step-title">STEP 4 · REFRESH &amp; VERIFY ISOLATION</div>
-      <div class="step-block"><strong>What to do:</strong> Click <em>REFRESH</em>. Optionally log in as a second operator and confirm their CATCH tab does not show the first operator's files.</div>
+      <div class="step-block"><strong>What to do:</strong> Click <em>REFRESH</em>. Optionally log in as a second operator and confirm their SNARF CATCH view does not show the first operator's files.</div>
       <div class="step-block"><strong>Expected result:</strong> Catches persist after refresh. Second operator sees empty feed (unless they ran their own script).</div>
       <div class="pass"><strong>Pass if:</strong> Files exist on disk at <code>snarfed/&lt;operator&gt;/</code> on the TSK server.</div>
     </div>
@@ -279,7 +279,7 @@ footer{
 
     <div class="step">
       <div class="step-title">STEP 1 · OPEN LURE BUILDER</div>
-      <div class="step-block"><strong>What to do:</strong> <em>USB DROPPER</em> → <em>SNARF</em> → <em>LURE</em> sub-tab.</div>
+      <div class="step-block"><strong>What to do:</strong> <em>USB DROPPER</em> → <em>SNARF</em> → click <em>LURE</em> intro card.</div>
       <div class="step-block"><strong>Expected result:</strong> Lure type selector (Windows LNK / Linux README / .desktop), package name field, payload attachment dropdown.</div>
       <div class="pass"><strong>Pass if:</strong> Saved exfil scripts from Mission 2 appear in the attach dropdown.</div>
     </div>
@@ -287,13 +287,13 @@ footer{
     <div class="step">
       <div class="step-title">STEP 2 · BUILD &amp; SAVE PACKAGE</div>
       <div class="step-block"><strong>What to do:</strong> Pick lure type, name the package, attach your exfil script (or a test stub). Click <em>BUILD PREVIEW</em>, then <em>SAVE PACKAGE</em>.</div>
-      <div class="step-block"><strong>Expected result:</strong> Package saved under BROWSE → <code>LURES</code> category with multiple files in the manifest.</div>
+      <div class="step-block"><strong>Expected result:</strong> Package saved under <code>LURES</code> in the payload list with multiple files in the manifest.</div>
       <div class="pass"><strong>Pass if:</strong> Preview lists lure file + payload script + launcher files together.</div>
     </div>
 
     <div class="step">
       <div class="step-title">STEP 3 · FLASH PACKAGE TO STICK</div>
-      <div class="step-block"><strong>What to do:</strong> Select the lure package in BROWSE. Click <em>FLASH PACKAGE</em> (or <em>FLASH</em> - TSK detects lure manifests automatically).</div>
+      <div class="step-block"><strong>What to do:</strong> Select the lure package in the payload list. Click <em>FLASH</em> (or use <em>SAVE + FLASH PACKAGE</em> from SNARF - TSK detects lure manifests automatically).</div>
       <div class="step-block"><strong>Expected result:</strong> All package files copy to the stick. Windows stick shows a convincing shortcut or README; script stays alongside.</div>
       <div class="pass"><strong>Pass if:</strong> Target user double-clicking the lure runs the attached exfil (lab test only).</div>
       <div class="fail"><strong>Troubleshooting:</strong> LNK blocked by policy - test README lure on Linux or use manual script execution for lab validation.</div>
@@ -314,7 +314,7 @@ footer{
 
     <div class="step">
       <div class="step-title">STEP 2 · SELECT PAYLOAD &amp; SWITCH</div>
-      <div class="step-block"><strong>What to do:</strong> Navigate to <em>BASH BUNNY</em>. Clone repo if needed. Pick a payload from BROWSE. Set switch position <code>1</code> or <code>2</code> in the header.</div>
+      <div class="step-block"><strong>What to do:</strong> Navigate to <em>BASH BUNNY</em>. Clone repo if needed. Pick a payload from the list. Set switch position <code>1</code> or <code>2</code> in the right preview panel.</div>
       <div class="step-block"><strong>Expected result:</strong> Preview shows payload.txt content. Switch buttons highlight active position.</div>
       <div class="pass"><strong>Pass if:</strong> <code>flash 1</code> or <code>flash 2</code> in command bar targets the selected switch.</div>
     </div>
@@ -335,14 +335,14 @@ footer{
 
     <div class="step">
       <div class="step-title">STEP 1 · CONFIGURE TURTLE SSH</div>
-      <div class="step-block"><strong>What to do:</strong> CONFIG tab → set <em>TURTLE IP</em> (default <code>172.16.84.1</code>), user <code>root</code>, port <code>22</code>, password if set.</div>
+      <div class="step-block"><strong>What to do:</strong> CONFIG modal → set <em>TURTLE IP</em> (default <code>172.16.84.1</code>), user <code>root</code>, port <code>22</code>, password if set.</div>
       <div class="step-block"><strong>Expected result:</strong> Turtle row in sidebar shows <code>READY</code> when reachable on the network.</div>
       <div class="pass"><strong>Pass if:</strong> <code>turtle connect</code> opens the in-browser SSH terminal.</div>
     </div>
 
     <div class="step">
-      <div class="step-title">STEP 2 · BROWSE &amp; PREVIEW MODULE</div>
-      <div class="step-block"><strong>What to do:</strong> Sidebar → <em>LAN TURTLE</em>. Clone turtle modules repo. Select a module payload from BROWSE.</div>
+      <div class="step-title">STEP 2 · SELECT &amp; PREVIEW MODULE</div>
+      <div class="step-block"><strong>What to do:</strong> Sidebar → <em>LAN TURTLE</em>. Clone turtle modules repo. Select a module payload from the list.</div>
       <div class="step-block"><strong>Expected result:</strong> Preview shows module scripts. Source indicator shows repo path.</div>
       <div class="pass"><strong>Pass if:</strong> Payload list populates after clone completes.</div>
     </div>

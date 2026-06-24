@@ -359,6 +359,49 @@ def flash_turtle(payload_path: str, progress_cb: Callable = None, cfg: Optional[
 # ── USB Dropper (mass-storage stick) ─────────────────────────────────────────
 
 _USB_SKIP_HINTS = ("BUNNY", "BASHBUNNY", "DUCKY", "RUBBER", "HAK5", "TURTLE")
+_NON_USB_FSTYPES = frozenset({
+    "cifs", "smbfs", "nfs", "nfs4", "fuse.sshfs", "afpfs", "ncpfs",
+    "overlay", "tmpfs", "devtmpfs", "proc", "sysfs", "autofs",
+})
+
+
+def _read_mount_fstypes() -> dict[str, str]:
+    """Map mountpoint -> fstype from /proc/mounts."""
+    out: dict[str, str] = {}
+    try:
+        with open("/proc/mounts") as f:
+            for line in f:
+                parts = line.split()
+                if len(parts) >= 3:
+                    out[parts[1]] = parts[2]
+    except Exception:
+        pass
+    return out
+
+
+def _is_plausible_usb_stick_mount(
+    path: str,
+    explicit: str,
+    removable: set[str],
+    fstype: str = "",
+) -> bool:
+    """USB dropper sticks only - not NAS/CIFS, not arbitrary /mnt paths."""
+    if not path or path.startswith("//"):
+        return False
+    if fstype in _NON_USB_FSTYPES:
+        return False
+    if path == explicit:
+        return True
+    if path in removable:
+        return True
+    parts = Path(path).parts
+    if len(parts) >= 4 and parts[1] == "media":
+        return True
+    if len(parts) >= 5 and parts[1] == "run" and parts[2] == "media":
+        return True
+    if len(parts) >= 3 and parts[1] == "Volumes":
+        return True
+    return False
 
 
 def _is_special_device_mount(path: str) -> bool:
@@ -408,7 +451,7 @@ def _lsblk_usb_entries() -> list[dict]:
     def walk(devs: list, parent_usb: bool = False) -> None:
         for d in devs:
             tran = (d.get("tran") or "").lower()
-            is_usb = parent_usb or tran == "usb" or d.get("hotplug") or d.get("rm")
+            is_usb = parent_usb or tran == "usb" or d.get("rm")
             mnt = d.get("mountpoint")
             dtype = d.get("type") or ""
             if mnt and is_usb and dtype in ("disk", "part"):
@@ -443,6 +486,8 @@ def _collect_usb_mounts(cfg: Optional[dict] = None) -> list[dict]:
     """Return USB stick mounts - writable first, read-only sticks included with flag."""
     cfg = cfg or load_cfg()
     explicit = (cfg.get("usb_mount") or "").strip()
+    removable = _removable_mountpoints()
+    fstypes = _read_mount_fstypes()
     seen: set[str] = set()
     mounts: list[dict] = []
 
@@ -451,6 +496,8 @@ def _collect_usb_mounts(cfg: Optional[dict] = None) -> list[dict]:
         if path in seen:
             continue
         if _is_special_device_mount(path):
+            continue
+        if not _is_plausible_usb_stick_mount(path, explicit, removable, fstypes.get(path, "")):
             continue
         seen.add(path)
         writable = not entry.get("read_only", False)
@@ -464,31 +511,26 @@ def _collect_usb_mounts(cfg: Optional[dict] = None) -> list[dict]:
         })
 
     candidates: list[str] = []
-    for pattern in ["/media/*/*", "/run/media/*/*", "/mnt/*", "/Volumes/*"]:
+    for pattern in ["/media/*/*", "/run/media/*/*", "/Volumes/*"]:
         candidates.extend(glob.glob(pattern))
 
-    try:
-        with open("/proc/mounts") as f:
-            for line in f:
-                parts = line.split()
-                if len(parts) >= 2:
-                    mnt = parts[1]
-                    if mnt.startswith(("/media", "/mnt", "/run/media", "/Volumes")):
-                        candidates.append(mnt)
-    except Exception:
-        pass
+    for mnt, fstype in fstypes.items():
+        if mnt.startswith(("/media", "/run/media", "/Volumes")):
+            candidates.append(mnt)
 
     for path in dict.fromkeys(candidates):
         if path in seen or _is_mount_parent_dir(path):
             continue
         if not os.path.isdir(path) or _is_special_device_mount(path):
             continue
+        if not _is_plausible_usb_stick_mount(path, explicit, removable, fstypes.get(path, "")):
+            continue
         writable = os.access(path, os.W_OK)
         seen.add(path)
         mounts.append({
             "path": path,
             "label": os.path.basename(path) or path,
-            "removable": path in _removable_mountpoints(),
+            "removable": path in removable,
             "writable": writable,
             "read_only": not writable,
             "configured": path == explicit,
@@ -590,16 +632,26 @@ def find_usb_mount(
 ) -> str | None:
     """Find a writable USB mass-storage mount for dropper payloads."""
     cfg = cfg or load_cfg()
+    explicit = (cfg.get("usb_mount") or "").strip()
+    removable = _removable_mountpoints()
+    fstypes = _read_mount_fstypes()
+
+    def _usable(path: str) -> bool:
+        if not path or not os.path.isdir(path):
+            return False
+        if not _is_plausible_usb_stick_mount(path, explicit, removable, fstypes.get(path, "")):
+            return False
+        return os.access(path, os.W_OK)
+
     preferred = (preferred or "").strip()
-    if preferred and os.path.isdir(preferred):
-        if os.access(preferred, os.W_OK):
+    if preferred:
+        if _usable(preferred):
             log(f"  Using selected USB: {preferred}", progress_cb)
             return preferred
-        log(f"  Selected USB is read-only: {preferred}", progress_cb)
+        log(f"  Selected USB is not writable or not a stick: {preferred}", progress_cb)
         return None
 
-    explicit = (cfg.get("usb_mount") or "").strip()
-    if explicit and os.path.isdir(explicit):
+    if explicit and _usable(explicit):
         log(f"  Using configured usb_mount: {explicit}", progress_cb)
         return explicit
 

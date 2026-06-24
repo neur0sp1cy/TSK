@@ -124,8 +124,9 @@ Session auth: register/login required; API uses `X-TSK-Token` header. Password m
 
 | Area | Purpose |
 |------|---------|
-| Left nav | Ducky, Bunny, Turtle, Teensy, USB Dropper |
-| Center tabs | BROWSE, SNARF (USB), REPOS, CONFIG |
+| Left nav | Devices + SYSTEM tiles (About, Help, Config, Repos, Operator) |
+| Center | Payload list for selected device; USB shows **SNARF** button in header |
+| Modals | CONFIG, REPOS, OPERATOR, SNARF (USB), About, Help |
 | Right panel | Preview, USB stick scan, FLASH / EDIT / SAVE |
 | Bottom bar | Command line (`set lhost`, `clone ducky`, `devices`, …) |
 | **H** | Help modal (operator guide) |
@@ -135,9 +136,9 @@ Session auth: register/login required; API uses `X-TSK-Token` header. Password m
 
 | Key | Action |
 |-----|--------|
-| `R` `B` `T` `U` `L` | Jump to device |
-| `C` / `P` / `A` / `H` | Config, Repos, About, Help |
-| `1`-`4` | Browse, Snarf, Config, Repos tabs |
+| `D` `B` `U` `L` | Jump to device (Ducky, Bunny, USB, Turtle) |
+| `C` `R` `O` `A` `H` | Config, Repos, Operator, About, Help |
+| `S` | SNARF builder (USB Dropper only) |
 | `f` / `Ctrl+Enter` | Flash |
 | `e` | Edit payload |
 | `Esc` | Close modals |
@@ -154,7 +155,7 @@ Session auth: register/login required; API uses `X-TSK-Token` header. Password m
 | LAN Turtle (OG) | SSH/SCP push |
 | Teensy 3.2 / 4.0 | `teensy_loader_cli` with pre-compiled `.hex` (compile pipeline in progress - hidden from UI for now) |
 
-Clone HAK5 libraries from the REPOS tab: `clone ducky`, `clone bunny`, `clone turtle`, `clone all`.
+Clone HAK5 libraries from the REPOS modal (sidebar **R**): `clone ducky`, `clone bunny`, `clone turtle`, `clone all`.
 
 ---
 

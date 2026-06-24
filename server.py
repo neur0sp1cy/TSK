@@ -256,19 +256,51 @@ async def register(request: Request, data: dict):
         return JSONResponse({"error": str(e)}, status_code=409)
 
 @app.post("/api/auth/change-password")
-async def change_password_route(data: dict, auth_user: str = Depends(require_auth)):
+async def change_password_route(request: Request, data: dict):
+    """Change password. Works from login screen (current password) or while logged in."""
     username = data.get("username", "").strip()
     current = data.get("current_password", "")
     new_pw = data.get("new_password", "")
     if not username or not current or not new_pw:
         return JSONResponse({"error": "Username, current password, and new password required"}, status_code=400)
-    if username != auth_user:
+    token = request.headers.get("X-TSK-Token", "").strip()
+    auth_user = _tokens.get(token, "")
+    if auth_user and auth_user != username:
         return JSONResponse({"error": "Cannot change another operator's password"}, status_code=403)
     try:
         cfg_mod.change_password(username, current, new_pw)
         return {"ok": True}
     except ValueError as e:
         return JSONResponse({"error": str(e)}, status_code=400)
+
+
+@app.post("/api/auth/rename")
+async def rename_operator(data: dict, auth_user: str = Depends(require_auth)):
+    new_username = data.get("new_username", "").strip()
+    password = data.get("password", "")
+    if not new_username or not password:
+        return JSONResponse({"error": "New operator name and current password required"}, status_code=400)
+    try:
+        cfg_mod.rename_user(auth_user, new_username, password)
+    except ValueError as e:
+        return JSONResponse({"error": str(e)}, status_code=400)
+    for t, u in list(_tokens.items()):
+        if u == auth_user:
+            del _tokens[t]
+    token = _issue_token(new_username)
+    cfg_mod.set_session(new_username, cfg_mod.load_users().get(new_username))
+    _rebuild_catch_token_map()
+    cfg = cfg_mod.load(new_username)
+    import platform
+    cfg["_user"] = new_username
+    cfg["_host"] = platform.node()
+    print(f"[TSK] operator renamed: {auth_user} -> {new_username}")
+    return {
+        "ok": True,
+        "username": new_username,
+        "token": token,
+        "config": cfg_mod.public_config(cfg),
+    }
 
 @app.delete("/api/auth/operator")
 async def delete_operator(data: dict, auth_user: str = Depends(require_auth)):
