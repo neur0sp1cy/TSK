@@ -3,6 +3,13 @@ TSK built-in payload database — shared by the web server.
 Placeholder payloads shown until device repos are cloned.
 """
 
+import copy
+from pathlib import Path
+
+from config import BASE_DIR
+
+STATIC_PAYLOADS_DIR = BASE_DIR / "web" / "static" / "payloads"
+
 BUILTIN_DB = {
     "ducky": [
         {"cat": "CREDENTIALS", "payloads": [
@@ -44,15 +51,46 @@ BUILTIN_DB = {
     ],
     "teensy": [
         {"cat": "HID ATTACKS", "payloads": [
-            {"name": "Brutal Add Admin",       "file": "add_admin.ino",        "path": "", "tags": ["PERSIST","CREDS"],"lang": "ARD", "desc": "Screetsec Brutal — add hidden admin user."},
-            {"name": "Kautilya Enum",          "file": "enum.ino",             "path": "", "tags": ["RECON","HID"],    "lang": "ARD", "desc": "SamratAshok Kautilya — full system enum."},
+            {"name": "TSK Lab Banner",         "file": "tsk_lab_banner.ino",   "path": "", "tags": ["HID","EXEC"],     "lang": "ARD", "desc": "USB HID banner sketch (compile to .hex for Teensy 3.2 flash)."},
         ]},
     ],
     "usb": [
-        {"cat": "DROPPERS", "payloads": [
-            {"name": "Autorun Dropper",        "file": "autorun_dropper.py",   "path": "", "tags": ["EXEC"],           "lang": "PY",  "desc": "Autorun.inf based dropper for Windows."},
-            {"name": "LNK Payload",            "file": "lnk_payload.py",       "path": "", "tags": ["EXEC"],           "lang": "PY",  "desc": "Malicious LNK file that runs payload on open."},
-            {"name": "USB Snarfer",            "file": "usb_snarfer.py",       "path": "", "tags": ["EXFIL"],          "lang": "PY",  "desc": "Python USB snarfer — copies docs, creds, keys."},
+        {"cat": "BUILT-INS", "payloads": [
+            {"name": "Lab Ping",               "file": "lab_ping.ps1",         "path": "", "tags": ["NET","EXFIL"],    "lang": "PS1", "desc": "POST hostname and user to TSK phone-home endpoint (lab connectivity test)."},
+            {"name": "Env Reporter PS",        "file": "env_reporter.ps1",     "path": "", "tags": ["RECON","EXFIL"],  "lang": "PS1", "desc": "Dump whoami and environment vars to a file on the USB stick (Windows)."},
+            {"name": "Env Reporter SH",        "file": "env_reporter.sh",      "path": "", "tags": ["RECON","EXFIL"],  "lang": "SH",  "desc": "Dump whoami and environment to a file on the USB stick (Linux)."},
         ]},
     ],
 }
+
+PAYLOAD_TEMPLATES = {
+    "ducky":  "REM TSK | new payload\nDELAY 1000\nSTRING Hello from TSK\nENTER\n",
+    "bunny":  "#!/bin/bash\n# TSK | new payload\nLED R\nATTACKMODE HID STORAGE\n",
+    "turtle": "#!/bin/sh\n# TSK | new module\n echo \"TSK lab module\"\n",
+    "teensy": "// TSK | new Teensy sketch\n#include <Keyboard.h>\nvoid setup() { Keyboard.begin(); }\nvoid loop() {}\n",
+    "usb":    "# TSK | new USB dropper\nWrite-Host 'TSK lab payload'\n",
+}
+
+DEFAULT_EXTENSIONS = {
+    "ducky": ".txt",
+    "bunny": ".txt",
+    "turtle": ".sh",
+    "teensy": ".ino",
+    "usb": ".ps1",
+}
+
+
+def resolve_builtin_db(device: str) -> list:
+    """Return a deep copy of BUILTIN_DB with static file paths resolved."""
+    raw = BUILTIN_DB.get(device, [])
+    db = copy.deepcopy(raw)
+    device_dir = STATIC_PAYLOADS_DIR / device
+    for group in db:
+        for p in group.get("payloads", []):
+            fname = p.get("file", "")
+            if not fname:
+                continue
+            static = device_dir / fname
+            if static.is_file():
+                p["path"] = str(static.resolve())
+    return db

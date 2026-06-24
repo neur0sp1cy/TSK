@@ -1013,6 +1013,22 @@ def flash_teensy(payload_path: str, progress_cb: Callable = None,
         log(f"✗ Payload not found: {payload_path}", progress_cb)
         return False
 
+    if payload.suffix.lower() == ".ino":
+        hex_candidate = payload.with_suffix(".hex")
+        if hex_candidate.is_file():
+            log(f"  Using compiled hex: {hex_candidate.name}", progress_cb)
+            payload = hex_candidate
+        else:
+            log("✗ No .hex next to .ino sketch.", progress_cb)
+            log("  Compile in Arduino IDE (Teensyduino) for Teensy 3.2,", progress_cb)
+            log(f"  then place {hex_candidate.name} beside the .ino file.", progress_cb)
+            log("  Or run: scripts/build_teensy_lab_hex.sh", progress_cb)
+            return False
+
+    if payload.suffix.lower() != ".hex":
+        log("✗ Teensy flash requires a compiled .hex file.", progress_cb)
+        return False
+
     loader = shutil.which("teensy_loader_cli")
     if not loader:
         log("✗ teensy_loader_cli not found.", progress_cb)

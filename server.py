@@ -26,8 +26,8 @@ sys.path.insert(0, str(Path(__file__).parent))
 import config as cfg_mod
 import repos as repo_mod
 import flash as flash_mod
-from db import BUILTIN_DB
-from paths import safe_path
+from db import resolve_builtin_db, PAYLOAD_TEMPLATES, DEFAULT_EXTENSIONS
+from paths import safe_path, user_payload_dir, is_user_payload_path
 from network import detect_lan_ip
 from deployments import append_deployment, list_deployments
 from ssh_terminal import handle_turtle_ssh, turtle_target_label
@@ -400,17 +400,21 @@ def _get_payload_db(device: str, username: str = "") -> list:
             db = [{"cat": cat, "payloads": items}
                   for cat, items in sorted(cats.items())]
         else:
-            db = BUILTIN_DB.get(device, [])
+            db = resolve_builtin_db(device)
     else:
-        db = BUILTIN_DB.get(device, [])
+        db = resolve_builtin_db(device)
 
     user_saved = repo_mod.index_user_payloads(device, user)
     if user_saved:
-        snarf_cat = next((g for g in db if g["cat"] == "SNARFSNARF"), None)
-        if snarf_cat:
-            snarf_cat["payloads"].extend(user_saved)
-        else:
-            db = list(db) + [{"cat": "SNARFSNARF", "payloads": user_saved}]
+        by_cat: dict[str, list] = {}
+        for p in user_saved:
+            by_cat.setdefault(p["cat"], []).append(p)
+        for cat, items in by_cat.items():
+            existing = next((g for g in db if g["cat"] == cat), None)
+            if existing:
+                existing["payloads"].extend(items)
+            else:
+                db = list(db) + [{"cat": cat, "payloads": items}]
     if device == "usb":
         user_lures = index_user_lures(user)
         if user_lures:
@@ -1119,6 +1123,15 @@ async def save_payload(data: dict, username: str = Depends(require_auth)):
         resolved = safe_path(path, username=username)
     except ValueError as e:
         return JSONResponse({"error": str(e)}, status_code=403)
+    # Repo-safe: never silently overwrite cloned library files
+    try:
+        if resolved.resolve().is_relative_to(cfg_mod.REPOS_DIR.resolve()):
+            return JSONResponse(
+                {"error": "Cannot save over cloned repo files - use Save to Library or Save Copy"},
+                status_code=403,
+            )
+    except ValueError:
+        pass
     try:
         import shutil
         backup = str(resolved) + ".bak"
@@ -1130,6 +1143,80 @@ async def save_payload(data: dict, username: str = Depends(require_auth)):
     except PermissionError:
         return JSONResponse({"error": f"Permission denied: {resolved}"}, status_code=403)
     except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/payload/create")
+async def create_payload(data: dict, username: str = Depends(require_auth)):
+    device = (data.get("device") or "").strip().lower()
+    name = (data.get("name") or "").strip()
+    content = data.get("content")
+    if device not in repo_mod.PAYLOAD_EXTS:
+        return JSONResponse({"error": f"Unknown device: {device}"}, status_code=400)
+    if not name:
+        return JSONResponse({"error": "Payload name required"}, status_code=400)
+    import re
+    stem = re.sub(r"[^\w.\-]+", "_", name.strip())[:48].strip("._") or "payload"
+    ext = data.get("extension") or DEFAULT_EXTENSIONS.get(device, ".txt")
+    if not ext.startswith("."):
+        ext = "." + ext
+    if not stem.lower().endswith(ext.lower()):
+        filename = stem + ext
+    else:
+        filename = stem
+    if content is None:
+        content = PAYLOAD_TEMPLATES.get(device, f"# TSK | {name}\n")
+    dest_dir = user_payload_dir(username, device)
+    dest = (dest_dir / filename).resolve()
+    if not str(dest).startswith(str(dest_dir)):
+        return JSONResponse({"error": "Invalid filename"}, status_code=400)
+    if dest.exists():
+        return JSONResponse({"error": f"File already exists: {filename}"}, status_code=409)
+    try:
+        dest.write_text(content, encoding="utf-8")
+    except OSError as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+    desc, tags = repo_mod._parse_payload_header(dest, device)
+    lang_map = {"ducky": "DS1", "bunny": "BB", "turtle": "LT", "teensy": "ARD", "usb": "PY"}
+    if ext == ".ps1":
+        lang = "PS1"
+    elif ext == ".sh":
+        lang = "SH"
+    elif ext == ".hex":
+        lang = "ARD"
+    else:
+        lang = lang_map.get(device, "TXT")
+    payload = {
+        "name": dest.stem.replace("_", " ").title(),
+        "file": dest.name,
+        "path": str(dest),
+        "cat": "MY PAYLOADS",
+        "tags": tags,
+        "lang": lang,
+        "desc": desc,
+        "operator_owned": True,
+    }
+    return {"ok": True, "payload": payload}
+
+
+@app.post("/api/payload/delete")
+async def delete_payload(data: dict, username: str = Depends(require_auth)):
+    path = (data.get("path") or "").strip()
+    if not path:
+        return JSONResponse({"error": "No path provided"}, status_code=400)
+    if not is_user_payload_path(path, username):
+        return JSONResponse(
+            {"error": "Only operator-owned payloads under MY PAYLOADS can be deleted"},
+            status_code=403,
+        )
+    try:
+        resolved = safe_path(path, username=username, must_exist=True)
+    except ValueError as e:
+        return JSONResponse({"error": str(e)}, status_code=403)
+    try:
+        resolved.unlink()
+        return {"ok": True, "path": str(resolved)}
+    except OSError as e:
         return JSONResponse({"error": str(e)}, status_code=500)
 
 

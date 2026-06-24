@@ -7,6 +7,7 @@ from pathlib import Path
 
 from config import REPOS_DIR, USERS_DIR, PAYLOADS_DIR, BASE_DIR
 
+STATIC_PAYLOADS_DIR = BASE_DIR / "web" / "static" / "payloads"
 SNARFED_DIR = BASE_DIR / "snarfed"
 
 
@@ -19,6 +20,8 @@ def allowed_bases(username: str = "default") -> list[Path]:
         PAYLOADS_DIR.resolve(),
         SNARFED_DIR.resolve(),
     ]
+    if STATIC_PAYLOADS_DIR.is_dir():
+        bases.append(STATIC_PAYLOADS_DIR.resolve())
     user_dir = USERS_DIR / username
     user_payloads = user_dir / "payloads"
     # Only allow the authenticated user's own directory, not all of USERS_DIR
@@ -49,3 +52,23 @@ def safe_path(path: str, username: str = "default", must_exist: bool = True) -> 
             continue
 
     raise ValueError(f"Path outside allowed directories: {resolved}")
+
+
+def user_payload_dir(username: str, device: str) -> Path:
+    """Operator-owned payload directory (created on demand)."""
+    p = USERS_DIR / username / "payloads" / device
+    p.mkdir(parents=True, exist_ok=True)
+    return p.resolve()
+
+
+def is_user_payload_path(path: str, username: str) -> bool:
+    """True if path is under users/<username>/payloads/."""
+    if not path:
+        return False
+    try:
+        resolved = Path(path).resolve()
+        base = (USERS_DIR / username / "payloads").resolve()
+        resolved.relative_to(base)
+        return True
+    except (ValueError, OSError):
+        return False

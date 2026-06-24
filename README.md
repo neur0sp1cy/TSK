@@ -153,7 +153,7 @@ Session auth: register/login required; API uses `X-TSK-Token` header. Password m
 | Rubber Ducky (OG) | `encoder.jar` → SD card |
 | Bash Bunny (OG) | Mass storage → switch1 / switch2 |
 | LAN Turtle (OG) | SSH/SCP push |
-| Teensy 3.2 / 4.0 | `teensy_loader_cli` with pre-compiled `.hex` (compile pipeline in progress - hidden from UI for now) |
+| Teensy 3.2 / 4.0 | `teensy_loader_cli` with compiled `.hex` (sidebar shows when built-in sketch is present; flash needs `.hex` beside `.ino`) |
 
 Clone HAK5 libraries from the REPOS modal (sidebar **R**): `clone ducky`, `clone bunny`, `clone turtle`, `clone all`.
 
