@@ -1629,6 +1629,25 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
   text-align:center;
   margin-bottom:14px;
 }
+.about-qr-section-title--grid{
+  margin-bottom:14px;
+  align-self:end;
+}
+.about-qr-grid{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(140px, auto));
+  column-gap:40px;
+  row-gap:0;
+  justify-content:center;
+  justify-items:center;
+  width:fit-content;
+  max-width:100%;
+  margin:0 auto;
+}
+.about-qr-grid-spacer{
+  display:block;
+  height:0;
+}
 .about-qr-row{
   display:flex;gap:40px;justify-content:center;align-items:flex-start;
   flex-wrap:wrap;
@@ -1670,17 +1689,34 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
   background:linear-gradient(135deg,rgba(255,26,26,0.12) 0%,rgba(0,229,255,0.06) 100%);
   font-family:var(--display);font-size:14px;letter-spacing:3px;color:var(--text-bright);
 }
+.about-kofi-link-row{
+  display:flex;align-items:center;gap:8px;
+}
+.about-kofi-emoji{
+  font-size:16px;line-height:1;flex-shrink:0;
+}
 .about-kofi-link{
-  display:inline-block;font-size:14px;color:#ff5e5b;text-decoration:none;
+  display:inline-block;font-size:14px;color:#ff5e5b;text-decoration:underline;
+  text-underline-offset:3px;
   font-weight:700;letter-spacing:1px;font-family:var(--display);
 }
-.about-kofi-link:hover{text-decoration:underline;}
+.about-kofi-link:hover{color:#ff8888;}
+.about-footer-wrap{
+  margin-top:32px;
+  border-top:1px solid var(--border);
+  padding:28px 0 6px;
+  text-align:center;
+}
 .about-footer-tag{
-  margin-top:22px;padding-top:18px;border-top:1px solid var(--border);
-  text-align:center;font-size:12px;color:var(--text);letter-spacing:2px;
+  margin:0;padding:0;border:none;
+  font-family:var(--display);font-size:11px;font-weight:700;
+  color:var(--text-bright);letter-spacing:3px;
+  text-transform:uppercase;
 }
 @media (max-width:640px){
-  .about-qr-row{gap:24px;}
+  .about-qr-row{gap:20px;}
+  .about-qr-grid{column-gap:20px;grid-template-columns:repeat(3, minmax(120px, auto));}
+  .about-qr-cell{min-width:120px;}
   .about-qr-url{font-size:11px;}
   .about-lead{white-space:normal;font-size:12px;}
 }
@@ -1729,6 +1765,9 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
   overflow-y:auto;
   flex:1;
   font-size:15px;line-height:1.55;color:var(--text-bright);
+}
+#about-body.sys-modal-body{
+  padding-bottom:12px;
 }
 #snarf-overlay.sys-overlay{padding:10px 14px;}
 #snarf-overlay .sys-modal{
@@ -4899,9 +4938,52 @@ async function showAbout() {
   } catch (e) { /* ignore */ }
 
   const githubQr = `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(GITHUB_REPO_URL)}`;
-  const qr2Url = phoneHomeUrl || KOFI_URL;
-  const qr2Label = phoneHomeUrl ? 'PHONE-HOME' : 'KO-FI';
-  const qr2Qr = `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(qr2Url)}`;
+  const kofiQr = `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(KOFI_URL)}`;
+  const phoneQr = phoneHomeUrl
+    ? `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(phoneHomeUrl)}`
+    : '';
+
+  const githubQrCell = `
+          <div class="about-qr-cell">
+            <a href="${GITHUB_REPO_URL}" target="_blank" rel="noopener">
+              <img src="${githubQr}" width="120" height="120" alt="GitHub QR">
+            </a>
+            <div class="about-qr-label">GITHUB</div>
+            <a class="about-qr-url" href="${GITHUB_REPO_URL}" target="_blank" rel="noopener">github.com/neur0sp1cy/TSK</a>
+          </div>`;
+
+  const phoneHomeCell = phoneHomeUrl ? `
+          <div class="about-qr-cell">
+            <a href="${phoneHomeUrl}" target="_blank" rel="noopener">
+              <img src="${phoneQr}" width="120" height="120" alt="Phone-home QR">
+            </a>
+            <div class="about-qr-label">PHONE-HOME</div>
+            <a class="about-qr-url" href="${phoneHomeUrl}" target="_blank" rel="noopener">${phoneHomeUrl.replace(/^https?:\/\//, '')}</a>
+          </div>` : '';
+
+  const kofiQrCell = `
+          <div class="about-qr-cell">
+            <a href="${KOFI_URL}" target="_blank" rel="noopener">
+              <img src="${kofiQr}" width="120" height="120" alt="Ko-fi QR">
+            </a>
+            <div class="about-qr-label">KO-FI</div>
+            <a class="about-qr-url" href="${KOFI_URL}" target="_blank" rel="noopener">ko-fi.com/neur0sp1cy</a>
+          </div>`;
+
+  const qrSection = phoneHomeUrl
+    ? `<div class="about-qr-grid">
+          <span class="about-qr-grid-spacer" aria-hidden="true"></span>
+          <div class="about-qr-section-title about-qr-section-title--grid">SCAN · CONNECT</div>
+          <span class="about-qr-grid-spacer" aria-hidden="true"></span>
+          ${githubQrCell}
+          ${phoneHomeCell}
+          ${kofiQrCell}
+        </div>`
+    : `<div class="about-qr-section-title">SCAN · CONNECT</div>
+        <div class="about-qr-row">
+          ${githubQrCell}
+          ${kofiQrCell}
+        </div>`;
 
   const teensyChip = TEENSY_ENABLED
     ? '<span class="about-device-chip">TEENSY</span>'
@@ -4934,23 +5016,7 @@ async function showAbout() {
       </div>
 
       <div class="about-qr-section">
-        <div class="about-qr-section-title">SCAN · CONNECT</div>
-        <div class="about-qr-row">
-          <div class="about-qr-cell">
-            <a href="${GITHUB_REPO_URL}" target="_blank" rel="noopener">
-              <img src="${githubQr}" width="120" height="120" alt="GitHub QR">
-            </a>
-            <div class="about-qr-label">GITHUB</div>
-            <a class="about-qr-url" href="${GITHUB_REPO_URL}" target="_blank" rel="noopener">github.com/neur0sp1cy/TSK</a>
-          </div>
-          <div class="about-qr-cell">
-            <a href="${qr2Url}" target="_blank" rel="noopener">
-              <img src="${qr2Qr}" width="120" height="120" alt="${qr2Label} QR">
-            </a>
-            <div class="about-qr-label">${qr2Label}</div>
-            <a class="about-qr-url" href="${qr2Url}" target="_blank" rel="noopener">${qr2Url.replace(/^https?:\/\//, '')}</a>
-          </div>
-        </div>
+        ${qrSection}
       </div>
 
       <div class="about-kofi-banner">
@@ -4962,12 +5028,17 @@ async function showAbout() {
         TSK is free forever. If it has been useful in the field, consider buying me a coffee -
         it goes straight back into hardware and development.
       </div>
-      <a class="about-kofi-link" href="${KOFI_URL}" target="_blank" rel="noopener">ko-fi.com/neur0sp1cy</a>
+      <div class="about-kofi-link-row">
+        <span class="about-kofi-emoji" aria-hidden="true">☕</span>
+        <a class="about-kofi-link" href="${KOFI_URL}" target="_blank" rel="noopener">ko-fi.com/neur0sp1cy</a>
+      </div>
       <div class="cfg-body-hint" style="margin-top:12px">
         Questions or concerns: <a href="mailto:${CONTACT_EMAIL}" style="color:var(--cyan)">${CONTACT_EMAIL}</a>
       </div>
 
-      <div class="about-footer-tag">All tools free. Always.</div>
+      <div class="about-footer-wrap">
+        <div class="about-footer-tag">All tools free · Always</div>
+      </div>
     </div>`;
 
   overlay.classList.add('visible');
