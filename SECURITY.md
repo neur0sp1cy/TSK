@@ -41,7 +41,7 @@ If you find a **security vulnerability in TSK itself** (not a feature working as
    - Your environment (TSK version / commit, OS, Python version)
 3. Allow a reasonable time for a fix before public disclosure.
 
-For **general bugs** (UI glitches, flash failures, doc errors), use [GitHub Issues](https://github.com/neur0sp1cy/TSK2/issues) and include repro steps from [TESTING_CHECKLIST.md](TESTING_CHECKLIST.md).
+For **general bugs** (UI glitches, flash failures, doc errors), use [GitHub Issues](https://github.com/neur0sp1cy/TSK/issues) and include repro steps from [TESTING_CHECKLIST.md](TESTING_CHECKLIST.md).
 
 For **questions or concerns** (non-security): [neur0sp1cy@proton.me](mailto:neur0sp1cy@proton.me).
 

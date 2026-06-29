@@ -16,7 +16,7 @@
 
 A free, open source platform for building and deploying USB / HID payloads. Includes a web UI for payload browsing, device flashing, SnarfSnarf exfil generation, lure building, and phone-home catch.
 
-Modern web rebuild of **The Skeleton Key** (2018 TUI lineage). GitHub repo: **[neur0sp1cy/TSK2](https://github.com/neur0sp1cy/TSK2)**.
+Modern web rebuild of **The Skeleton Key** (2018 TUI lineage). GitHub repo: **[neur0sp1cy/TSK](https://github.com/neur0sp1cy/TSK)**.
 
 **By [Neur0Sp1cy](https://github.com/neur0sp1cy)**
 
@@ -76,8 +76,8 @@ Dependencies install automatically via `uv sync` (FastAPI, uvicorn, bcrypt, jinj
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-git clone https://github.com/neur0sp1cy/TSK2
-cd TSK2
+git clone https://github.com/neur0sp1cy/TSK
+cd TSK
 uv sync
 uv run python server.py
 ```
@@ -97,8 +97,8 @@ A self-signed cert is generated once at `ssl/tsk.crt` and reused on every restar
 ### Windows
 
 ```powershell
-git clone https://github.com/neur0sp1cy/TSK2
-cd TSK2
+git clone https://github.com/neur0sp1cy/TSK
+cd TSK
 uv sync
 uv run python server.py
 # or: uv run python server.py --ssl
@@ -162,7 +162,7 @@ Clone HAK5 libraries from the REPOS modal (sidebar **R**): `clone ducky`, `clone
 ## Project structure
 
 ```
-TSK2/
+TSK/
 ├── server.py           # Web server (start here)
 ├── web/index.html      # Web UI
 ├── web/tutorial.html   # In-app tutorial missions
@@ -194,13 +194,13 @@ Every donation goes back into hardware and development. No paywalls, ever.
 
 ### Bug reports and support
 
-- **Bugs:** [GitHub Issues](https://github.com/neur0sp1cy/TSK2/issues) (use the bug report template)
+- **Bugs:** [GitHub Issues](https://github.com/neur0sp1cy/TSK/issues) (use the bug report template)
 - **Repro help:** [TESTING_CHECKLIST.md](TESTING_CHECKLIST.md) - cite the section you are on
 - **Security issues in TSK:** see [SECURITY.md](SECURITY.md) (responsible disclosure, not public issues for exploit details)
 - **Questions / concerns:** [neur0sp1cy@proton.me](mailto:neur0sp1cy@proton.me)
 - **Expectations:** best-effort support; be constructive - we squash bugs, not tolerate abuse
 
-**Enable Issues:** On GitHub, open **neur0sp1cy/TSK2** → **Settings** → **General** → **Features** → enable **Issues** → **Save**. New issues will use the bug report template in `.github/ISSUE_TEMPLATE/`.
+**Enable Issues:** On GitHub, open **neur0sp1cy/TSK** → **Settings** → **General** → **Features** → enable **Issues** → **Save**. New issues will use the bug report template in `.github/ISSUE_TEMPLATE/`.
 
 ---
 

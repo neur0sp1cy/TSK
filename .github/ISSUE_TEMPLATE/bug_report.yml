@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         Thanks for helping improve TSK. Please test only in systems you own or have **written permission** to assess.
-        See [TESTING_CHECKLIST.md](https://github.com/neur0sp1cy/TSK2/blob/main/TESTING_CHECKLIST.md) for repro ideas.
+        See [TESTING_CHECKLIST.md](https://github.com/neur0sp1cy/TSK/blob/main/TESTING_CHECKLIST.md) for repro ideas.
 
   - type: checkboxes
     id: authorized
