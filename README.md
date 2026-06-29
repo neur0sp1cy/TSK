@@ -40,7 +40,7 @@ Full policy: **[SECURITY.md](SECURITY.md)** (authorized use, vulnerability repor
 
 - **Web UI** - Browse HAK5 payload repos, preview, edit, and flash to supported devices
 - **USB Dropper** - Build exfil scripts (PowerShell / Bash), lure packages (LNK, README, `.desktop`), flash to a plain USB stick
-- **SnarfSnarf** - Visual exfil builder with phone-home or on-stick output
+- **SnarfSnarf (SNARF modal)** - Visual exfil builder with phone-home or on-stick output; saved scripts appear under **EXFILS**, lure packages under **LURES**, hand-authored files under **MY PAYLOADS** (`+ NEW`)
 - **CATCH** - Live receiver for phone-home uploads with preview and ZIP export
 - **LAN Turtle** - SSH terminal in the browser
 - **Themes** - Six UI themes (default through flat); `theme <name>` in command bar
@@ -112,7 +112,7 @@ uv run python server.py
 4. Optional: open **/tutorial** for Mission 1 walkthrough, or press **H** and click **OPEN TUTORIAL**.
 
 Per-operator config: `users/<operator>/config.json`  
-Saved USB payloads: `users/<operator>/payloads/usb/`  
+Saved USB payloads: `users/<operator>/payloads/usb/` (exfil scripts, `packages/<slug>/` lure bundles)  
 Cloned repos: `repos/`  
 Phone-home uploads: `snarfed/<operator>/` (isolated per operator)
 
@@ -125,7 +125,7 @@ Session auth: register/login required; API uses `X-TSK-Token` header. Password m
 | Area | Purpose |
 |------|---------|
 | Left nav | Devices + SYSTEM tiles (About, Help, Config, Repos, Operator) |
-| Center | Payload list for selected device; USB shows **SNARF** button in header |
+| Center | Payload list for selected device; USB shows **+ NEW**, **SNARF**, and LHOST chip in header |
 | Modals | CONFIG, REPOS, OPERATOR, SNARF (USB), About, Help |
 | Right panel | Preview, USB stick scan, FLASH / EDIT / SAVE |
 | Bottom bar | Command line (`set lhost`, `clone ducky`, `devices`, …) |

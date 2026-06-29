@@ -100,7 +100,7 @@ Prioritized for booth demo and first GitHub visitors. **Must-have** before go-li
 - Teensy compile pipeline in UI
 - Full mobile layout
 - Password reset / email flows
-- Operator **NEW payload** authoring per device (planned for v1.0.1 - see Phase 4)
+- Operator **NEW payload** authoring for Ducky/Bunny/Turtle (USB Dropper shipped - see Phase 4A)
 - In-app **Ducky / Bunny command reference** (planned post-launch - see Phase 4)
 
 ---
@@ -109,20 +109,22 @@ Prioritized for booth demo and first GitHub visitors. **Must-have** before go-li
 
 **Not blockers for v1.0.0.** Ship after checklist sign-off and Git tag. Target: **v1.0.1** for payload authoring; command ref can land in the same release or a quick follow-up.
 
-### 4A | NEW payload + MY PAYLOADS (priority)
+### 4A | NEW payload + MY PAYLOADS
 
-Today: USB/Snarf can save to `users/<operator>/payloads/usb/`. Ducky, Bunny, Turtle, and Teensy are browse/edit/flash against cloned repos only. Builtin payloads open in the editor with a template but cannot be saved to the operator library (`path: ""` disables SAVE FILE; SAVE COPY only downloads locally).
+**USB Dropper (shipped):** `+ NEW`, **MY PAYLOADS**, **EXFILS**, **LURES** categories, lure package manifests, rename/delete, binary-safe LNK preview.
 
-| # | Feature | Notes |
-|---|---------|-------|
-| 1 | **+ NEW PAYLOAD** on BROWSE for each device (Ducky, Bunny, Turtle, Teensy, USB) | Name prompt → create file under `users/<operator>/payloads/<device>/` |
-| 2 | **MY PAYLOADS** category in browse tree | Operator-owned files; do not lump Ducky/Bunny saves under SNARFSNARF |
-| 3 | **SAVE TO LIBRARY** in editor | When no file path exists, save to MY PAYLOADS instead of download-only |
-| 4 | **Repo-safe saves** | Editing a file under `repos/` should save-as to MY PAYLOADS by default (no silent overwrite of cloned libraries) |
-| 5 | **API** `POST /api/payload/create` | `device`, `filename`, optional `content` or template id; validate path under user payload dir |
-| 6 | **index_user_payloads** | Use cat `MY PAYLOADS` (or `OPERATOR`) for non-USB devices; keep SNARFSNARF for USB exfil scripts |
+**Remaining for v1.0.1+ (other devices):**
 
-**Effort:** Medium. Backend paths largely exist (`config.payload_path`, `/api/payload/save`, `index_user_payloads`).
+| # | Feature | Status | Notes |
+|---|---------|--------|-------|
+| 1 | **+ NEW PAYLOAD** on Ducky, Bunny, Turtle, Teensy | Partial | USB done; extend browse header to other devices |
+| 2 | **MY PAYLOADS** category for non-USB devices | Partial | USB done via `index_user_payloads` |
+| 3 | **SAVE TO LIBRARY** in editor | Shipped (USB) | Repo paths save-as to MY PAYLOADS |
+| 4 | **Repo-safe saves** | Shipped | No silent overwrite of cloned repos |
+| 5 | **API** `POST /api/payload/create` | Shipped | |
+| 6 | **index_user_payloads** cat names | Shipped (USB) | EXFILS / MY PAYLOADS / LURES |
+
+**Effort (remaining):** Small-Medium for Ducky/Bunny/Turtle parity only.
 
 ### 4B | Device command reference
 
@@ -160,7 +162,7 @@ When someone walks in unexpectedly, operators need a one-key escape hatch that h
 
 ```
 After v1.0.0 tag
-  1   NEW payload + MY PAYLOADS (v1.0.1)
+  1   + NEW / MY PAYLOADS for Ducky, Bunny, Turtle (v1.0.1)
   2   DEVICE REF in Help (+ HAK5 doc links)
   3   Boss Mode (decoy screen + hotkey)
   4   Optional polish: editor command chips, demo on command
@@ -203,8 +205,8 @@ Items **not** already on your list. Pick what resonates; none are blockers for l
 
 | Idea | Why | Effort |
 |------|-----|--------|
-| **Clarify HTTP snarf vs HTTPS UI** | CONFIG or Help: "UI may use HTTPS; phone-home URLs in generated scripts use HTTP unless you customize" | Small |
-| **CATCH empty state copy** | When no catches: "Run a lure stub or exfil script; catches appear here" + link to tutorial | Small |
+| **Clarify HTTP snarf vs HTTPS UI** | Shipped in Help modal + README (`--ssl` section) | Done |
+| **CATCH empty state copy** | Shipped: lure/exfil hint + tutorial link | Done |
 | **Deployment log visibility** | CONFIG already has deployments CSV; surface "last flash" in bottom bar or SNARF header | Small |
 | **DefCon edition string** | Align README / login / ticker with actual con year you are targeting | Tiny |
 | **Remove or gate HTP overlay until gif exists** | Avoid dead img 404 in network tab during demos | Tiny |
@@ -244,7 +246,7 @@ Week 2
   Day 4-7   Buffer for hardware arrives / VM issues / booth dry run
 
 Post v1.0.0 (Phase 4)
-  Week 1    NEW payload + MY PAYLOADS (target v1.0.1)
+  Week 1    + NEW / MY PAYLOADS for Ducky, Bunny, Turtle (v1.0.1)
   Week 1-2  DEVICE REF in Help modal
 ```
 

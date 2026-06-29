@@ -40,24 +40,27 @@ CONFIG (LHOST / LPORT)
     ↓
 SNARF → EXFIL   build PowerShell (Windows) or Bash (Linux) script
     ↓
-SAVE or SAVE + FLASH   script appears in payload list under SNARFSNARF
+SAVE TO PAYLOADS or SAVE + FLASH   script appears under EXFILS
     ↓
 SNARF → LURE   optional Windows .lnk or Linux README / .desktop lure
     ↓
-SAVE PACKAGE or SAVE + FLASH PACKAGE
+SAVE PACKAGE or SAVE + FLASH PACKAGE   package appears under LURES
     ↓
 Victim runs lure or RUN_PAYLOAD launcher
     ↓
 SNARF → CATCH   phone-home uploads appear in live feed
 ```
 
+USB payload list order: **BUILT-INS** → **EXFILS** → **LURES** → **MY PAYLOADS** (`+ NEW` creates entries in MY PAYLOADS).
+
 ### SNARF → EXFIL
 
+- Set **SCRIPT NAME** before save (filename stem for `.ps1` / `.sh`).
 - Select exfil targets and output mode:
   - **USB root / hidden** - loot copied on the USB stick (victim-side)
   - **Phone home** - HTTP POST to `http://<LHOST>:<LPORT>/api/snarf`
 - Format: PowerShell, Bash, or both.
-- **SAVE + FLASH** copies the script to the operator USB stick in one step.
+- **SAVE TO PAYLOADS** or **SAVE + FLASH** copies the script to your library (and optionally the operator USB stick).
 
 ### SNARF → LURE
 
@@ -67,7 +70,11 @@ SNARF → CATCH   phone-home uploads appear in live feed
 | Linux | Bash lure | `bash README.txt` from USB mount |
 | Linux | Desktop entry | Open `.desktop` (may require "Trust" on GNOME) |
 
-Payload options: saved exfil script, minimal test stub (`tsk2_lure_ok` phone-home), or custom inline command.
+Set **PACKAGE NAME** for the list label (victim-facing filenames come from the lure preset). Packages are stored under `users/<operator>/payloads/usb/packages/<slug>/`.
+
+Payload options: saved exfil script, minimal test stub (`lure_check.txt` with `tsk2_lure_stub_ok` in CATCH), or custom inline command.
+
+Windows `.lnk` files are binary - preview shows a summary, not raw bytes. Edit the companion `.ps1` or rebuild in SNARF → LURE.
 
 ### SNARF → CATCH
 
@@ -93,9 +100,9 @@ Payload options: saved exfil script, minimal test stub (`tsk2_lure_ok` phone-hom
 
 1. USB Dropper → **SNARF → LURE**
 2. Type: **LNK shortcut** | Preset: **Invoice_2026** | Payload: **Minimal Windows test stub**
-3. **BUILD PREVIEW** → **SAVE + FLASH PACKAGE**
+3. **GENERATE** → **SAVE + FLASH PACKAGE**
 4. On a Windows test host: plug USB, double-click `Invoice_2026.lnk`
-5. Operator: **SNARF → CATCH** - expect `tsk2_lure_ok` or stub POST in live feed
+5. Operator: **SNARF → CATCH** - expect `lure_check.txt` with `tsk2_lure_stub_ok` in live feed
 
 ### Scenario B: Linux README lure
 
@@ -137,6 +144,8 @@ Payload options: saved exfil script, minimal test stub (`tsk2_lure_ok` phone-hom
 | USB stick not detected | Plain stick; click scan; `lsblk`; set `usb_mount` in CONFIG |
 | USB read-only | Use blank FAT32 stick, not install media |
 | Phone-home never arrives | LHOST must be LAN IP; open firewall on LPORT; same network |
+| UI uses HTTPS but snarf fails | Phone-home scripts use plain `http://LHOST:LPORT` by default; victim must reach that URL |
+| LNK preview looks garbled | Expected for binary shortcuts - use embedded strings summary; FLASH copies file verbatim |
 | LNK built on Linux | Generation works on Linux; execution is Windows-only |
 | Linux `.desktop` blocked | Use README bash lure, or mark desktop file trusted |
 | Port 1337 in use | `fuser -k 1337/tcp` or change LPORT in CONFIG |

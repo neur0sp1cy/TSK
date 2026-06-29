@@ -126,7 +126,8 @@ Optional for v1.0.0 but recommended: one HAK5 device flash (Bunny, Ducky, or Tur
 | 4.5 | `clone ducky` (or bunny/turtle) succeeds | No | | |
 | 4.6 | After clone, payload list shows repo payloads | No | | |
 | 4.7 | `update all` pulls without error | No | | |
-| 4.8 | Saved operator payloads appear under SNARFSNARF / USER | No | | |
+| 4.8 | USB: exfil saves under EXFILS; lure packages under LURES; + NEW under MY PAYLOADS | No | | |
+| 4.9 | USB + NEW creates script in MY PAYLOADS | No | | |
 
 ---
 
@@ -140,6 +141,7 @@ Optional for v1.0.0 but recommended: one HAK5 device flash (Bunny, Ducky, or Tur
 | 5.4 | Flash preview shows substituted vars before flash | No | | |
 | 5.5 | FLASH completes for USB stick payload | Yes* | | *If testing USB |
 | 5.6 | DOWNLOAD saves payload file locally | No | | |
+| 5.7 | LNK lure: EDIT blocked; preview shows binary summary | No | | |
 
 ---
 
@@ -150,13 +152,14 @@ Optional for v1.0.0 but recommended: one HAK5 device flash (Bunny, Ducky, or Tur
 | 6.1 | USB device → SNARF button visible in PAYLOADS header | Yes | | |
 | 6.2 | EXFIL builder: select targets, PowerShell format | Yes | | |
 | 6.3 | EXFIL builder: Bash format | No | | |
-| 6.4 | BUILD PREVIEW shows script in SNARF modal (LHOST/LPORT) | Yes | | |
-| 6.5 | SAVE writes to `users/<op>/payloads/usb/` | Yes | | |
-| 6.6 | SAVE appears in payload list → SNARFSNARF | Yes | | |
-| 6.7 | Phone-home output mode in generated script | Yes | | |
-| 6.8 | USB root / hidden deploy modes in builder | No | | |
-| 6.9 | SAVE + FLASH copies to stick | Yes | | |
-| 6.10 | RUN_PAYLOAD.bat / .sh on stick after flash | No | | |
+| 6.4 | GENERATE shows script in SNARF modal (LHOST/LPORT) | Yes | | |
+| 6.5 | SAVE TO PAYLOADS writes to `users/<op>/payloads/usb/` | Yes | | |
+| 6.6 | SAVE appears in payload list under EXFILS | Yes | | |
+| 6.7 | SCRIPT NAME field sets saved filename stem | No | | |
+| 6.8 | Phone-home output mode in generated script | Yes | | |
+| 6.9 | USB root / hidden deploy modes in builder | No | | |
+| 6.10 | SAVE + FLASH copies to stick | Yes | | |
+| 6.11 | RUN_PAYLOAD.bat / .sh on stick after flash | No | | |
 
 ---
 
@@ -168,11 +171,13 @@ Optional for v1.0.0 but recommended: one HAK5 device flash (Bunny, Ducky, or Tur
 | 7.2 | LURE: Linux README bash lure | No | | |
 | 7.3 | LURE: Linux .desktop entry | No | | |
 | 7.4 | Attach saved exfil or minimal test stub | Yes | | |
-| 7.5 | BUILD PREVIEW for lure package | Yes | | |
-| 7.6 | SAVE PACKAGE to operator storage | Yes | | |
+| 7.5 | GENERATE preview for lure package | Yes | | |
+| 7.6 | SAVE PACKAGE to operator storage (LURES list) | Yes | | |
 | 7.7 | SAVE + FLASH PACKAGE to USB stick | Yes | | |
-| 7.8 | **Scenario A:** Windows VM double-click LNK → phone-home | Yes | | |
-| 7.9 | **Scenario B:** Linux VM `bash README.txt` → phone-home | No | | |
+| 7.8 | PACKAGE NAME sets list label; victim filename shown as → hint | No | | |
+| 7.9 | **Scenario A:** Windows VM double-click LNK → phone-home | Yes | | |
+| 7.10 | **Scenario B:** Linux VM `bash README.txt` → phone-home | No | | |
+| 7.11 | LNK preview: binary summary (not raw garbled text) | No | | |
 
 ---
 

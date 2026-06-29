@@ -274,7 +274,7 @@ ul.compact li{margin:8px 0;font-size:15px;line-height:1.55;}
                 <li>Check exfil targets (e.g. Documents, Credentials, Clipboard).</li>
                 <li>Pick <em>Phone home - HTTP POST</em> for CATCH testing, or <em>Copy to USB root</em> for offline exfil.</li>
                 <li>Choose <em>PowerShell [Windows]</em> or <em>Bash [Linux]</em> format.</li>
-                <li>Set filename (default <code>snarf_exfil</code>).</li>
+                <li>Set <em>SCRIPT NAME</em> (filename stem, default <code>snarf_exfil</code>).</li>
               </ul>
             </div>
             <div class="step-block"><strong>Expected result:</strong> Preview script includes your LHOST/LPORT when phone-home is selected.</div>
@@ -285,7 +285,7 @@ ul.compact li{margin:8px 0;font-size:15px;line-height:1.55;}
           <div class="step">
             <div class="step-title">STEP 3 · SAVE TO PAYLOAD LIBRARY</div>
             <div class="step-block"><strong>What to do:</strong> Click <em>SAVE TO PAYLOADS</em> (or <em>SAVE + FLASH</em> if stick is already plugged in).</div>
-            <div class="step-block"><strong>Expected result:</strong> Toast confirms save. Modal closes; script appears under <code>SNARFSNARF</code> in the payload list.</div>
+            <div class="step-block"><strong>Expected result:</strong> Toast confirms save. Modal closes; script appears under <code>EXFILS</code> in the payload list (order: BUILT-INS → EXFILS → LURES → MY PAYLOADS).</div>
             <div class="pass"><strong>Pass if:</strong> Selecting the saved payload shows its content in the right preview panel.</div>
           </div>
 
@@ -319,7 +319,7 @@ ul.compact li{margin:8px 0;font-size:15px;line-height:1.55;}
           <div class="step">
             <div class="step-title">STEP 1 · OPEN CATCH</div>
             <div class="step-block"><strong>What to do:</strong> <em>USB DROPPER</em> → <em>SNARF</em> (header button or <kbd>S</kbd>) → click <em>CATCH</em> intro card.</div>
-            <div class="step-block"><strong>Expected result:</strong> <em>LIVE FEED</em> and <em>SNARFED FILES</em> panels visible. Feed may say "Waiting for phone-home uploads..."</div>
+            <div class="step-block"><strong>Expected result:</strong> <em>LIVE FEED</em> and <em>SNARFED FILES</em> panels visible. Feed may say "Run a lure stub or exfil script - catches appear here."</div>
             <div class="pass"><strong>Pass if:</strong> CATCH view loads without errors while logged in as the operator who built the script.</div>
           </div>
 
@@ -367,7 +367,7 @@ ul.compact li{margin:8px 0;font-size:15px;line-height:1.55;}
           <div class="step">
             <div class="step-title">STEP 2 · BUILD &amp; SAVE PACKAGE</div>
             <div class="step-block"><strong>What to do:</strong> Pick lure type, name the package, attach your exfil script (or a test stub). Click <em>GENERATE</em>, then <em>SAVE PACKAGE</em>.</div>
-            <div class="step-block"><strong>Expected result:</strong> Package saved under <code>LURES</code> in the payload list with multiple files in the manifest.</div>
+            <div class="step-block"><strong>Expected result:</strong> Package saved under <code>LURES</code> in the payload list. Row shows package name with <code>→ victim_filename</code> hint. Windows <code>.lnk</code> preview is a binary summary, not editable text.</div>
             <div class="pass"><strong>Pass if:</strong> Preview lists lure file + payload script + launcher files together.</div>
           </div>
 

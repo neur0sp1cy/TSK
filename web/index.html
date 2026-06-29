@@ -5000,12 +5000,13 @@ function showHelp() {
       <div class="help-flow-step"><strong>1 · CONFIG</strong> - Set <span class="help-k">LHOST</span> / <span class="help-k">LPORT</span> (CONFIG modal or command bar).
         LHOST is your machine's LAN IP; LPORT is this TSK server (default 1337). Required for phone-home and test stubs.</div>
       <div class="help-flow-step"><strong>2 · SNARF → EXFIL</strong> - Pick what to steal (Windows PowerShell / Linux Bash).
-        <em>BUILD</em> generates a script → <em>SAVE</em> (or <em>SAVE + FLASH</em>) → script appears in the payload list under EXFILS.</div>
-      <div class="help-flow-step"><strong>3 · SNARF → LURE</strong> - Windows: <span class="help-k">LNK</span> shortcut · Linux: <span class="help-k">README</span> script or <span class="help-k">.desktop</span> entry.
-        Attach a saved exfil script or use a test stub. <em>SAVE PACKAGE</em> writes lure + payload to your library → <em>FLASH PACKAGE</em> copies all files to the stick.</div>
-      <div class="help-flow-step"><strong>4 · FLASH</strong> - Plug a <em>plain USB stick</em> (not Bunny/Ducky). Right panel: scan stick, pick deploy (root or hidden <code>.tsk/</code>), preview, then FLASH.
+        Set <span class="help-k">SCRIPT NAME</span>, then <em>GENERATE</em> → <em>SAVE TO PAYLOADS</em> (or <em>SAVE + FLASH</em>) → script appears under <span class="help-k">EXFILS</span>.</div>
+      <div class="help-flow-step"><strong>3 · SNARF → LURE</strong> - Windows: <span class="help-k">LNK</span> shortcut (binary; preview only) · Linux: <span class="help-k">README</span> script or <span class="help-k">.desktop</span> entry.
+        Set <span class="help-k">PACKAGE NAME</span>. Attach a saved exfil script or use a test stub. <em>SAVE PACKAGE</em> → row under <span class="help-k">LURES</span> → <em>FLASH</em> deploys lure + companion scripts together.</div>
+      <div class="help-flow-step"><strong>4 · MY PAYLOADS</strong> - <span class="help-k">+ NEW</span> or editor save for hand-written scripts. List order on USB: BUILT-INS → EXFILS → LURES → MY PAYLOADS.</div>
+      <div class="help-flow-step"><strong>5 · FLASH</strong> - Plug a <em>plain USB stick</em> (not Bunny/Ducky). Right panel: scan stick, pick deploy (root or hidden <code>.tsk/</code>), preview, then FLASH.
         Scripts get <code>RUN_PAYLOAD.bat</code> / <code>.sh</code> launchers on Windows/Linux.</div>
-      <div class="help-flow-step"><strong>5 · SNARF → CATCH</strong> - If exfil uses phone-home, uploads hit <code>POST /api/snarf</code>.
+      <div class="help-flow-step"><strong>6 · SNARF → CATCH</strong> - If exfil uses phone-home, uploads hit <code>POST /api/snarf</code>.
         Catches are scoped to your operator account under <code>snarfed/&lt;operator&gt;/</code>.
         Watch the live feed, preview files, export ZIP. URL: <code>http://&lt;LHOST&gt;:&lt;LPORT&gt;/api/snarf</code></div>
       <div class="help-flow-step"><strong>HTTPS</strong> - Start with <code>python server.py --ssl</code> for LAN access over TLS.
@@ -5654,7 +5655,7 @@ let sshTerm = null;
 let sshFit = null;
 let sshWs = null;
 
-// ── SNARFSNARF (USB Dropper builder) ─────────────────────────────────────────
+// ── SNARF builder (USB Dropper) ───────────────────────────────────────────────
 let _snarfOptions = null;
 let _snarfBuilt = null;
 let _snarfFormDraft = null;
@@ -5798,7 +5799,7 @@ function renderSnarfCatchFeed() {
     : '';
   if (!_snarfFeed.length) {
     el.innerHTML = listenLine + lastLine +
-      '<div class="snarf-catch-empty">Waiting for phone-home uploads…</div>';
+      '<div class="snarf-catch-empty">Run a lure stub or phone-home exfil on a lab target - catches appear here. See <a href="/tutorial" target="_blank" rel="noopener">tutorial</a> Mission 2-3.</div>';
     return;
   }
   el.innerHTML = listenLine + lastLine + _snarfFeed.map(e => `
@@ -5869,7 +5870,7 @@ async function loadSnarfCatches() {
     const data = await r.json();
     const sessions = data.sessions || [];
     if (!sessions.length) {
-      tree.innerHTML = '<div class="snarf-catch-empty">No snarfed files yet.</div>';
+      tree.innerHTML = '<div class="snarf-catch-empty">No snarfed files yet. Run a lure stub or exfil script on a lab victim, then click REFRESH.</div>';
       return;
     }
     tree.innerHTML = sessions.map(s => `
