@@ -1,9 +1,7 @@
 """Tests for path confinement."""
 
 import pytest
-from pathlib import Path
 
-from config import REPOS_DIR, USERS_DIR
 from paths import safe_path
 
 

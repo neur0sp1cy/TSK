@@ -49,6 +49,7 @@ coverage.xml
 *.py.cover
 .hypothesis/
 .pytest_cache/
+pytest-junit.xml
 cover/
 
 # Translations
@@ -233,3 +234,4 @@ web/static/music/*
 
 # ── Local planning notes (never commit) ───────────────────────────────────────
 .plan/
+.cursor/

@@ -124,6 +124,10 @@ def build_script(raw: dict, user_cfg: Optional[dict] = None) -> dict:
         warnings.append(
             "Phone-home mode POSTs to /api/snarf on TSK - use the SNARF → CATCH tab to monitor incoming files."
         )
+        if conf["zip"]:
+            warnings.append(
+                "Zip archive: phone-home uploads one .zip per run (individual files if zip is unavailable on the target)."
+            )
 
     return {
         "format": fmt,

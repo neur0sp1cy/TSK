@@ -22,6 +22,18 @@ def _safe_filename(name: str) -> str:
         raise ValueError(f"Unsafe payload filename: {name!r}")
     return name
 
+
+_BINARY_FLASH_SUFFIXES = frozenset({".lnk"})
+
+
+def is_binary_payload(path: Path | str) -> bool:
+    return Path(path).suffix.lower() in _BINARY_FLASH_SUFFIXES
+
+
+def extract_printable_strings(raw: bytes, min_len: int = 6, limit: int = 16) -> list[str]:
+    found = re.findall(rb"[\x20-\x7e]{%d,}" % min_len, raw[:16384])
+    return [s.decode("ascii", errors="replace") for s in found[:limit]]
+
 def find_mount(hints: list[str], extra_paths: list[str] | None = None) -> str | None:
     """Search common mount points for a device by name hints."""
     candidates = []
@@ -690,6 +702,9 @@ def substitute_config_vars(text: str, cfg: dict) -> str:
 
 def _stage_payload(payload: Path, cfg: dict, progress_cb: Callable = None) -> tuple[Path, bool]:
     """Read payload, apply variable substitution, return path (maybe temp)."""
+    if is_binary_payload(payload):
+        return payload, False
+
     try:
         text = payload.read_text(encoding="utf-8", errors="replace")
     except Exception as e:
@@ -714,6 +729,21 @@ def _stage_payload(payload: Path, cfg: dict, progress_cb: Callable = None) -> tu
     return staged, True
 
 
+def _binary_flash_preview_snippet(payload: Path, snippet_limit: int = 2048) -> str:
+    size = payload.stat().st_size
+    strings = extract_printable_strings(payload.read_bytes())
+    lines = [
+        f"[Binary {payload.suffix.upper()} shortcut · {size:,} bytes]",
+        "",
+        "Not shown as text. FLASH copies this file verbatim (no LHOST/LPORT substitution).",
+        "For lure packages, FLASH deploys the shortcut and companion script together.",
+    ]
+    if strings:
+        lines.extend(["", "Embedded strings (preview):", *[f"  {s}" for s in strings]])
+    snippet = "\n".join(lines)
+    return snippet[:snippet_limit]
+
+
 def flash_preview(
     payload_path: str,
     cfg: dict,
@@ -729,6 +759,40 @@ def flash_preview(
 
     lhost = (cfg.get("lhost") or "").strip() or "127.0.0.1"
     lport = (cfg.get("lport") or "").strip() or "1337"
+
+    if is_binary_payload(payload):
+        snippet = _binary_flash_preview_snippet(payload, snippet_limit)
+        diff: dict = {"on_stick": False, "changed": False}
+        if (device or "").strip().lower() == "usb":
+            mount = find_usb_mount(cfg=cfg, preferred=usb_mount_path)
+            if mount:
+                deploy_mode = (usb_deploy or "root").strip().lower()
+                dest_dir = Path(mount) / ".tsk" if deploy_mode == "hidden" else Path(mount)
+                try:
+                    safe_name = _safe_filename(payload.name)
+                except ValueError:
+                    safe_name = payload.name
+                dest = dest_dir / safe_name
+                if dest.is_file():
+                    try:
+                        on_stick = dest.read_bytes()
+                        local = payload.read_bytes()
+                        diff = {
+                            "on_stick": True,
+                            "changed": on_stick != local,
+                            "stick_path": str(dest),
+                        }
+                    except OSError:
+                        diff = {"on_stick": True, "changed": True, "stick_path": str(dest)}
+        return {
+            "snippet": snippet,
+            "truncated": len(snippet) >= snippet_limit,
+            "lhost": lhost,
+            "lport": lport,
+            "substituted": False,
+            "binary": True,
+            "diff": diff,
+        }
 
     staged, is_temp = _stage_payload(payload, cfg)
     try:
@@ -774,6 +838,7 @@ def flash_preview(
         "lhost": lhost,
         "lport": lport,
         "substituted": has_vars,
+        "binary": False,
         "diff": diff,
     }
 
@@ -923,6 +988,17 @@ def flash_usb(
                 pass
 
 
+def _safe_relative_path(name: str) -> str:
+    """Safe path relative to the operator USB payload library (may include packages/…)."""
+    rel = name.replace("\\", "/").strip().lstrip("/")
+    if not rel or ".." in rel.split("/"):
+        raise ValueError(f"Unsafe path: {name!r}")
+    for part in rel.split("/"):
+        if not part or not re.fullmatch(r"[\w.\-]+", part):
+            raise ValueError(f"Unsafe path segment in: {name!r}")
+    return rel
+
+
 def flash_lure_package(
     filenames: list[str],
     username: str,
@@ -943,7 +1019,7 @@ def flash_lure_package(
     sources: list[Path] = []
     for fn in filenames:
         try:
-            safe = _safe_filename(fn)
+            safe = _safe_relative_path(fn)
         except ValueError as e:
             log(f"✗ {e}", progress_cb)
             return False

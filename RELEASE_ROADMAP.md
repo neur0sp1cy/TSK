@@ -139,13 +139,31 @@ Help (`H`) covers TSK operator workflow, not DuckyScript or Bash Bunny syntax. B
 
 **Effort:** Small for Help + links; Medium for editor chips.
 
+### 4D | Boss Mode (panic / decoy screen)
+
+When someone walks in unexpectedly, operators need a one-key escape hatch that hides payloads, SNARF, and device status behind something boring and plausible.
+
+| # | Feature | Notes |
+|---|---------|-------|
+| 1 | **`boss` / `boss off` command** | Toggle decoy overlay; same muscle memory as `present` |
+| 2 | **Global hotkey** | e.g. **`B`** (when not typing in an input) or **`Ctrl+Shift+B`** - instant toggle, no command bar |
+| 3 | **Decoy screen** | Full-viewport innocuous page: fake spreadsheet, "Network Inventory" table, or generic IT status dashboard (no TSK branding, no red/cyan hacker chrome) |
+| 4 | **State preservation** | Remember open modal, selected device, and scroll position; restore exactly on `boss off` |
+| 5 | **Optional: decoy presets** | `boss spreadsheet` · `boss inventory` · `boss maintenance` - pick decoy skin |
+| 6 | **Help + roadmap only until built** | Document in Help under FUN when shipped; not a launch blocker |
+
+**Not the same as `present`:** presentation mode is for booth/projector (bigger type, hide sidebar). Boss Mode is a **plausible cover story** for shoulder-surfers and open-plan labs.
+
+**Effort:** Small-Medium (CSS overlay + decoy HTML templates + hotkey handler; no backend required).
+
 ### 4C | Suggested post-launch order
 
 ```
 After v1.0.0 tag
   1   NEW payload + MY PAYLOADS (v1.0.1)
   2   DEVICE REF in Help (+ HAK5 doc links)
-  3   Optional polish: editor command chips, demo on command
+  3   Boss Mode (decoy screen + hotkey)
+  4   Optional polish: editor command chips, demo on command
 ```
 
 ---
@@ -172,6 +190,7 @@ Items **not** already on your list. Pick what resonates; none are blockers for l
 
 | Idea | Why | Effort |
 |------|-----|--------|
+| **`boss` / Boss Mode** | One-key decoy screen (spreadsheet, inventory, etc.) when someone walks in; restore state on toggle off | Small-Medium |
 | **`demo on` / `demo off` command** | One toggle for booth: presentation mode + defcon styling + hide distractions | Small |
 | **CHANGELOG.md + GitHub Release** | First public release looks intentional; users know what v2 is | Small |
 | **README screenshots** (3-4 panels) | GitHub visitors understand the product in 10 seconds | Small |

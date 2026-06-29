@@ -40,7 +40,10 @@ def _safe_segment(value: str, default: str, max_len: int = 64) -> str:
 
 def _safe_filename(filepath: str, upload_name: str = "") -> str:
     hint = (filepath or upload_name or "upload").strip()
-    hint = re.sub(r"[\\/:]+", "_", hint)
+    hint = hint.replace("\\", "/")
+    # Victim scripts often send full paths (/tmp/foo.txt) - keep leaf name only
+    if "/" in hint:
+        hint = hint.rsplit("/", 1)[-1]
     cleaned = _SEGMENT_RE.sub("_", hint)
     return (cleaned[:200] or "upload")
 

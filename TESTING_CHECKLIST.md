@@ -75,6 +75,9 @@ Optional for v1.0.0 but recommended: one HAK5 device flash (Bunny, Ducky, or Tur
 | 1.6 | Register second operator (for isolation tests) | Yes | | |
 | 1.7 | Change password (CONFIG or auth UI) | No | | |
 | 1.8 | `users/<operator>/` directory created on register | No | | |
+| 1.9 | Delete operator → login screen only (app hidden, no stale modals) | Yes | | |
+| 1.10 | Register new operator after delete → Operator modal shows new name + correct `users/<op>/` paths | Yes | | |
+| 1.11 | Rename operator → modal and CONFIG paths update | No | | |
 
 ---
 

