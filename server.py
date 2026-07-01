@@ -8,6 +8,7 @@ import asyncio
 import html
 import json
 import os
+import re
 import secrets
 import shutil
 import sys
@@ -390,43 +391,115 @@ async def get_usb_mounts(force: bool = False, username: str = Depends(require_au
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _get_payload_db(device: str, username: str = "") -> list:
-    """Get payloads — real repo if cloned, otherwise builtin; merge user saves."""
+    """Get payloads - repo sets if cloned, else builtin; merge user packages."""
     user = username.strip() or cfg_mod.current_user()
     rp = cfg_mod.REPOS_DIR / device
     if rp.exists():
-        payloads = repo_mod.index_payloads(device)
-        if payloads:
-            cats = {}
-            for p in payloads:
-                cats.setdefault(p["cat"], []).append(p)
-            db = [{"cat": cat, "payloads": items}
-                  for cat, items in sorted(cats.items())]
+        sets = repo_mod.index_payload_sets_for_device(device)
+        if sets:
+            from payload_sets import sets_to_grouped_db
+            db = sets_to_grouped_db(sets)
         else:
-            db = resolve_builtin_db(device)
+            db = _builtin_as_sets(device)
     else:
-        db = resolve_builtin_db(device)
+        db = _builtin_as_sets(device)
 
-    user_saved = repo_mod.index_user_payloads(device, user)
-    if user_saved:
-        by_cat: dict[str, list] = {}
-        for p in user_saved:
-            by_cat.setdefault(p["cat"], []).append(p)
-        for cat, items in by_cat.items():
-            existing = next((g for g in db if g["cat"] == cat), None)
-            if existing:
-                existing["payloads"].extend(items)
-            else:
-                db = list(db) + [{"cat": cat, "payloads": items}]
     if device == "usb":
+        user_saved = repo_mod.index_user_payloads(device, user)
+        if user_saved:
+            db = _merge_usb_flat_payloads(db, user_saved)
         user_lures = index_user_lures(user)
         if user_lures:
-            lure_cat = next((g for g in db if g["cat"] == "LURES"), None)
-            if lure_cat:
-                lure_cat["payloads"].extend(user_lures)
-            else:
-                db = list(db) + [{"cat": "LURES", "payloads": user_lures}]
+            db = _merge_usb_flat_payloads(db, user_lures)
         db = _sort_usb_payload_db(db)
+    else:
+        user_sets = repo_mod.index_user_payload_sets(device, user)
+        if user_sets:
+            from payload_sets import sets_to_grouped_db
+            user_db = sets_to_grouped_db(user_sets)
+            for grp in user_db:
+                existing = next((g for g in db if g["cat"] == grp["cat"]), None)
+                if existing:
+                    existing.setdefault("sets", []).extend(grp["sets"])
+                else:
+                    db = list(db) + [grp]
+        legacy = repo_mod.index_user_payloads(device, user)
+        if legacy:
+            db = _merge_legacy_user_files(db, legacy)
+
     return db
+
+
+def _builtin_as_sets(device: str) -> list:
+    """Wrap builtin flat payloads as single-file sets for consistent UI."""
+    from payload_sets import flatten_set_to_rows
+
+    groups = resolve_builtin_db(device)
+    out = []
+    for grp in groups:
+        sets = []
+        for p in grp.get("payloads", []):
+            set_id = f"builtin/{p.get('name', 'payload')}"
+            fake_set = {
+                "set_id": set_id,
+                "name": p.get("name", "Payload"),
+                "set_name": p.get("name", "Payload"),
+                "cat": grp["cat"],
+                "tags": p.get("tags", []),
+                "desc": p.get("desc", ""),
+                "lang": p.get("lang", "TXT"),
+                "primary_path": p.get("path", ""),
+                "primary_file": p.get("file", ""),
+                "operator_owned": False,
+                "files": [{
+                    "display_name": p.get("file", p.get("name", "")).split("/")[-1],
+                    "file": p.get("file", ""),
+                    "path": p.get("path", ""),
+                    "file_role": "primary",
+                    "readonly": False,
+                    "lang": p.get("lang", "TXT"),
+                    "is_primary": True,
+                }],
+            }
+            sets.append(fake_set)
+        out.append({"cat": grp["cat"], "sets": sets})
+    return out
+
+
+def _merge_usb_flat_payloads(db: list, flat: list) -> list:
+    by_cat: dict[str, list] = {}
+    for g in db:
+        by_cat.setdefault(g["cat"], [])
+        if "sets" in g:
+            by_cat[g["cat"]].extend(g["sets"])
+    for p in flat:
+        by_cat.setdefault(p["cat"], []).append({
+            "set_id": f"user/{p.get('package_id') or p.get('file', p.get('name'))}",
+            "name": p.get("name", ""),
+            "set_name": p.get("name", ""),
+            "cat": p["cat"],
+            "tags": p.get("tags", []),
+            "desc": p.get("desc", ""),
+            "lang": p.get("lang", "TXT"),
+            "primary_path": p.get("path", ""),
+            "primary_file": p.get("file", ""),
+            "operator_owned": p.get("operator_owned", True),
+            "package_id": p.get("package_id"),
+            "files": [{
+                "display_name": p.get("file", p.get("name", "")),
+                "file": p.get("file", ""),
+                "path": p.get("path", ""),
+                "file_role": "primary",
+                "readonly": False,
+                "lang": p.get("lang", "TXT"),
+                "is_primary": True,
+            }],
+        })
+    return [{"cat": c, "sets": by_cat[c]} for c in sorted(by_cat)]
+
+
+def _merge_legacy_user_files(db: list, flat: list) -> list:
+    return _merge_usb_flat_payloads(db, flat)
 
 
 _USB_PAYLOAD_CAT_ORDER = (
@@ -446,15 +519,21 @@ async def get_payloads(device: str, username: str = Depends(require_auth)):
     rp = cfg_mod.REPOS_DIR / device
     repo_exists = rp.exists()
     db = _get_payload_db(device, username)
-    total = sum(len(g["payloads"]) for g in db)
-    print(f"[TSK] /api/payloads/{device} user={username!r} → repo={rp} exists={repo_exists} payloads={total}")
+    set_count = sum(len(g.get("sets", [])) for g in db)
+    file_count = sum(
+        len(s.get("files", []))
+        for g in db
+        for s in g.get("sets", [])
+    )
+    print(f"[TSK] /api/payloads/{device} user={username!r} → repo={rp} exists={repo_exists} sets={set_count} files={file_count}")
     return {
         "device": device,
         "source": "repo" if repo_exists else "builtin",
         "repo_exists": repo_exists,
         "repo_path": str(rp),
         "repo_url": repo_mod.REPO_URLS.get(device, ""),
-        "total": total,
+        "total": set_count,
+        "file_total": file_count,
         "groups": db,
     }
 
@@ -471,10 +550,11 @@ async def _read_file(path: str, username: str):
             raw = resolved.read_bytes()
             size = len(raw)
             strings = flash_mod.extract_printable_strings(raw)
+            btype = flash_mod.detect_binary_type(resolved) or resolved.suffix.lstrip(".").upper() or "BIN"
             return {
                 "content": "",
                 "binary": True,
-                "binary_type": resolved.suffix.lstrip(".").upper() or "BIN",
+                "binary_type": btype,
                 "size": size,
                 "strings_preview": strings,
                 "path": str(resolved),
@@ -507,11 +587,36 @@ async def search_payloads(device: str, q: str, username: str = Depends(require_a
     q_lower = q.lower()
     results = []
     for group in db:
-        for p in group["payloads"]:
-            if (q_lower in p["name"].lower() or
-                q_lower in p.get("desc","").lower() or
-                any(q_lower in t.lower() for t in p.get("tags",[]))):
-                results.append({**p, "cat": group["cat"]})
+        for s in group.get("sets", []):
+            set_match = (
+                q_lower in s.get("name", "").lower()
+                or q_lower in s.get("desc", "").lower()
+                or any(q_lower in t.lower() for t in s.get("tags", []))
+            )
+            for f in s.get("files", []):
+                row = {
+                    "name": s.get("name"),
+                    "set_id": s.get("set_id"),
+                    "set_name": s.get("set_name"),
+                    "cat": group["cat"],
+                    "tags": s.get("tags", []),
+                    "desc": s.get("desc", ""),
+                    "lang": f.get("lang"),
+                    "file": f.get("file"),
+                    "path": f.get("path"),
+                    "display_name": f.get("display_name"),
+                    "file_role": f.get("file_role"),
+                    "readonly": f.get("readonly", False),
+                    "is_primary": f.get("is_primary", False),
+                    "primary_path": s.get("primary_path", ""),
+                    "operator_owned": s.get("operator_owned", False),
+                }
+                if (
+                    set_match
+                    or q_lower in (f.get("display_name") or "").lower()
+                    or q_lower in (f.get("file") or "").lower()
+                ):
+                    results.append(row)
     return {"results": results, "count": len(results)}
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1320,6 +1425,146 @@ async def create_payload(data: dict, username: str = Depends(require_auth)):
     return {"ok": True, "payload": payload}
 
 
+_PACKAGE_NAME_RE = re.compile(r"^[a-zA-Z0-9_-]{2,32}$")
+_PACKAGE_FILE_RE = re.compile(r"^[\w.\-]{1,64}$")
+
+
+def _safe_package_slug(name: str) -> str:
+    slug = re.sub(r"[^\w.\-]+", "_", name.strip())[:32].strip("._")
+    return slug or "payload"
+
+
+def _user_package_dir(username: str, device: str, package_name: str) -> Path:
+    base = user_payload_dir(username, device).resolve()
+    pkg = (base / _safe_package_slug(package_name)).resolve()
+    if not str(pkg).startswith(str(base)):
+        raise ValueError("Invalid package name")
+    return pkg
+
+
+def _package_file_exists(pkg_dir: Path, filename: str) -> bool:
+    target = filename.lower()
+    for child in pkg_dir.iterdir():
+        if child.is_file() and child.name.lower() == target:
+            return True
+    return False
+
+
+@app.post("/api/payload/package/create")
+async def create_payload_package(data: dict, username: str = Depends(require_auth)):
+    device = (data.get("device") or "").strip().lower()
+    name = (data.get("name") or "").strip()
+    if device not in repo_mod.PAYLOAD_EXTS or device == "usb":
+        return JSONResponse({"error": f"Packages not supported for device: {device}"}, status_code=400)
+    if not _PACKAGE_NAME_RE.match(name):
+        return JSONResponse(
+            {"error": "Package name must be 2-32 characters: letters, numbers, underscore, hyphen"},
+            status_code=400,
+        )
+    try:
+        pkg_dir = _user_package_dir(username, device, name)
+    except ValueError as e:
+        return JSONResponse({"error": str(e)}, status_code=400)
+    if pkg_dir.exists():
+        return JSONResponse({"error": f"Package already exists: {name}"}, status_code=409)
+    try:
+        pkg_dir.mkdir(parents=True, exist_ok=False)
+        starter = pkg_dir / "payload.txt"
+        starter.write_text(PAYLOAD_TEMPLATES.get(device, f"# TSK | {name}\n"), encoding="utf-8")
+    except OSError as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+    return {"ok": True, "package": name, "path": str(pkg_dir), "primary": str(starter)}
+
+
+@app.post("/api/payload/package/file")
+async def add_package_file(data: dict, username: str = Depends(require_auth)):
+    device = (data.get("device") or "").strip().lower()
+    package = (data.get("package") or data.get("set_id") or "").strip()
+    filename = (data.get("filename") or data.get("name") or "").strip()
+    content = data.get("content")
+    if not package or not filename:
+        return JSONResponse({"error": "package and filename required"}, status_code=400)
+    if not _PACKAGE_FILE_RE.match(filename):
+        return JSONResponse({"error": "Invalid filename"}, status_code=400)
+    pkg_name = Path(package).name if "/" in package else package
+    try:
+        pkg_dir = _user_package_dir(username, device, pkg_name)
+    except ValueError as e:
+        return JSONResponse({"error": str(e)}, status_code=400)
+    if not pkg_dir.is_dir():
+        return JSONResponse({"error": "Package not found"}, status_code=404)
+    if _package_file_exists(pkg_dir, filename):
+        return JSONResponse(
+            {"error": f"File already exists in this package: {filename} - rename or delete it first"},
+            status_code=409,
+        )
+    dest = (pkg_dir / filename).resolve()
+    if not str(dest).startswith(str(pkg_dir.resolve())):
+        return JSONResponse({"error": "Invalid filename"}, status_code=400)
+    if content is None:
+        content = ""
+    try:
+        if isinstance(content, str):
+            dest.write_text(content, encoding="utf-8")
+        else:
+            dest.write_bytes(content)
+    except OSError as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+    return {"ok": True, "path": str(dest), "filename": filename}
+
+
+@app.post("/api/payload/package/file/upload")
+async def upload_package_file(
+    username: str = Depends(require_auth),
+    device: str = Form(""),
+    package: str = Form(""),
+    filename: str = Form(""),
+    file: UploadFile = File(...),
+):
+    device = device.strip().lower()
+    package = package.strip()
+    filename = (filename or (file.filename if file else "") or "").strip()
+    if not package or not filename:
+        return JSONResponse({"error": "package and filename required"}, status_code=400)
+    if not _PACKAGE_FILE_RE.match(filename):
+        return JSONResponse({"error": "Invalid filename"}, status_code=400)
+    pkg_name = Path(package).name if "/" in package else package
+    try:
+        pkg_dir = _user_package_dir(username, device, pkg_name)
+    except ValueError as e:
+        return JSONResponse({"error": str(e)}, status_code=400)
+    if not pkg_dir.is_dir():
+        return JSONResponse({"error": "Package not found"}, status_code=404)
+    if _package_file_exists(pkg_dir, filename):
+        return JSONResponse({"error": f"File already exists: {filename}"}, status_code=409)
+    raw = await file.read()
+    if len(raw) > 10 * 1024 * 1024:
+        return JSONResponse({"error": "File too large (max 10 MB)"}, status_code=400)
+    dest = (pkg_dir / filename).resolve()
+    try:
+        dest.write_bytes(raw)
+    except OSError as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+    return {"ok": True, "path": str(dest), "filename": filename, "bytes": len(raw)}
+
+
+@app.delete("/api/payload/package")
+async def delete_payload_package(package: str, device: str, username: str = Depends(require_auth)):
+    device = device.strip().lower()
+    pkg_name = Path(package).name if "/" in package else package.strip()
+    try:
+        pkg_dir = _user_package_dir(username, device, pkg_name)
+    except ValueError as e:
+        return JSONResponse({"error": str(e)}, status_code=400)
+    if not pkg_dir.is_dir():
+        return JSONResponse({"error": "Package not found"}, status_code=404)
+    try:
+        shutil.rmtree(pkg_dir)
+    except OSError as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+    return {"ok": True}
+
+
 @app.post("/api/payload/rename")
 async def rename_payload(data: dict, username: str = Depends(require_auth)):
     path = (data.get("path") or "").strip()
@@ -1355,6 +1600,9 @@ async def rename_payload(data: dict, username: str = Depends(require_auth)):
         return JSONResponse({"error": "Invalid filename"}, status_code=400)
     if dest.exists() and dest != resolved:
         return JSONResponse({"error": f"File already exists: {new_filename}"}, status_code=409)
+    for sibling in resolved.parent.iterdir():
+        if sibling.is_file() and sibling != resolved and sibling.name.lower() == new_filename.lower():
+            return JSONResponse({"error": f"File already exists: {new_filename}"}, status_code=409)
     try:
         resolved.rename(dest)
     except OSError as e:

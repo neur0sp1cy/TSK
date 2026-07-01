@@ -24,10 +24,125 @@ def _safe_filename(name: str) -> str:
 
 
 _BINARY_FLASH_SUFFIXES = frozenset({".lnk"})
+_TEXT_EXTS = frozenset({
+    ".txt", ".sh", ".py", ".ps1", ".bat", ".duck", ".md", ".ino", ".json", ".xml", ".yaml", ".yml",
+})
+_README_RE = re.compile(r"^readme(\..+)?$", re.I)
+
+
+class FlashError(Exception):
+    def __init__(self, code: str, message: str, needed: int = 0, free: int = 0):
+        super().__init__(message)
+        self.code = code
+        self.needed = needed
+        self.free = free
+
+
+def detect_binary_type(path: Path | str) -> str | None:
+    """Return ELF, PE, or BIN from magic bytes, or None if likely text."""
+    p = Path(path)
+    try:
+        with open(p, "rb") as f:
+            head = f.read(4)
+    except OSError:
+        return None
+    if head.startswith(b"\x7fELF"):
+        return "ELF"
+    if head[:2] == b"MZ":
+        return "PE"
+    if head.startswith(b"\xcf\xfa\xed\xfe") or head.startswith(b"\xfe\xed\xfa\xcf"):
+        return "MACHO"
+    if p.suffix.lower() in _BINARY_FLASH_SUFFIXES:
+        return "LNK"
+    try:
+        if p.stat().st_size > 0 and b"\x00" in head:
+            return "BIN"
+    except OSError:
+        pass
+    return None
 
 
 def is_binary_payload(path: Path | str) -> bool:
-    return Path(path).suffix.lower() in _BINARY_FLASH_SUFFIXES
+    p = Path(path)
+    if p.suffix.lower() in _BINARY_FLASH_SUFFIXES:
+        return True
+    return detect_binary_type(p) is not None
+
+
+def is_text_payload_file(path: Path | str) -> bool:
+    p = Path(path)
+    if p.suffix.lower() in _TEXT_EXTS:
+        return True
+    if detect_binary_type(p):
+        return False
+    try:
+        with open(p, "rb") as f:
+            chunk = f.read(512)
+        if b"\x00" in chunk:
+            return False
+        chunk.decode("utf-8")
+        return True
+    except (OSError, UnicodeDecodeError):
+        return False
+
+
+def classify_payload_file(path: Path) -> tuple[str, bool]:
+    """Return (role, skip). role: readme, primary, companion, binary."""
+    name = path.name
+    low = name.lower()
+    if _README_RE.match(low):
+        return "readme", False
+    if low == "payload.txt":
+        return "primary", False
+    if low == "payload.sh":
+        return "primary", False
+
+    btype = detect_binary_type(path)
+    if btype:
+        return "binary", False
+
+    ext = path.suffix.lower()
+    if ext in _TEXT_EXTS or is_text_payload_file(path):
+        return "companion", False
+
+    return "companion", True
+
+
+def payload_root_files(payload_path: Path | str, device: str = "bunny") -> list[Path]:
+    """Manifest files in a payload root directory (immediate children only)."""
+    p = Path(payload_path).resolve()
+    root = p.parent if p.is_file() else p
+    if not (root / "payload.txt").exists() and not (root / "payload.sh").exists():
+        return [p] if p.is_file() else []
+
+    files: list[Path] = []
+    for child in sorted(root.iterdir()):
+        if not child.is_file() or child.name.startswith("."):
+            continue
+        role, skip = classify_payload_file(child)
+        if skip:
+            continue
+        files.append(child)
+    return files
+
+
+def check_mount_space(mount: str, files: list[Path], buffer: int = 65536) -> None:
+    """Raise FlashError if mount lacks space for files."""
+    try:
+        needed = sum(f.stat().st_size for f in files if f.is_file()) + buffer
+        usage = shutil.disk_usage(mount)
+        if needed > usage.free:
+            raise FlashError(
+                "disk_full",
+                f"Not enough space on device - need {needed // 1024} KB, "
+                f"only {usage.free // 1024} KB free",
+                needed=needed,
+                free=usage.free,
+            )
+    except FlashError:
+        raise
+    except OSError:
+        pass
 
 
 def extract_printable_strings(raw: bytes, min_len: int = 6, limit: int = 16) -> list[str]:
@@ -278,27 +393,50 @@ def flash_bunny(payload_path: str, switch: int = 1,
     switch_dir = Path(mount) / "payloads" / f"switch{switch}"
     switch_dir.mkdir(parents=True, exist_ok=True)
 
-    dest = switch_dir / "payload.txt"
-    try:
-        shutil.copy2(payload, dest)
-        log(f"  ✓ Payload → {switch_dir}/payload.txt", progress_cb)
-
-        # Sync filesystem
+    manifest = payload_root_files(payload, device="bunny")
+    if len(manifest) > 1:
+        log(f"  Flashing payload set ({len(manifest)} files)...", progress_cb)
         try:
-            os.sync()
-        except Exception:
-            pass
+            check_mount_space(mount, manifest)
+        except FlashError as e:
+            log(f"✗ {e}", progress_cb)
+            return False
+        try:
+            for src in manifest:
+                dest = switch_dir / src.name
+                shutil.copy2(src, dest)
+                log(f"  ✓ {src.name} → {switch_dir}/", progress_cb)
+        except OSError as e:
+            if getattr(e, "errno", None) == 28:
+                log("✗ Not enough disk space on Bash Bunny storage", progress_cb)
+            else:
+                log(f"✗ Copy failed: {e}", progress_cb)
+            return False
+    else:
+        dest = switch_dir / "payload.txt"
+        try:
+            check_mount_space(mount, [payload])
+            shutil.copy2(payload, dest)
+            log(f"  ✓ Payload → {switch_dir}/payload.txt", progress_cb)
+        except FlashError as e:
+            log(f"✗ {e}", progress_cb)
+            return False
+        except OSError as e:
+            if getattr(e, "errno", None) == 28:
+                log("✗ Not enough disk space on Bash Bunny storage", progress_cb)
+            else:
+                log(f"✗ Copy failed: {e}", progress_cb)
+            return False
 
-        log("", progress_cb)
-        log("  ✓ FLASH COMPLETE!", progress_cb)
-        log(f"  Flip switch to position {switch} and re-plug to execute.", progress_cb)
-        return True
-    except PermissionError:
-        log("✗ Permission denied. Try: sudo chmod 777 " + mount, progress_cb)
-        return False
-    except Exception as e:
-        log(f"✗ Copy failed: {e}", progress_cb)
-        return False
+    try:
+        os.sync()
+    except Exception:
+        pass
+
+    log("", progress_cb)
+    log("  ✓ FLASH COMPLETE!", progress_cb)
+    log(f"  Flip switch to position {switch} and re-plug to execute.", progress_cb)
+    return True
 
 # ── LAN Turtle ────────────────────────────────────────────────────────────────
 
@@ -1134,6 +1272,8 @@ def flash_device(device: str, payload: dict,
     extra = extra or {}
     cfg = cfg or load_cfg()
     path = payload.get("path", "")
+    if extra.get("flash_set") and payload.get("primary_path"):
+        path = payload["primary_path"]
     if not path:
         log("✗ No file path for this payload.", progress_cb)
         return False

@@ -14,6 +14,13 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/css/xterm.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/lib/xterm.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@xterm/addon-fit@0.10.0/lib/addon-fit.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/bash.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/powershell.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/python.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/cpp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
 <style>
 /* ── RESET & ROOT ─────────────────────────────────────────────────────────── */
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -1155,6 +1162,44 @@ body.defcon34-mode #tsk-logo{
   padding:14px 20px 8px;font-size:14px;letter-spacing:3px;
   color:var(--red);font-weight:700;font-family:var(--display);
 }
+.p-set-header{
+  display:flex;align-items:center;padding:10px 20px 6px 14px;
+  cursor:pointer;gap:12px;border-left:3px solid transparent;
+  transition:all 0.12s;
+}
+.p-set-header:hover{
+  background:color-mix(in srgb, var(--device-accent, var(--yellow)) 8%, transparent);
+}
+.p-set-header.selected-set{
+  background:color-mix(in srgb, var(--device-accent, var(--yellow)) 10%, transparent);
+  border-left-color:var(--device-accent, var(--yellow));
+}
+.p-set-name{
+  flex:1;font-family:var(--display);font-size:13px;letter-spacing:1.5px;
+  color:var(--text-bright);font-weight:700;
+}
+.p-set-header.selected-set .p-set-name{color:var(--device-accent, var(--yellow));}
+.p-file-row{padding-left:34px;}
+.p-file-row .p-name{font-size:13px;font-weight:400;}
+.p-role-badge{
+  font-size:10px;padding:2px 6px;border-radius:2px;letter-spacing:1px;
+  font-family:var(--display);color:var(--text);border:1px solid var(--border);
+  flex-shrink:0;
+}
+.p-role-badge.ro{color:var(--text);opacity:0.85;}
+#preview-code.markdown-preview{
+  white-space:normal;line-height:1.55;
+}
+#preview-code.markdown-preview h1,
+#preview-code.markdown-preview h2,
+#preview-code.markdown-preview h3{
+  color:var(--cyan);margin:12px 0 8px;font-family:var(--display);font-size:13px;
+}
+#preview-code.markdown-preview p{margin:0 0 10px;}
+#preview-code.markdown-preview code{
+  background:rgba(0,229,255,0.08);padding:1px 5px;border-radius:2px;
+}
+#preview-code.markdown-preview ul{margin:0 0 10px 18px;}
 .p-item{
   display:flex;align-items:center;padding:8px 20px;
   cursor:pointer;transition:all 0.12s;gap:12px;
@@ -2526,6 +2571,7 @@ body.presentation-mode .ed-btn{font-size:13px;padding:11px 24px;}
               <span id="center-source">○ PREVIEW</span>
               <span id="center-payload-count" class="center-payload-badge is-hidden" title="Payloads for this device"></span>
               <button type="button" id="btn-new-payload" class="browse-new-payload-btn browse-header-ctl" onclick="createNewPayload()" title="Create a new payload in MY PAYLOADS">+ NEW</button>
+              <button type="button" id="btn-add-package-file" class="browse-new-payload-btn browse-header-ctl is-hidden" onclick="addPackageFile()" title="Add a file to the selected package">+ ADD FILE</button>
               <button type="button" id="btn-snarf" class="snarf-header-btn browse-header-ctl" onclick="showSnarf()" style="display:none" title="SNARF builder (S)">SNARF</button>
               <button type="button" id="lhost-chip" class="lhost-header-chip browse-header-ctl unset" onclick="showConfig()" title="Open CONFIG to set LHOST and LPORT">LHOST not set</button>
             </div>
@@ -2825,6 +2871,7 @@ const S = {
   selectedPayload: null,  // set synchronously on click
   selectedPayloadKey: '',
   selectedSetKey: '',
+  flashSetSelected: false,
   deviceConnected: {},
   lastSnarfCatch: null,
   defcon34: false,
@@ -3424,6 +3471,7 @@ async function init() {
   applyDeviceTheme(S.device);
   updateTurtleActions();
   updatePayloadHeader();
+  initHljsDucky();
   await loadDevicePayloads(S.device);
   await restoreSessionState();
   loadDeviceCounts();
@@ -3926,10 +3974,120 @@ function updateActionButtons() {
   const p = S.selectedPayload || S.payload;
   const hasSelection = !!(p && (p.path || p.name || p.file));
   const hasPath = !!(p && p.path);
+  const viewOnly = !!(p && (p.readonly || p.file_role === 'binary' || (p.file_role === 'readme' && !p.operator_owned)));
+  const canFlashSet = !!(S.flashSetSelected && p && (p.primary_path || p.path));
+  const canFlashSingle = !!(hasPath && !payloadHasGroupedSet(p));
+  const canFlashFile = !!(hasPath && p.is_primary && payloadHasGroupedSet(p) && S.flashSetSelected);
 
-  flash.disabled = !hasPath;
-  edit.disabled = !hasSelection;
+  flash.disabled = !(canFlashSet || canFlashSingle || canFlashFile);
+  edit.disabled = !hasSelection || viewOnly || isBinaryPayload(p);
   save.disabled = !hasSelection;
+  if (edit) edit.textContent = viewOnly ? 'VIEW' : 'EDIT';
+}
+
+function initHljsDucky() {
+  if (typeof hljs === 'undefined') return;
+  if (hljs.getLanguage('ducky')) return;
+  hljs.registerLanguage('ducky', function(hljs) {
+    const KEYWORDS = 'REM DELAY GUI STRING ENTER ALT CTRL SHIFT LEFT RIGHT UP DOWN WINDOWS MENU ESCAPE DELETE BACKSPACE TAB CAPSLOCK PRINTSCREEN SCROLLLOCK PAUSE BREAK INSERT HOME END PAGEUP PAGEDOWN DEFAULT_DELAY DEFAULTCHARDELAY LED ATTACKMODE GET REPEAT';
+    return {
+      case_insensitive: true,
+      keywords: { keyword: KEYWORDS.split(' ') },
+      contains: [hljs.C_LINE_COMMENT_MODE, hljs.QUOTE_STRING_MODE],
+    };
+  });
+}
+
+function hljsLangFor(lang) {
+  const map = { DS1: 'ducky', BB: 'bash', LT: 'bash', SH: 'bash', PS1: 'powershell', PY: 'python', ARD: 'cpp', BAT: 'dos' };
+  return map[lang] || null;
+}
+
+function renderPreviewCode(code, lang, isMarkdown) {
+  const el = document.getElementById('preview-code');
+  if (!el) return;
+  el.classList.remove('markdown-preview');
+  if (isMarkdown && typeof marked !== 'undefined') {
+    el.classList.add('markdown-preview');
+    el.innerHTML = marked.parse(code || '', { breaks: true });
+    return;
+  }
+  const hl = hljsLangFor(lang);
+  if (hl && typeof hljs !== 'undefined') {
+    try {
+      initHljsDucky();
+      el.innerHTML = hljs.highlight(code || '', { language: hl }).value;
+      return;
+    } catch (e) { /* fallback */ }
+  }
+  el.innerHTML = highlightCode(code, lang);
+}
+
+async function selectPayloadSet(setId) {
+  const set = _payloadSets[setId];
+  if (!set) return;
+  S.flashSetSelected = true;
+  S.selectedSetKey = setId.toLowerCase();
+  const primaryIdx = _flatPayloads.findIndex(p =>
+    p.set_id === set.set_id && (p.is_primary || p.file_role === 'primary'));
+  const idx = primaryIdx >= 0 ? primaryIdx : _flatPayloads.findIndex(p => p.set_id === set.set_id);
+  if (idx >= 0) {
+    await selectPayload(idx, true);
+    S.flashSetSelected = true;
+    applyPayloadListSelection();
+    updateActionButtons();
+    updatePackageFileButton();
+  }
+}
+
+async function selectPayload(idx, keepFlashSet) {
+  const p = _flatPayloads[idx];
+  if (!p) return;
+
+  S.payload = p;
+  S.selectedPayload = p;
+  S.selectedPayloadKey = payloadItemKey(p);
+  S.selectedSetKey = payloadSetKey(p);
+  if (!keepFlashSet) S.flashSetSelected = false;
+
+  applyPayloadListSelection();
+
+  const viewOnly = p.readonly || p.file_role === 'binary' || (p.file_role === 'readme' && !p.operator_owned);
+  document.getElementById('preview-title').textContent = viewOnly ? 'VIEW' : 'PREVIEW';
+  document.getElementById('preview-lang').textContent = p.lang || '-';
+  const fileEl = document.getElementById('preview-file');
+  fileEl.textContent = p.display_name || p.file || p.name;
+  fileEl.classList.remove('preview-file--empty');
+  syncPreviewEmptyHint();
+  document.getElementById('preview-desc').textContent = p.desc || '';
+  document.getElementById('right').classList.add('payload-active');
+  updateActionButtons();
+  updateArmedState();
+  updatePackageFileButton();
+
+  let code = '';
+  let previewLang = p.lang;
+  const isMarkdown = p.file_role === 'readme';
+  if (p.path) {
+    try {
+      const r = await fetch('/api/payload/preview', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({path: p.path})
+      });
+      const data = await r.json();
+      if (data.binary) {
+        code = formatBinaryPreview(p, data);
+        previewLang = data.binary_type || 'BIN';
+      } else {
+        code = data.content || '';
+      }
+    } catch(e) {}
+  }
+  if (!code && !isMarkdown) code = getPreviewTemplate(p);
+  renderPreviewCode(code, previewLang, isMarkdown);
+  updateFlashPreview();
+  saveSessionState();
 }
 
 // ── PAYLOADS ──────────────────────────────────────────────────────────────────
@@ -3950,10 +4108,14 @@ async function createNewPayload() {
     toast('Teensy support is coming soon', 'info');
     return;
   }
-  const name = prompt('New payload name:');
+  const isUsb = S.device === 'usb';
+  const name = prompt(isUsb
+    ? 'New payload name:'
+    : 'New package name (2-32 chars: letters, numbers, underscore, hyphen):');
   if (!name || !name.trim()) return;
   try {
-    const r = await fetch('/api/payload/create', {
+    const endpoint = isUsb ? '/api/payload/create' : '/api/payload/package/create';
+    const r = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ device: S.device, name: name.trim() }),
@@ -3963,11 +4125,64 @@ async function createNewPayload() {
       toast(data.error || 'Create failed', 'err');
       return;
     }
-    queuePayloadSelection({ path: data.payload.path });
+    const selPath = isUsb ? data.payload.path : data.primary;
+    queuePayloadSelection({ path: selPath });
     await loadDevicePayloads(S.device);
-    toast('Created in MY PAYLOADS', 'ok');
+    toast(isUsb ? 'Created in MY PAYLOADS' : `Package "${name.trim()}" created`, 'ok');
   } catch (e) {
     toast(`Create failed: ${e}`, 'err');
+  }
+}
+
+function userPackageName(p) {
+  if (!p?.path) return '';
+  const norm = p.path.replace(/\\/g, '/');
+  const m = norm.match(/\/payloads\/[^/]+\/([^/]+)\//);
+  return m ? m[1] : (p.set_id || '');
+}
+
+function updatePackageFileButton() {
+  const btn = document.getElementById('btn-add-package-file');
+  if (!btn) return;
+  const p = S.selectedPayload || S.payload;
+  const show = !!(p && isUserPayload(p) && p.cat === 'MY PAYLOADS' && S.device !== 'usb' && userPackageName(p));
+  btn.classList.toggle('is-hidden', !show);
+}
+
+async function addPackageFile() {
+  const p = S.selectedPayload || S.payload;
+  if (!p || !isUserPayload(p) || p.cat !== 'MY PAYLOADS') {
+    toast('Select a file in your package first', 'warn');
+    return;
+  }
+  const packageName = userPackageName(p);
+  if (!packageName) {
+    toast('Could not resolve package folder', 'err');
+    return;
+  }
+  const filename = prompt('Filename to add (e.g. helper.sh, notes.md):');
+  if (!filename || !filename.trim()) return;
+  try {
+    const r = await fetch('/api/payload/package/file', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        device: S.device,
+        package: packageName,
+        filename: filename.trim(),
+        content: '',
+      }),
+    });
+    const data = await r.json();
+    if (!r.ok || !data.ok) {
+      toast(data.error || 'Add file failed', 'err');
+      return;
+    }
+    queuePayloadSelection({ path: data.path });
+    await loadDevicePayloads(S.device);
+    toast(`Added ${data.filename}`, 'ok');
+  } catch (e) {
+    toast(`Add file failed: ${e}`, 'err');
   }
 }
 
@@ -4191,41 +4406,26 @@ function updateTotalCount() {
 }
 
 let _flatPayloads = [];
+let _payloadSets = {};
 
 function payloadItemKey(p) {
   if (!p) return '';
-  return (p.path || p.file || `${p.cat || ''}::${p.name}`).toLowerCase();
-}
-
-function payloadParentDir(p) {
-  if (!p) return '';
-  const f = (p.file || '').replace(/\\/g, '/');
-  if (f.includes('/')) return f.slice(0, f.lastIndexOf('/')).toLowerCase();
-  const path = (p.path || '').replace(/\\/g, '/');
-  if (path.includes('/')) return path.slice(0, path.lastIndexOf('/')).toLowerCase();
-  return '';
-}
-
-function payloadSetSiblings(p) {
-  if (!p) return [];
-  const parent = payloadParentDir(p);
-  if (!parent) return [p];
-  const nameKey = (p.name || '').toLowerCase();
-  return _flatPayloads.filter(x =>
-    payloadParentDir(x) === parent && (x.name || '').toLowerCase() === nameKey
-  );
-}
-
-function payloadHasGroupedSet(p) {
-  return payloadSetSiblings(p).length > 1;
+  if (p.path) return p.path.toLowerCase();
+  return `${p.set_id || ''}::${p.display_name || p.file || p.name || ''}`.toLowerCase();
 }
 
 function payloadSetKey(p) {
   if (!p) return '';
-  if (payloadHasGroupedSet(p)) {
-    return `${payloadParentDir(p)}::${(p.name || '').toLowerCase()}`;
-  }
-  return payloadItemKey(p);
+  return (p.set_id || payloadItemKey(p)).toLowerCase();
+}
+
+function payloadSetSiblings(p) {
+  if (!p?.set_id) return p ? [p] : [];
+  return _flatPayloads.filter(x => x.set_id === p.set_id);
+}
+
+function payloadHasGroupedSet(p) {
+  return payloadSetSiblings(p).length > 1;
 }
 
 function payloadItemClasses(p) {
@@ -4233,25 +4433,32 @@ function payloadItemClasses(p) {
   if (!active) return '';
   const itemKey = S.selectedPayloadKey || payloadItemKey(active);
   const classes = [];
-  if (payloadHasGroupedSet(active)) {
-    const setKey = S.selectedSetKey || payloadSetKey(active);
-    if (setKey && payloadSetKey(p) === setKey) classes.push('selected-set');
-  }
+  const setKey = S.selectedSetKey || payloadSetKey(active);
+  if (setKey && payloadSetKey(p) === setKey) classes.push('selected-set');
   if (itemKey && payloadItemKey(p) === itemKey) classes.push('selected-primary');
   return classes.join(' ');
+}
+
+function setHeaderClasses(setId) {
+  const active = S.selectedPayload || S.payload;
+  if (!active) return '';
+  const setKey = S.selectedSetKey || payloadSetKey(active);
+  return setKey && setKey === (setId || '').toLowerCase() ? 'selected-set' : '';
 }
 
 function applyPayloadListSelection() {
   const active = S.selectedPayload || S.payload;
   if (!active) return;
   const itemKey = S.selectedPayloadKey || payloadItemKey(active);
-  const grouped = payloadHasGroupedSet(active);
-  const setKey = grouped ? (S.selectedSetKey || payloadSetKey(active)) : '';
+  const setKey = S.selectedSetKey || payloadSetKey(active);
+  document.querySelectorAll('.p-set-header').forEach(el => {
+    el.classList.toggle('selected-set', !!(setKey && el.dataset.setId === setKey));
+  });
   document.querySelectorAll('.p-item').forEach(el => {
     const idx = parseInt(el.dataset.idx, 10);
     const p = _flatPayloads[idx];
     if (!p) return;
-    el.classList.toggle('selected-set', !!(grouped && setKey && payloadSetKey(p) === setKey));
+    el.classList.toggle('selected-set', !!(setKey && payloadSetKey(p) === setKey));
     el.classList.toggle('selected-primary', !!(itemKey && payloadItemKey(p) === itemKey));
   });
 }
@@ -4270,6 +4477,7 @@ function sortUsbPayloadGroups(groups) {
 function renderPayloads(groups) {
   const list = document.getElementById('payload-list');
   _flatPayloads = [];
+  _payloadSets = {};
   if (S.device === 'usb' && groups?.length) groups = sortUsbPayloadGroups(groups);
   const color  = getDeviceColor(S.device) || '#fff';
   const isReal = (S.repoExists || {})[S.device];
@@ -4287,26 +4495,62 @@ function renderPayloads(groups) {
   let idx = 0;
   for (const group of groups) {
     html += `<div class="p-cat">${group.cat}</div>`;
-    for (const p of group.payloads) {
-      _flatPayloads.push(p);
-      const n = idx++;
-      const tags = (p.tags||[]).map(t =>
+    const sets = group.sets || [];
+    for (const set of sets) {
+      const setKey = (set.set_id || set.name || '').toLowerCase();
+      _payloadSets[setKey] = set;
+      const tags = (set.tags || []).map(t =>
         `<span class="tag tag-${t}">${t}</span>`).join('');
-      const sel = payloadItemClasses(p);
-      const userBtns = isUserPayload(p)
-        ? `<button type="button" class="p-item-rename" onclick="renameUserPayload(event,${n})" title="Rename payload file">REN</button>`
-          + `<button type="button" class="p-item-delete" onclick="deleteUserPayload(event,${n})" title="Delete from MY PAYLOADS">DEL</button>`
-        : '';
-      const lureHint = (p.cat === 'LURES' && p.file)
-        ? `<span class="p-lure-victim">→ ${p.file}</span>` : '';
-      html += `<div class="p-item${sel ? ' ' + sel : ''}" onclick="selectPayload(${n})" data-idx="${n}">
-        <span class="p-num">#${String(n+1).padStart(2,'0')}</span>
-        <div class="p-icon" style="color:${color}"></div>
-        <span class="p-name">${p.name}${lureHint}</span>
-        <div class="p-tags">${tags}</div>
-        <span class="p-lang">${p.lang||''}</span>
-        ${userBtns}
-      </div>`;
+      const showHeader = (set.files || []).length !== 1 || set.name;
+      if (showHeader) {
+        html += `<div class="p-set-header ${setHeaderClasses(setKey)}"
+          data-set-id="${setKey}" onclick="selectPayloadSet('${setKey.replace(/'/g, "\\'")}')">
+          <div class="p-icon" style="color:${color}"></div>
+          <span class="p-set-name">${set.set_name || set.name}</span>
+          <div class="p-tags">${tags}</div>
+        </div>`;
+      }
+      for (const f of (set.files || [])) {
+        const row = {
+          name: set.name,
+          set_id: set.set_id,
+          set_name: set.set_name || set.name,
+          cat: group.cat,
+          tags: set.tags || [],
+          desc: set.desc || '',
+          lang: f.lang || set.lang,
+          file: f.file,
+          path: f.path,
+          display_name: f.display_name,
+          file_role: f.file_role,
+          readonly: f.readonly,
+          is_primary: f.is_primary,
+          operator_owned: set.operator_owned,
+          primary_path: set.primary_path,
+          binary_type: f.binary_type,
+          size: f.size,
+          package_id: set.package_id,
+        };
+        _flatPayloads.push(row);
+        const n = idx++;
+        const sel = payloadItemClasses(row);
+        const roleBadge = row.readonly || row.file_role === 'binary' || row.file_role === 'readme'
+          ? `<span class="p-role-badge ro">RO</span>` : '';
+        const userBtns = isUserPayload(row)
+          ? `<button type="button" class="p-item-rename" onclick="renameUserPayload(event,${n})" title="Rename">REN</button>`
+            + `<button type="button" class="p-item-delete" onclick="deleteUserPayload(event,${n})" title="Delete">DEL</button>`
+          : '';
+        const lureHint = (row.cat === 'LURES' && row.file)
+          ? `<span class="p-lure-victim">→ ${row.file}</span>` : '';
+        const label = row.display_name || row.file || row.name;
+        html += `<div class="p-item p-file-row${sel ? ' ' + sel : ''}" onclick="selectPayload(${n})" data-idx="${n}">
+          <span class="p-num">#${String(n+1).padStart(2,'0')}</span>
+          <span class="p-name">${label}${lureHint}</span>
+          ${roleBadge}
+          <span class="p-lang">${row.lang || ''}</span>
+          ${userBtns}
+        </div>`;
+      }
     }
   }
   list.innerHTML = html || '<div class="cfg-hint" style="padding:20px">No payloads found.</div>';
@@ -4341,55 +4585,7 @@ function syncPayloadSelectionAfterReload(prevKey) {
   syncPreviewEmptyHint();
   updateActionButtons();
   updateArmedState();
-}
-
-async function selectPayload(idx) {
-  const p = _flatPayloads[idx];
-  if (!p) return;
-
-  // Set BOTH S.payload and S.selectedPayload synchronously BEFORE any await
-  S.payload = p;
-  S.selectedPayload = p;
-  S.selectedPayloadKey = payloadItemKey(p);
-  S.selectedSetKey = payloadSetKey(p);
-
-  applyPayloadListSelection();
-
-  // Update preview header synchronously
-  document.getElementById('preview-title').textContent = 'PREVIEW';
-  document.getElementById('preview-lang').textContent = p.lang || '-';
-  const fileEl = document.getElementById('preview-file');
-  fileEl.textContent = p.file || p.name;
-  fileEl.classList.remove('preview-file--empty');
-  syncPreviewEmptyHint();
-  document.getElementById('preview-desc').textContent = p.desc || '';
-  document.getElementById('right').classList.add('payload-active');
-  updateActionButtons();
-  updateArmedState();
-
-  // Load real file content async (preview only)
-  let code = '';
-  let previewLang = p.lang;
-  if (p.path) {
-    try {
-      const r = await fetch('/api/payload/preview', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({path: p.path})
-      });
-      const data = await r.json();
-      if (data.binary) {
-        code = formatBinaryPreview(p, data);
-        previewLang = 'LNK';
-      } else {
-        code = data.content || '';
-      }
-    } catch(e) {}
-  }
-  if (!code) code = getPreviewTemplate(p);
-  document.getElementById('preview-code').innerHTML = highlightCode(code, previewLang);
-  updateFlashPreview();
-  saveSessionState();
+  updatePackageFileButton();
 }
 
 function getPreviewTemplate(p) {
@@ -4406,21 +4602,25 @@ function getPreviewTemplate(p) {
 
 function isBinaryPayload(payload) {
   if (!payload) return false;
-  if (payload.lang === 'LNK') return true;
-  return /\.lnk$/i.test(payload.file || '');
+  if (payload.file_role === 'binary') return true;
+  if (payload.lang === 'LNK' || payload.binary_type) return true;
+  return /\.lnk$/i.test(payload.file || payload.display_name || '');
 }
 
 function formatBinaryPreview(payload, data) {
-  const name = payload.file || payload.name || 'shortcut';
-  const type = data.binary_type || payload.lang || 'BIN';
+  const name = payload.display_name || payload.file || payload.name || 'file';
+  const type = data.binary_type || payload.binary_type || payload.lang || 'BIN';
   const size = data.size != null ? `${data.size.toLocaleString()} bytes` : 'unknown size';
   const lines = [
-    `# ${name} (${type} · ${size})`,
+    `# ${name}`,
+    `# ${type} · ${size}`,
     '#',
-    '# Windows shortcut - binary file, not a text script.',
-    '# FLASH copies it verbatim and deploys companion scripts in the package.',
-    '# Edit the companion .ps1 in MY PAYLOADS / EXFILS, or rebuild in SNARF → LURE.',
+    '# Binary file - not a text script.',
+    '# FLASH copies it with the payload set when you select the payload header and flash.',
   ];
+  if (type === 'LNK') {
+    lines.push('# Edit companion .ps1 in MY PAYLOADS / EXFILS, or rebuild in SNARF → LURE.');
+  }
   const strings = data.strings_preview || [];
   if (strings.length) {
     lines.push('#', '# Embedded strings (preview):');
@@ -4475,12 +4675,10 @@ async function onSearch(e) {
     const color = getDeviceColor(S.device) || '#fff';
     let html = `<div class="p-cat">${data.count} RESULTS FOR "${q.toUpperCase()}"</div>`;
     data.results.forEach((p, idx) => {
-      const tags = (p.tags||[]).map(t=>`<span class="tag tag-${t}">${t}</span>`).join('');
+      const label = p.display_name || p.file || p.name;
       html += `<div class="p-item" onclick="selectPayload(${idx})">
         <span class="p-num">#${String(idx+1).padStart(2,'0')}</span>
-        <div class="p-icon" style="color:${color}"></div>
-        <span class="p-name">${p.name}</span>
-        <div class="p-tags">${tags}</div>
+        <span class="p-name">${label}</span>
         <span class="p-lang">${p.lang||''}</span>
       </div>`;
     });
@@ -5158,7 +5356,10 @@ async function doFlash() {
   document.getElementById('flash-bar-wrap').style.display = 'flex';
   animateFlashBar();
   showLog();
-  logLine(`⚡ Flashing ${S.payload.name} → ${S.device.toUpperCase()}`, 'info');
+  logLine(`⚡ Flashing ${S.payload.set_name || S.payload.name} → ${S.device.toUpperCase()}`, 'info');
+  if (S.flashSetSelected && payloadHasGroupedSet(S.payload)) {
+    logLine('  Payload set - copying all root files in package', 'info');
+  }
   if (S.device === 'usb') {
     logLine('  Plain USB stick - copies payload + RUN_PAYLOAD launcher', 'info');
   }
@@ -5192,14 +5393,20 @@ async function doFlash() {
       onFlashDone(false);
     }
   }, 120000);
+  const flashPayload = { ...S.payload };
+  if (S.flashSetSelected && flashPayload.primary_path) {
+    flashPayload.path = flashPayload.primary_path;
+    flashPayload.file = flashPayload.primary_file || flashPayload.file;
+  }
   await fetch('/api/flash', {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify({
       device: S.device,
-      payload: S.payload,
+      payload: flashPayload,
       extra: {
         switch: S.switch,
+        flash_set: !!(S.flashSetSelected && payloadHasGroupedSet(S.payload)),
         usb_deploy: S.device === 'usb' ? (S.usbDeploy || 'root') : undefined,
         usb_mount_path: S.device === 'usb' ? (S.usbMountPath || '') : undefined,
       },
@@ -5616,8 +5823,7 @@ async function edSave() {
       if (S.selectedPayload) {
         const updatedPayload = Object.assign({}, S.selectedPayload, {path: data.path});
         const newContent = document.getElementById('editor-textarea').value;
-        document.getElementById('preview-code').innerHTML =
-          highlightCode(newContent, updatedPayload.lang);
+        renderPreviewCode(newContent, updatedPayload.lang, updatedPayload.file_role === 'readme');
       }
       setTimeout(() => {
         statusEl.textContent = `Editing: ${data.path}`;

@@ -128,6 +128,14 @@ Optional for v1.0.0 but recommended: one HAK5 device flash (Bunny, Ducky, or Tur
 | 4.7 | `update all` pulls without error | No | | |
 | 4.8 | USB: exfil saves under EXFILS; lure packages under LURES; + NEW under MY PAYLOADS | No | | |
 | 4.9 | USB + NEW creates script in MY PAYLOADS | No | | |
+| 4.10 | Bunny (cloned): multi-file payload shows set header + file rows (e.g. BunnyLogger) | No | | |
+| 4.11 | Click set header → FLASH enabled; flashes all root files to switch folder | No | | |
+| 4.12 | README opens as markdown VIEW (not raw editor) | No | | |
+| 4.13 | Binary companion shows summary row (ELF · N KB), not garbled dump | No | | |
+| 4.14 | + NEW on Bunny/Ducky/Turtle creates MY PAYLOADS package folder | No | | |
+| 4.15 | + ADD FILE adds companion; duplicate filename rejected (409) | No | | |
+| 4.16 | REN/DEL on operator-owned package files works | No | | |
+| 4.17 | Flash with insufficient disk space shows clear error in terminal | No | | |
 
 ---
 

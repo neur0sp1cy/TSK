@@ -78,70 +78,45 @@ def update_repo(device: str, progress_cb: Callable[[str], None] = None) -> bool:
         return False
 
 def index_payloads(device: str) -> list[dict]:
-    """
-    Walk a cloned repo and return a list of payload dicts.
-    Each dict has: name, file, path, cat, tags, lang, desc
-    """
+    """Return flat payload rows (one per file) from payload sets."""
     dest = repo_path(device)
     if not dest.exists():
         return []
-
-    exts = PAYLOAD_EXTS.get(device, [".txt"])
-    payloads = []
-
-    # HAK5 repos have a payloads/ subdir
     search_root = dest / "payloads" if (dest / "payloads").exists() else dest
+    from payload_sets import index_payload_sets, flatten_set_to_rows
 
-    for root, dirs, files in os.walk(search_root):
-        # Skip hidden dirs and .git
-        dirs[:] = [d for d in dirs if not d.startswith(".")]
-        for fname in files:
-            fpath = Path(root) / fname
-            ext = fpath.suffix.lower()
-            if ext not in exts and ext != "":
-                continue
-            if fname.startswith("."):
-                continue
+    sets = index_payload_sets(search_root, device, _parse_payload_header, operator_owned=False)
+    rows: list[dict] = []
+    for s in sets:
+        rows.extend(flatten_set_to_rows(s))
+    return rows
 
-            rel   = fpath.relative_to(search_root)
-            parts = rel.parts
 
-            lang_map = {
-                "ducky": "DS1", "bunny": "BB", "turtle": "LT",
-                "teensy": "ARD", "usb": "PY",
-            }
+def index_payload_sets_for_device(device: str) -> list[dict]:
+    dest = repo_path(device)
+    if not dest.exists():
+        return []
+    search_root = dest / "payloads" if (dest / "payloads").exists() else dest
+    from payload_sets import index_payload_sets
 
-            # HAK5 repo structure:
-            #   payloads/<Category>/<PayloadName>/payload.txt
-            # Use parent folder name as payload name when possible
-            if len(parts) >= 3:
-                # e.g. credentials/WifiGrabber/payload.txt
-                cat  = parts[0].replace("_"," ").replace("-"," ").title().upper()
-                name = parts[-2].replace("_"," ").replace("-"," ").title()
-            elif len(parts) == 2:
-                # e.g. credentials/quickcreds.txt
-                cat  = parts[0].replace("_"," ").replace("-"," ").title().upper()
-                name = fpath.stem.replace("_"," ").replace("-"," ").title()
-            else:
-                cat  = "GENERAL"
-                name = fpath.stem.replace("_"," ").replace("-"," ").title()
+    return index_payload_sets(search_root, device, _parse_payload_header, operator_owned=False)
 
-            # Read first few lines for description / tags
-            desc, tags = _parse_payload_header(fpath, device)
 
-            payloads.append({
-                "name": name,
-                "file": str(rel),
-                "path": str(fpath),
-                "cat":  cat,
-                "tags": tags,
-                "lang": lang_map.get(device, "TXT"),
-                "desc": desc,
-            })
+def index_user_payload_sets(device: str, username: str = "default") -> list[dict]:
+    """Index MY PAYLOADS package folders under users/<user>/payloads/<device>/."""
+    if device == "usb":
+        return []
+    base = cfg_mod.USERS_DIR / username / "payloads" / device
+    if not base.exists():
+        return []
 
-    # Sort by category then name
-    payloads.sort(key=lambda p: (p["cat"], p["name"]))
-    return payloads
+    from payload_sets import index_payload_sets
+
+    sets = index_payload_sets(base, device, _parse_payload_header, operator_owned=True)
+    for s in sets:
+        s["cat"] = "MY PAYLOADS"
+        s["operator_owned"] = True
+    return sets
 
 
 def index_user_payloads(device: str, username: str = "default") -> list[dict]:
@@ -252,7 +227,7 @@ def repo_status(device: str) -> dict:
         return {"cloned": False, "commits": 0, "branch": "", "payload_count": 0}
     rc, branch, _ = run_git(["rev-parse", "--abbrev-ref", "HEAD"], cwd=dest)
     _, log, _     = run_git(["rev-list", "--count", "HEAD"], cwd=dest)
-    count = len(index_payloads(device))
+    count = len(index_payload_sets_for_device(device))
     return {
         "cloned": True,
         "branch": branch if rc == 0 else "unknown",
