@@ -16,7 +16,7 @@ from typing import Optional
 # ── Known device USB IDs ──────────────────────────────────────────────────────
 
 KNOWN_DEVICES = {
-    # Hak5 USB Rubber Ducky (OG) — HID keyboard mode
+    # Hak5 USB Rubber Ducky (OG) - HID keyboard mode
     (0x03eb, 0x2042): {
         "name": "USB Rubber Ducky",
         "short": "DUCKY",
@@ -24,7 +24,7 @@ KNOWN_DEVICES = {
         "color": "yellow",
         "mount_type": "hid",
     },
-    # OG Rubber Ducky — Atmel HID (your device)
+    # OG Rubber Ducky - Atmel HID (your device)
     (0x03eb, 0x2401): {
         "name": "USB Rubber Ducky",
         "short": "DUCKY",
@@ -32,7 +32,7 @@ KNOWN_DEVICES = {
         "color": "yellow",
         "mount_type": "hid",
     },
-    # Hak5 Bash Bunny (OG) — multiple modes
+    # Hak5 Bash Bunny (OG) - multiple modes
     (0x1d6b, 0x0104): {
         "name": "Bash Bunny",
         "short": "BUNNY",
@@ -40,7 +40,7 @@ KNOWN_DEVICES = {
         "color": "white",
         "mount_type": "mass_storage",
     },
-    # Bash Bunny OG — RNDIS/Ethernet Gadget mode (most common)
+    # Bash Bunny OG - RNDIS/Ethernet Gadget mode (most common)
     (0xf000, 0xfff0): {
         "name": "Bash Bunny",
         "short": "BUNNY",
@@ -72,7 +72,7 @@ KNOWN_DEVICES = {
         "color": "green",
         "mount_type": "ethernet",
     },
-    # OG LAN Turtle — Realtek RTL8152 Fast Ethernet (your device)
+    # OG LAN Turtle - Realtek RTL8152 Fast Ethernet (your device)
     (0x0bda, 0x8152): {
         "name": "LAN Turtle",
         "short": "TURTLE",
@@ -124,7 +124,7 @@ def _detect_via_pyusb() -> list[tuple[int, int]]:
         return []
 
 def _detect_via_sysfs() -> list[tuple[int, int]]:
-    """Parse /sys/bus/usb/devices on Linux — no root needed."""
+    """Parse /sys/bus/usb/devices on Linux - no root needed."""
     found = []
     try:
         base = "/sys/bus/usb/devices"
@@ -211,7 +211,7 @@ def _find_mount_path(key: str) -> Optional[str]:
 # ── Main poll function ────────────────────────────────────────────────────────
 
 def _enumerate_usb_ids() -> list[tuple[int, int]]:
-    """Enumerate USB VID/PID pairs — sysfs + pyusb primary, lsusb on backend failure."""
+    """Enumerate USB VID/PID pairs - sysfs + pyusb primary, lsusb on backend failure."""
     ids: list[tuple[int, int]] = []
     try:
         ids = _detect_via_sysfs()
@@ -232,7 +232,7 @@ def poll_devices() -> dict[str, DeviceStatus]:
     Always returns entries for all known device types (connected or not).
     """
 
-    # Build baseline — all disconnected
+    # Build baseline - all disconnected
     statuses: dict[str, DeviceStatus] = {}
     seen_keys = set()
 

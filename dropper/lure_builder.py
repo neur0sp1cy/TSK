@@ -1,5 +1,5 @@
 """
-USB lure builder (Phase 5.2) — deceptive files that run a payload when opened.
+USB lure builder (Phase 5.2) - deceptive files that run a payload when opened.
 Windows: LNK shortcuts · Linux: bash lure + .desktop entry
 """
 

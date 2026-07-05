@@ -235,3 +235,4 @@ web/static/music/*
 # ── Local planning notes (never commit) ───────────────────────────────────────
 .plan/
 .cursor/
+TECHNOLOGY.md

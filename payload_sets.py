@@ -87,6 +87,18 @@ def _is_payload_root(names_lower: set[str], device: str) -> bool:
     return False
 
 
+def _is_hidden_bunny_deploy_slot(root: Path, search_root: Path, device: str) -> bool:
+    """Hide upstream switch1/switch2 placeholder folders from browse (FLASH still uses switch UI)."""
+    if device != "bunny":
+        return False
+    try:
+        rel = root.relative_to(search_root)
+    except ValueError:
+        return False
+    parts = tuple(p.lower() for p in rel.parts)
+    return len(parts) == 1 and parts[0] in ("switch1", "switch2")
+
+
 def discover_payload_roots(search_root: Path, device: str) -> list[Path]:
     roots: list[Path] = []
     if not search_root.is_dir():
@@ -96,7 +108,9 @@ def discover_payload_roots(search_root: Path, device: str) -> list[Path]:
         dirs[:] = [d for d in dirs if not d.startswith(".")]
         names_lower = {f.lower() for f in files}
         if _is_payload_root(names_lower, device):
-            roots.append(Path(root).resolve())
+            root_path = Path(root).resolve()
+            if not _is_hidden_bunny_deploy_slot(root_path, search_root, device):
+                roots.append(root_path)
             dirs.clear()
     return roots
 
@@ -269,15 +283,133 @@ def flatten_set_to_rows(payload_set: dict) -> list[dict]:
     return rows
 
 
+_PINNED_CAT_ORDER = ("MY PAYLOADS",)
+
+
+def sort_payload_categories(cats: list[str]) -> list[str]:
+    """Alphabetical categories with operator-owned MY PAYLOADS pinned last."""
+    pinned = [c for c in _PINNED_CAT_ORDER if c in cats]
+    rest = sorted((c for c in cats if c not in _PINNED_CAT_ORDER), key=str.lower)
+    return rest + pinned
+
+
 def sets_to_grouped_db(sets: list[dict]) -> list[dict]:
     by_cat: dict[str, list] = {}
     for s in sets:
         by_cat.setdefault(s["cat"], []).append(s)
-    return [{"cat": cat, "sets": by_cat[cat]} for cat in sorted(by_cat)]
+    return [{"cat": cat, "sets": by_cat[cat]} for cat in sort_payload_categories(list(by_cat))]
 
 
 def count_sets(sets: list[dict]) -> int:
     return len(sets)
+
+
+def _load_turtle_module_list(modules_dir: Path) -> dict[str, str]:
+    listing = modules_dir / "module_list"
+    out: dict[str, str] = {}
+    if not listing.is_file():
+        return out
+    try:
+        for line in listing.read_text(encoding="utf-8", errors="ignore").splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            parts = line.split(None, 1)
+            if len(parts) == 2:
+                out[parts[0]] = parts[1].strip()
+    except OSError:
+        pass
+    return out
+
+
+def _parse_turtle_module_desc(fpath: Path) -> str:
+    try:
+        with open(fpath, encoding="utf-8", errors="ignore") as f:
+            for _ in range(25):
+                line = f.readline()
+                if not line:
+                    break
+                m = re.search(r'DESCRIPTION=["\']([^"\']+)["\']', line.strip())
+                if m:
+                    return m.group(1).strip()[:120]
+    except OSError:
+        pass
+    return ""
+
+
+def _turtle_module_tags(name: str, desc: str) -> list[str]:
+    tag_keywords = {
+        "cred": "CREDS", "password": "CREDS", "hash": "CREDS", "quickcreds": "CREDS",
+        "exfil": "EXFIL", "steal": "EXFIL", "copy": "EXFIL", "dump": "EXFIL",
+        "recon": "RECON", "enum": "RECON", "scan": "RECON", "nmap": "RECON", "sniff": "RECON",
+        "persist": "PERSIST", "autossh": "PERSIST", "tunnel": "PERSIST", "ssh": "PERSIST",
+        "exec": "EXEC", "shell": "EXEC", "meterpreter": "EXEC", "netcat": "EXEC",
+        "net": "NET", "network": "NET", "dns": "NET", "vpn": "NET", "openvpn": "NET",
+        "spoof": "NET", "responder": "NET", "portfwd": "NET",
+    }
+    tags: list[str] = []
+    blob = f"{name} {desc}".lower()
+    for kw, tag in tag_keywords.items():
+        if kw in blob and tag not in tags:
+            tags.append(tag)
+    return tags[:3] if tags else ["EXEC"]
+
+
+def index_turtle_module_sets(
+    modules_dir: Path,
+    parse_header: Callable | None = None,
+) -> list[dict]:
+    """Index LAN Turtle modules: single extensionless files under modules/."""
+    if not modules_dir.is_dir():
+        return []
+
+    module_list = _load_turtle_module_list(modules_dir)
+    skip = {"module_list"}
+    sets: list[dict] = []
+
+    for fpath in sorted(modules_dir.iterdir(), key=lambda p: p.name.lower()):
+        if not fpath.is_file() or fpath.name.startswith(".") or fpath.name in skip:
+            continue
+        try:
+            if fpath.stat().st_size > MAX_TEXT_BYTES:
+                continue
+        except OSError:
+            continue
+
+        stem = fpath.stem or fpath.name
+        set_name = _title_name(stem)
+        desc = module_list.get(fpath.name) or module_list.get(stem) or _parse_turtle_module_desc(fpath)
+        if not desc and parse_header:
+            desc, _ = parse_header(fpath, "turtle")
+        if not desc:
+            desc = f"{set_name} module"
+        tags = _turtle_module_tags(stem, desc)
+        rel_file = f"modules/{fpath.name}"
+        resolved = str(fpath.resolve())
+
+        sets.append({
+            "set_id": rel_file,
+            "name": set_name,
+            "set_name": set_name,
+            "cat": "MODULES",
+            "tags": tags,
+            "desc": desc,
+            "lang": "LT",
+            "primary_path": resolved,
+            "primary_file": fpath.name,
+            "operator_owned": False,
+            "files": [{
+                "display_name": fpath.name,
+                "file": rel_file,
+                "path": resolved,
+                "file_role": "primary",
+                "readonly": False,
+                "lang": "SH",
+                "is_primary": True,
+            }],
+        })
+
+    return sets
 
 
 def manifest_paths_for_set(payload_set: dict) -> list[Path]:

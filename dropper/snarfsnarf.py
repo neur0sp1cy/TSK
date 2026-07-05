@@ -1,5 +1,5 @@
 """
-SnarfSnarf — visual exfil script generator (Phase 5.1).
+SnarfSnarf - visual exfil script generator (Phase 5.1).
 Builds PowerShell / Bash payloads from operator checkbox selections.
 """
 

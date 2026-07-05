@@ -1,5 +1,5 @@
 """
-Path confinement — prevent directory traversal on file read/write APIs.
+Path confinement - prevent directory traversal on file read/write APIs.
 """
 
 import os

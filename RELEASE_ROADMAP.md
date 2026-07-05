@@ -141,6 +141,22 @@ Help (`H`) covers TSK operator workflow, not DuckyScript or Bash Bunny syntax. B
 
 **Effort:** Small for Help + links; Medium for editor chips.
 
+### 4E | USB Dropper decoy / callback files (parking-lot drop)
+
+Physical USB drops are a common pen-test scenario: a stick left in a parking lot or lobby gets plugged in by curious staff. Operators need benign-looking files on the stick that **phone home to SecOps / central IT** when opened, without looking like obvious malware.
+
+| # | Feature | Notes |
+|---|---------|-------|
+| 1 | **Attach decoy files to flash** | Copy operator-selected files (PDF, DOCX, XLSX, etc.) onto the stick alongside lure/exfil payloads |
+| 2 | **Callback on open** | LNK / README / `.desktop` wrappers that run a minimal check-in stub when the decoy is opened (reuse phone-home CATCH flow) |
+| 3 | **AV-conscious templates** | Prefer signed-looking names, no obfuscation, small PowerShell/Bash stubs; document lab-only use and detection expectations |
+| 4 | **Package builder UI** | SNARF or LURES tab: pick decoy file + optional callback stub; preview full stick layout before FLASH |
+| 5 | **CATCH tagging** | Tag uploads as `decoy-open` vs exfil so operators can report "file was opened at 14:32" in client deliverables |
+
+**Use case:** Authorized red-team / physical social engineering - "someone found the USB and opened the annual-report.pdf shortcut."
+
+**Effort:** Medium (file attach on flash + lure template variants + CATCH metadata).
+
 ### 4D | Boss Mode (panic / decoy screen)
 
 When someone walks in unexpectedly, operators need a one-key escape hatch that hides payloads, SNARF, and device status behind something boring and plausible.
@@ -165,7 +181,8 @@ After v1.0.0 tag
   1   + NEW / MY PAYLOADS for Ducky, Bunny, Turtle (v1.0.1)
   2   DEVICE REF in Help (+ HAK5 doc links)
   3   Boss Mode (decoy screen + hotkey)
-  4   Optional polish: editor command chips, demo on command
+  4   USB Dropper decoy/callback files (parking-lot drop)
+  5   Optional polish: editor command chips, demo on command
 ```
 
 ---

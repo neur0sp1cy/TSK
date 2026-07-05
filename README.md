@@ -20,8 +20,6 @@ Modern web rebuild of **The Skeleton Key** (2018 TUI lineage). GitHub repo: **[n
 
 **By [Neur0Sp1cy](https://github.com/neur0sp1cy)**
 
-Special thanks to **derv82** for helping inspire the original TSK vision.
-
 **Contact:** [neur0sp1cy@proton.me](mailto:neur0sp1cy@proton.me) - questions, concerns, and comments.
 
 ---

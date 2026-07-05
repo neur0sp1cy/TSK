@@ -1,5 +1,5 @@
 """
-TSK built-in payload database — shared by the web server.
+TSK built-in payload database - shared by the web server.
 Placeholder payloads shown until device repos are cloned.
 """
 

@@ -55,7 +55,12 @@ def clone_repo(device: str, progress_cb: Callable[[str], None] = None) -> bool:
 
     if progress_cb: progress_cb(f"Cloning {url} ...")
     dest.parent.mkdir(parents=True, exist_ok=True)
-    rc, out, err = run_git(["clone", "--depth=1", url, str(dest)])
+    clone_args = ["clone", "--depth=1"]
+    # Turtle modules live on gh-pages, not main.
+    if device == "turtle":
+        clone_args.extend(["-b", "gh-pages"])
+    clone_args.extend([url, str(dest)])
+    rc, out, err = run_git(clone_args)
     if rc == 0:
         if progress_cb: progress_cb(f"✓ Cloned {device} repo")
         return True
@@ -82,10 +87,14 @@ def index_payloads(device: str) -> list[dict]:
     dest = repo_path(device)
     if not dest.exists():
         return []
-    search_root = dest / "payloads" if (dest / "payloads").exists() else dest
-    from payload_sets import index_payload_sets, flatten_set_to_rows
+    from payload_sets import index_payload_sets, index_turtle_module_sets, flatten_set_to_rows
 
-    sets = index_payload_sets(search_root, device, _parse_payload_header, operator_owned=False)
+    if device == "turtle":
+        modules_dir = dest / "modules"
+        sets = index_turtle_module_sets(modules_dir, _parse_payload_header) if modules_dir.is_dir() else []
+    else:
+        search_root = dest / "payloads" if (dest / "payloads").exists() else dest
+        sets = index_payload_sets(search_root, device, _parse_payload_header, operator_owned=False)
     rows: list[dict] = []
     for s in sets:
         rows.extend(flatten_set_to_rows(s))
@@ -95,6 +104,12 @@ def index_payloads(device: str) -> list[dict]:
 def index_payload_sets_for_device(device: str) -> list[dict]:
     dest = repo_path(device)
     if not dest.exists():
+        return []
+    if device == "turtle":
+        from payload_sets import index_turtle_module_sets
+        modules_dir = dest / "modules"
+        if modules_dir.is_dir():
+            return index_turtle_module_sets(modules_dir, _parse_payload_header)
         return []
     search_root = dest / "payloads" if (dest / "payloads").exists() else dest
     from payload_sets import index_payload_sets

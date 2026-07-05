@@ -1,5 +1,5 @@
 """
-Browser SSH bridge for LAN Turtle — streams OpenSSH over WebSocket.
+Browser SSH bridge for LAN Turtle - streams OpenSSH over WebSocket.
 SSH runs in a new session on a dedicated PTY so the password prompt appears
 in the browser xterm, not the server's terminal.
 """
@@ -16,7 +16,7 @@ import subprocess
 import termios
 from fastapi import WebSocket, WebSocketDisconnect
 
-# OG LAN Turtle — match manual ssh that works on OpenSSH 9.x
+# OG LAN Turtle - match manual ssh that works on OpenSSH 9.x
 TURTLE_SSH_OPTS = [
     "-o", "ConnectTimeout=15",
     "-o", "StrictHostKeyChecking=no",
@@ -153,7 +153,7 @@ def _terminate_proc(proc: subprocess.Popen) -> None:
 async def handle_turtle_ssh(ws: WebSocket, cfg: dict) -> None:
     """Bridge WebSocket ↔ ssh via PTY (interactive LAN Turtle shell)."""
     if not shutil.which("ssh"):
-        await ws.send_json({"type": "error", "msg": "ssh not found — install OpenSSH client"})
+        await ws.send_json({"type": "error", "msg": "ssh not found - install OpenSSH client"})
         await ws.close()
         return
 

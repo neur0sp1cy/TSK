@@ -19,7 +19,7 @@ OPERATOR_NAME_RE = re.compile(r"^[a-zA-Z0-9_-]{2,32}$")
 
 SENSITIVE_CONFIG_KEYS = frozenset({"turtle_password", "catch_token"})
 
-# ── Base paths — always relative to this file's location ─────────────────────
+# ── Base paths - always relative to this file's location ─────────────────────
 BASE_DIR     = Path(__file__).resolve().parent   # absolute path to TSK dir
 USERS_DIR    = BASE_DIR / "users"
 REPOS_DIR    = BASE_DIR / "repos"
@@ -270,7 +270,7 @@ def set_key(key: str, value, username: str = "default") -> None:
 # ── Repo paths (now project-relative) ────────────────────────────────────────
 
 def repo_path(device: str, username: str = "default") -> Path:
-    """Get repo path — shared REPOS_DIR by default."""
+    """Get repo path - shared REPOS_DIR by default."""
     return REPOS_DIR / device
 
 def payload_path(device: str, username: str = "default") -> Path:

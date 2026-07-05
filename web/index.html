@@ -167,7 +167,11 @@ body[data-theme="flat"] #preview-file{color:var(--text-bright);font-weight:600;}
 body[data-theme="light"] #preview-lang,
 body[data-theme="flat"] #preview-lang{color:var(--text-bright);}
 body[data-theme="light"] .p-cat,
-body[data-theme="flat"] .p-cat{color:var(--accent)!important;}
+body[data-theme="light"] .p-cat-name,
+body[data-theme="light"] .p-cat-label,
+body[data-theme="flat"] .p-cat,
+body[data-theme="flat"] .p-cat-name,
+body[data-theme="flat"] .p-cat-label{color:var(--accent)!important;}
 body[data-theme="light"] .sys-tile:not(.active),
 body[data-theme="flat"] .sys-tile:not(.active){opacity:0.92;}
 body[data-theme="light"] .dev-card:not(.active),
@@ -198,7 +202,9 @@ body[data-theme="matrix"] #btn-save{
   font-weight:600;
 }
 body[data-theme="cinematic"] #preview-desc,
-body[data-theme="cinematic"] .p-name{color:var(--text-bright);}
+body[data-theme="cinematic"] .p-item:not(.p-file-row) .p-name{color:var(--text-bright);}
+body[data-theme="cinematic"] .p-set-name{color:var(--device-accent, var(--yellow));}
+body[data-theme="cinematic"] .p-file-row .p-name{color:var(--text);}
 body[data-theme="cinematic"] .hstat,
 body[data-theme="cinematic"] .nav-label{color:var(--text-bright);}
 
@@ -218,9 +224,17 @@ body[data-theme="pushed"] .dev-card:not(.active){color:var(--text-bright);opacit
 body:not([data-theme]) #preview-file,
 body[data-theme="default"] #preview-file,
 body[data-theme="pushed"] #preview-file{color:var(--text-bright);font-weight:600;}
-body:not([data-theme]) .p-name,
-body[data-theme="default"] .p-name,
-body[data-theme="pushed"] .p-name{color:var(--text-bright);}
+body:not([data-theme]) .p-item:not(.p-file-row) .p-name,
+body[data-theme="default"] .p-item:not(.p-file-row) .p-name,
+body[data-theme="pushed"] .p-item:not(.p-file-row) .p-name{color:var(--text-bright);}
+body:not([data-theme]) .p-set-name,
+body[data-theme="default"] .p-set-name,
+body[data-theme="pushed"] .p-set-name{color:var(--device-accent, var(--yellow));}
+body:not([data-theme]) .p-file-row .p-name,
+body[data-theme="default"] .p-file-row .p-name,
+body[data-theme="pushed"] .p-file-row .p-name{color:var(--text);}
+body[data-theme="flat"] .p-set-name{color:var(--device-accent, var(--yellow));}
+body[data-theme="flat"] .p-file-row .p-name{color:var(--text);}
 body:not([data-theme]) .repo-missing,
 body[data-theme="default"] .repo-missing,
 body[data-theme="pushed"] .repo-missing{color:var(--text);}
@@ -553,6 +567,9 @@ body[data-theme="light"] #login-btn:disabled{background:#ddd;color:#aaa;}
 /* Main row */
 #main{display:flex;flex:1;overflow:hidden;min-height:0;}
 #workbench{
+  flex:1;min-width:0;display:flex;flex-direction:row;overflow:hidden;
+}
+#workbench-right{
   flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;
 }
 #workbench-body{
@@ -566,7 +583,7 @@ body[data-theme="light"] #login-btn:disabled{background:#ddd;color:#aaa;}
   overflow:hidden;
 }
 #logo-area{
-  padding:20px 14px 18px;flex-shrink:0;text-align:center;
+  padding:20px 14px 16px;flex-shrink:0;text-align:center;
   position:relative;
   background:
     radial-gradient(ellipse 110% 90% at 50% -10%, rgba(255,26,26,0.16) 0%, transparent 58%),
@@ -640,23 +657,32 @@ body[data-theme="light"] #login-btn:disabled{background:#ddd;color:#aaa;}
   background:rgba(0,229,255,0.07);
 }
 
-/* Sidebar nav */
-#nav{
-  flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;
-  padding:16px 0 8px;scrollbar-width:none;
-  position:relative;isolation:isolate;
+/* Sidebar nav - small gap below logo */
+#sidebar-stack{
+  flex:1;min-height:0;display:flex;flex-direction:column;
+  padding-bottom:8px;
 }
-#nav::-webkit-scrollbar{display:none;}
-#nav > .nav-section,
-#nav > .sys-grid,
-#nav > #device-list{position:relative;z-index:1;}
+#sidebar-stack-top{
+  flex:0 0 auto;height:14px;
+}
+#sidebar-menu-block{
+  flex:0 0 auto;display:flex;flex-direction:column;gap:14px;
+}
+#sidebar-system{
+  flex-shrink:0;padding:0;
+}
+#sidebar-devices{
+  flex:0 0 auto;display:flex;flex-direction:column;
+  overflow:visible;padding:0;
+}
+#sidebar-devices .nav-section--gap{margin-top:0;flex-shrink:0;}
 .nav-section{
   font-size:14px;letter-spacing:4px;color:var(--red);
   padding:12px 14px 6px;font-weight:700;font-family:var(--display);
   position:relative;text-align:center;
   text-shadow:0 0 12px rgba(255,26,26,0.35);
 }
-.nav-section--gap{margin-top:16px;}
+.nav-section--gap{margin-top:22px;}
 .nav-section::after{
   content:'';display:block;height:1px;
   margin:8px auto 0;width:min(200px, 88%);
@@ -718,7 +744,7 @@ body[data-theme="light"] #login-btn:disabled{background:#ddd;color:#aaa;}
 .sys-tile--yellow{--tile-accent:var(--yellow);}
 
 /* Unified device cards */
-#device-list{padding:0 0 8px;}
+#device-list{padding:0 0 12px;}
 
 .dev-card{
   display:flex;align-items:center;gap:10px;
@@ -897,14 +923,59 @@ body.defcon34-mode #tsk-logo{
   display:flex;align-items:center;gap:16px;width:100%;
 }
 .browse-title-left{
-  display:flex;align-items:center;gap:10px;flex-shrink:1;min-width:0;flex-wrap:wrap;
+  display:flex;align-items:center;gap:10px;flex:1;min-width:0;flex-wrap:nowrap;
 }
 .browse-title-left .cfg-title{margin-bottom:0;flex-shrink:0;}
 .browse-title-left #center-source{flex-shrink:0;}
 .browse-title-left #center-payload-count{flex-shrink:0;}
-.browse-title-left #btn-new-payload{flex-shrink:0;}
+.browse-title-left #btn-payload-collapse{flex-shrink:0;}
 .browse-title-left #btn-snarf{flex-shrink:0;}
 .browse-title-left #lhost-chip{flex-shrink:0;}
+.browse-chip-btn{
+  min-width:30px;height:30px;padding:0 10px;box-sizing:border-box;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-size:10px;font-weight:600;
+  letter-spacing:1.5px;line-height:1;white-space:nowrap;
+  border:1px solid var(--border-bright);border-radius:4px;
+  background:rgba(255,255,255,0.04);color:var(--text-bright);
+  flex-shrink:0;cursor:default;
+}
+button.browse-chip-btn{
+  cursor:pointer;appearance:none;-webkit-appearance:none;
+  transition:border-color 0.15s,color 0.15s,background 0.15s;
+}
+button.browse-chip-btn:hover{
+  border-color:var(--device-accent,var(--cyan));
+  color:var(--device-accent,var(--cyan));
+  background:color-mix(in srgb,var(--device-accent,var(--cyan)) 8%,transparent);
+}
+.browse-chip-btn.is-hidden{display:none;}
+.browse-chip-btn--snarf{
+  border-color:var(--cyan);color:var(--cyan);
+  background:rgba(0,229,255,0.08);
+}
+.browse-chip-btn--snarf:hover{background:rgba(0,229,255,0.15);}
+.browse-chip-btn--lhost{
+  font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:0.5px;
+}
+.browse-chip-btn--lhost.unset{
+  font-family:var(--display);font-size:10px;letter-spacing:1.5px;font-weight:600;
+  color:#ffaa00;border-color:rgba(255,170,0,0.45);
+  background:rgba(255,170,0,0.06);
+}
+.browse-chip-btn--lhost.unset:hover{
+  color:#ffcc55;border-color:#ffaa00;background:rgba(255,170,0,0.1);
+}
+.browse-chip-btn--package{
+  border-color:var(--green);color:var(--green);
+  background:rgba(0,255,136,0.08);min-width:30px;padding:0 8px;
+}
+.browse-chip-btn--package:hover{background:rgba(0,255,136,0.15);}
+.browse-chip-btn--file{
+  border-color:var(--cyan);color:var(--cyan);
+  background:rgba(0,229,255,0.08);min-width:30px;padding:0 8px;
+}
+.browse-chip-btn--file:hover{background:rgba(0,229,255,0.15);}
 .center-device-icon{
   width:30px;height:30px;display:flex;align-items:center;justify-content:center;
   font-family:var(--display);font-size:13px;font-weight:700;flex-shrink:0;
@@ -922,37 +993,12 @@ body.defcon34-mode #tsk-logo{
   display:inline-flex;align-items:center;justify-content:center;
   flex-shrink:0;line-height:1;
 }
-.browse-new-payload-btn{
-  font-family:var(--display);font-size:10px;letter-spacing:2px;
-  padding:0 10px;border:1px solid var(--green);border-radius:4px;
-  background:rgba(0,255,136,0.08);color:var(--green);cursor:pointer;
-}
-.browse-new-payload-btn:hover{background:rgba(0,255,136,0.15);}
 .snarf-header-btn{
   font-family:var(--display);font-size:10px;letter-spacing:2px;
   padding:0 10px;border:1px solid var(--cyan);border-radius:4px;
   background:rgba(0,229,255,0.08);color:var(--cyan);cursor:pointer;
 }
 .snarf-header-btn:hover{background:rgba(0,229,255,0.15);}
-.lhost-header-chip{
-  font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:0.5px;
-  line-height:1;padding:0 12px;white-space:nowrap;
-  border:1px solid var(--border-bright);border-radius:4px;
-  background:rgba(255,255,255,0.05);color:var(--text-bright);cursor:pointer;
-  appearance:none;-webkit-appearance:none;
-  transition:border-color 0.15s,color 0.15s,background 0.15s,box-shadow 0.15s;
-}
-.lhost-header-chip:hover{
-  border-color:var(--cyan);color:var(--cyan);
-  background:rgba(0,229,255,0.08);
-  box-shadow:0 0 10px rgba(0,229,255,0.12);
-}
-.lhost-header-chip.unset{
-  font-family:var(--display);font-size:10px;letter-spacing:2px;font-weight:400;
-  color:#ffaa00;border-color:rgba(255,170,0,0.45);
-  background:rgba(255,170,0,0.06);
-}
-.lhost-header-chip.unset:hover{color:#ffcc55;border-color:#ffaa00;background:rgba(255,170,0,0.1);}
 .p-item-delete,
 .p-item-rename{
   font-size:11px;padding:2px 8px;border:1px solid var(--border);border-radius:3px;
@@ -961,6 +1007,7 @@ body.defcon34-mode #tsk-logo{
 }
 .p-item-delete:hover{border-color:var(--red);color:var(--red);}
 .p-item-rename:hover{border-color:var(--cyan);color:var(--cyan);}
+.p-set-header .p-set-delete{margin-left:auto;margin-right:2px;}
 .p-lure-victim{font-size:11px;color:var(--text);margin-left:6px;font-weight:400;}
 .browse-sticky-title .cfg-title,
 .panel-head .cfg-title{margin-bottom:0;line-height:1;}
@@ -978,7 +1025,7 @@ body.defcon34-mode #tsk-logo{
   border:1px solid color-mix(in srgb,var(--device-accent,var(--border)) 55%,var(--border));
   border-radius:4px;color:var(--text-bright);
   background:color-mix(in srgb,var(--device-accent,transparent) 6%,rgba(255,255,255,0.03));
-  flex-shrink:0;
+  flex-shrink:0;cursor:default;
 }
 .center-payload-badge.preview{
   color:var(--text);
@@ -1158,14 +1205,50 @@ body.defcon34-mode #tsk-logo{
   border-radius:4px;font-family:var(--mono);font-size:12px;line-height:1.55;color:var(--text-bright);
   max-height:160px;overflow:auto;white-space:pre-wrap;
 }
+.p-cat-header{
+  display:flex;align-items:center;gap:10px;padding:14px 20px 8px;
+  cursor:pointer;user-select:none;
+}
+.p-cat-header:hover{background:rgba(255,26,26,0.04);}
+.p-cat-chevron{
+  width:18px;height:18px;padding:0;border:none;background:transparent;
+  color:var(--red);font-size:11px;line-height:1;cursor:pointer;flex-shrink:0;
+  transition:transform 0.15s;font-family:var(--display);
+}
+.p-cat-header.collapsed .p-cat-chevron{transform:rotate(-90deg);}
+.p-cat-name{
+  font-size:14px;letter-spacing:3px;color:var(--red);
+  font-weight:700;font-family:var(--display);flex-shrink:0;
+}
 .p-cat{
   padding:14px 20px 8px;font-size:14px;letter-spacing:3px;
   color:var(--red);font-weight:700;font-family:var(--display);
+}
+.p-cat-count{
+  font-size:11px;color:var(--text);opacity:0.7;font-family:var(--mono);
+  letter-spacing:0.5px;flex-shrink:0;
+}
+.p-cat-collapsed{display:none!important;}
+.p-cat-actions{
+  display:flex;align-items:center;gap:10px;padding:14px 20px 8px;
+  cursor:pointer;user-select:none;
+}
+.p-cat-actions:hover{background:rgba(255,26,26,0.04);}
+.p-cat-actions .p-cat-chevron{color:var(--red);}
+.p-cat-actions.collapsed .p-cat-chevron{transform:rotate(-90deg);}
+.p-cat-actions .p-cat-label{
+  font-size:14px;letter-spacing:3px;color:var(--red);
+  font-weight:700;font-family:var(--display);flex-shrink:0;
+}
+.p-cat-actions .p-cat-hint{
+  font-size:11px;color:var(--text);opacity:0.75;font-family:var(--mono);
+  letter-spacing:0.5px;
 }
 .p-set-header{
   display:flex;align-items:center;padding:10px 20px 6px 14px;
   cursor:pointer;gap:12px;border-left:3px solid transparent;
   transition:all 0.12s;
+  color:var(--device-accent, var(--yellow));
 }
 .p-set-header:hover{
   background:color-mix(in srgb, var(--device-accent, var(--yellow)) 8%, transparent);
@@ -1176,11 +1259,43 @@ body.defcon34-mode #tsk-logo{
 }
 .p-set-name{
   flex:1;font-family:var(--display);font-size:13px;letter-spacing:1.5px;
-  color:var(--text-bright);font-weight:700;
+  color:var(--device-accent, var(--yellow));font-weight:700;
 }
-.p-set-header.selected-set .p-set-name{color:var(--device-accent, var(--yellow));}
+.p-set-header.selected-set .p-set-name{
+  color:var(--device-accent, var(--yellow));
+  text-shadow:0 0 12px color-mix(in srgb, var(--device-accent, var(--yellow)) 45%, transparent);
+}
+.p-set-header .p-icon{opacity:0.95;border-width:1.5px;background:transparent;transition:background 0.12s,opacity 0.12s;}
+.p-set-header.collapsed .p-icon{background:transparent;opacity:0.85;}
+.p-set-header:not(.collapsed) .p-icon{background:currentColor;opacity:1;}
+.p-set-chevron{
+  width:18px;height:18px;padding:0;border:none;background:transparent;
+  color:var(--device-accent, var(--yellow));font-size:11px;line-height:1;
+  cursor:pointer;flex-shrink:0;transition:transform 0.15s;
+  font-family:var(--display);
+}
+.p-set-chevron:hover{opacity:1;}
+.p-set-header.collapsed .p-set-chevron{transform:rotate(-90deg);}
+.p-set-file-count{
+  font-size:11px;color:var(--text);opacity:0.7;font-family:var(--mono);
+  letter-spacing:0.5px;flex-shrink:0;
+}
+.p-file-row.p-set-collapsed{display:none;}
 .p-file-row{padding-left:34px;}
-.p-file-row .p-name{font-size:13px;font-weight:400;}
+.p-file-row .p-name{
+  font-size:13px;font-weight:400;
+  color:var(--text);
+  opacity:0.92;
+}
+.p-file-row:hover .p-name{
+  color:color-mix(in srgb, var(--device-accent, var(--yellow)) 30%, var(--text-bright));
+  opacity:1;
+}
+.p-file-row .p-num{
+  color:color-mix(in srgb, var(--text) 75%, var(--device-accent, var(--yellow)) 25%);
+  opacity:0.8;
+}
+.p-file-row .p-lang{opacity:0.85;}
 .p-role-badge{
   font-size:10px;padding:2px 6px;border-radius:2px;letter-spacing:1px;
   font-family:var(--display);color:var(--text);border:1px solid var(--border);
@@ -1222,7 +1337,11 @@ body.defcon34-mode #tsk-logo{
 .p-num{font-size:13px;color:var(--text);width:36px;flex-shrink:0;font-family:var(--display);}
 .p-icon{width:8px;height:8px;border:1px solid currentColor;border-radius:1px;flex-shrink:0;opacity:0.6;}
 .p-name{flex:1;color:var(--text-bright);font-size:14px;}
-.p-item.selected-set .p-name{color:var(--text-bright);}
+.p-item.selected-set:not(.p-file-row) .p-name{color:var(--text-bright);}
+.p-item.p-file-row.selected-set .p-name{
+  color:color-mix(in srgb, var(--device-accent, var(--yellow)) 24%, var(--text));
+  opacity:1;
+}
 .p-item.selected-primary .p-name{
   color:var(--device-accent, var(--yellow));
   font-weight:700;
@@ -1506,11 +1625,6 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
 #bottom{
   height:54px;display:flex;align-items:stretch;padding:0;
   background:var(--bg2);flex-shrink:0;
-}
-#bottom-sidebar-spacer{
-  width:var(--sidebar-w,280px);flex-shrink:0;
-  background:var(--bg2);
-  border-right:1px solid var(--border);
 }
 #bottom-cmd-wrap{
   flex:1;min-width:0;display:flex;align-items:center;
@@ -1876,6 +1990,7 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
   overflow:hidden;
   --ed-font:14px;
   --ed-lh:1.75;
+  --ed-line-px:calc(var(--ed-font) * var(--ed-lh));
 }
 
 #editor-titlebar{
@@ -1926,6 +2041,35 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
   margin-left:auto;color:var(--text);
   font-family:var(--display);font-size:12px;letter-spacing:1px;
 }
+#editor-find-bar{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 18px;background:#0a0a14;
+  border-bottom:1px solid var(--border);flex-shrink:0;
+}
+#editor-find-bar.is-hidden{display:none;}
+#editor-find-input{
+  flex:1;min-width:120px;max-width:320px;
+  padding:5px 10px;background:var(--bg);border:1px solid var(--border);
+  border-radius:3px;color:var(--text-bright);font-family:var(--mono);font-size:12px;
+}
+#editor-find-input:focus{outline:none;border-color:var(--cyan);}
+#editor-find-status{
+  font-size:11px;color:var(--text);font-family:var(--mono);
+  min-width:72px;text-align:center;
+}
+.ed-find-btn{
+  cursor:pointer;padding:4px 8px;border-radius:3px;
+  border:1px solid var(--border);background:transparent;
+  color:var(--text-bright);font-family:var(--display);font-size:10px;letter-spacing:1px;
+}
+.ed-find-btn:hover{border-color:var(--cyan);color:var(--cyan);}
+.ed-find-case{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:var(--display);font-size:10px;letter-spacing:1px;
+  color:var(--text);cursor:pointer;user-select:none;flex-shrink:0;
+}
+.ed-find-case input{accent-color:var(--cyan);cursor:pointer;}
+.ed-find-case.active{color:var(--cyan);}
 #editor-modified{
   color:var(--yellow);font-size:12px;flex-shrink:0;
   display:none;
@@ -1935,20 +2079,41 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
 #editor-body{
   flex:1;display:flex;overflow:hidden;
 }
+#editor-code-wrap{
+  position:relative;flex:1;min-width:0;overflow:hidden;
+  display:flex;background:var(--bg);
+}
 #editor-gutter{
   width:52px;flex-shrink:0;
   background:var(--bg2);
   border-right:1px solid var(--border);
-  padding:12px 0;
+  padding:12px 10px 12px 0;
   overflow:hidden;
-  font-size:13px;line-height:var(--ed-lh);
-  color:var(--preview-comment);text-align:right;
-  padding-right:10px;
   font-family:var(--mono);
+  font-size:var(--ed-font);
+  color:var(--preview-comment);text-align:right;
   user-select:none;
+  box-sizing:border-box;
+  margin:0;
 }
-#editor-gutter div{line-height:var(--ed-lh);font-size:13px;}
+#editor-gutter div{
+  font-size:var(--ed-font);
+  margin:0;padding:0;
+  box-sizing:border-box;
+}
 .gutter-var{color:#c8a800;}
+.gutter-find{
+  color:#ffd700;
+  background:rgba(255,215,0,0.22);
+  border-radius:2px;
+}
+.gutter-find-current{
+  color:#000;
+  background:var(--cyan);
+  font-weight:700;
+  box-shadow:0 0 10px rgba(0,229,255,0.55);
+  border-radius:2px;
+}
 #editor-vars-panel{
   display:none;
   background:#04040c;
@@ -1992,16 +2157,25 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
   color:var(--text);font-size:12px;font-style:italic;opacity:0.88;
 }
 #editor-textarea{
+  position:relative;z-index:1;
   flex:1;
   background:var(--bg);
   border:none;outline:none;resize:none;
   font-family:var(--mono);font-size:var(--ed-font);
-  line-height:var(--ed-lh);color:var(--preview-text);
+  line-height:var(--ed-line-px);color:var(--preview-text);
   padding:12px 16px;
   caret-color:var(--green);
   tab-size:4;
+  box-sizing:border-box;
+  margin:0;
+  white-space:pre;
+  overflow-wrap:normal;
 }
-#editor-textarea::selection{background:rgba(255,26,26,0.2);}
+#editor-textarea::selection{background:rgba(255,215,0,0.55);color:#000;}
+#editor-textarea.ed-find-active::selection{
+  background:var(--cyan);color:#000;
+  box-shadow:0 0 0 2px var(--cyan);
+}
 
 #editor-statusbar{
   display:flex;align-items:center;justify-content:space-between;
@@ -2223,7 +2397,6 @@ body[data-theme="light"] #btn-flash:disabled{background:#ddd;color:#aaa;}
 /* Presentation mode (projector / live demo) */
 body.presentation-mode{font-size:15px;}
 body.presentation-mode #sidebar{display:none;}
-body.presentation-mode #bottom-sidebar-spacer{display:none;}
 body.presentation-mode #center{flex:1;}
 body.presentation-mode #right{min-width:min(42vw,520px);}
 body.presentation-mode .payload-item{font-size:14px;padding:10px 14px;}
@@ -2451,7 +2624,6 @@ body.presentation-mode .ed-btn{font-size:13px;padding:11px 24px;}
   <div id="main">
 
     <div id="workbench">
-    <div id="workbench-body">
 
     <!-- SIDEBAR -->
     <div id="sidebar">
@@ -2466,7 +2638,10 @@ body.presentation-mode .ed-btn{font-size:13px;padding:11px 24px;}
         </div>
       </div>
 
-      <div id="nav">
+      <div id="sidebar-stack">
+      <div id="sidebar-stack-top" aria-hidden="true"></div>
+      <div id="sidebar-menu-block">
+      <div id="sidebar-system">
         <div class="nav-section">SYSTEM</div>
         <div class="sys-grid">
           <button type="button" class="sys-tile sys-tile--muted" data-nav="about" onclick="navigate('about')">
@@ -2492,7 +2667,9 @@ body.presentation-mode .ed-btn{font-size:13px;padding:11px 24px;}
             <span class="sys-tile-label">OPERATOR</span>
           </button>
         </div>
+      </div>
 
+      <div id="sidebar-devices">
         <div class="nav-section nav-section--gap">DEVICES</div>
         <div id="device-list">
           <div class="dev-card" id="dev-bunny" data-nav="bunny" data-device="bunny" onclick="navigate('bunny')">
@@ -2552,7 +2729,12 @@ body.presentation-mode .ed-btn{font-size:13px;padding:11px 24px;}
           </div>
         </div>
       </div>
+      </div>
+      </div>
     </div>
+
+    <div id="workbench-right">
+    <div id="workbench-body">
 
     <!-- CENTER -->
     <div id="center">
@@ -2570,10 +2752,12 @@ body.presentation-mode .ed-btn{font-size:13px;padding:11px 24px;}
               <div class="cfg-title">PAYLOADS</div>
               <span id="center-source">○ PREVIEW</span>
               <span id="center-payload-count" class="center-payload-badge is-hidden" title="Payloads for this device"></span>
-              <button type="button" id="btn-new-payload" class="browse-new-payload-btn browse-header-ctl" onclick="createNewPayload()" title="Create a new payload in MY PAYLOADS">+ NEW</button>
-              <button type="button" id="btn-add-package-file" class="browse-new-payload-btn browse-header-ctl is-hidden" onclick="addPackageFile()" title="Add a file to the selected package">+ ADD FILE</button>
-              <button type="button" id="btn-snarf" class="snarf-header-btn browse-header-ctl" onclick="showSnarf()" style="display:none" title="SNARF builder (S)">SNARF</button>
-              <button type="button" id="lhost-chip" class="lhost-header-chip browse-header-ctl unset" onclick="showConfig()" title="Open CONFIG to set LHOST and LPORT">LHOST not set</button>
+              <button type="button" id="btn-payload-collapse" class="browse-chip-btn browse-header-ctl is-hidden"
+                onclick="toggleCollapseAllPayloads()" title="Expand or collapse all payload packages">EXPAND ALL</button>
+              <button type="button" id="lhost-chip" class="browse-chip-btn browse-chip-btn--lhost browse-header-ctl unset"
+                onclick="showConfig()" title="Open CONFIG to set LHOST and LPORT">LHOST not set</button>
+              <button type="button" id="btn-snarf" class="browse-chip-btn browse-chip-btn--snarf browse-header-ctl"
+                onclick="showSnarf()" style="display:none" title="SNARF builder (S)">SNARF</button>
             </div>
             <div id="search-wrap" class="browse-header-ctl">
               <span class="search-icon">⌕</span>
@@ -2587,9 +2771,8 @@ body.presentation-mode .ed-btn{font-size:13px;padding:11px 24px;}
 
     </div><!-- /workbench-body -->
 
-    <!-- BOTTOM BAR (sidebar + center only) -->
+    <!-- BOTTOM BAR (center column only) -->
     <div id="bottom">
-      <div id="bottom-sidebar-spacer" aria-hidden="true"></div>
       <div id="bottom-cmd-wrap">
         <label id="cmd-area" class="cmd-shell" for="cmd-input">
           <span class="cmd-label">COMMAND</span>
@@ -2616,6 +2799,7 @@ body.presentation-mode .ed-btn{font-size:13px;padding:11px 24px;}
       </div>
     </div>
 
+    </div><!-- /workbench-right -->
     </div><!-- /workbench -->
 
     <div id="panel-divider" class="panel-locked" title="Preview panel width locked" aria-hidden="true"></div>
@@ -2796,12 +2980,25 @@ body.presentation-mode .ed-btn{font-size:13px;padding:11px 24px;}
     </div>
 
     <div id="editor-toolbar">
-      <span class="ed-tool" onclick="edFind()">⌕ FIND</span>
+      <span class="ed-tool" id="ed-tool-find" onclick="toggleEdFind()" title="Find in file (Ctrl+F)">⌕ FIND</span>
       <span class="ed-tool" onclick="edSelectAll()">SELECT ALL</span>
       <span class="ed-tool" onclick="edUndo()">↩ UNDO</span>
       <span class="ed-tool" onclick="edWrap()">WRAP</span>
       <span class="ed-tool" id="ed-tool-vars" onclick="toggleVarsPanel()" title="Toggle variable substitutions (Ctrl+D)">◈ VARS</span>
       <span id="editor-line-count">0 lines</span>
+    </div>
+
+    <div id="editor-find-bar" class="is-hidden">
+      <input id="editor-find-input" type="text" placeholder="Find in file..." spellcheck="false"
+        autocomplete="off" onkeydown="onEditorFindKey(event)" oninput="onEditorFindInput()">
+      <label class="ed-find-case" id="editor-find-case-wrap" title="Match case">
+        <input type="checkbox" id="editor-find-case" onclick="event.stopPropagation()"
+          onchange="onEditorFindCaseToggle(event)"> Aa
+      </label>
+      <button type="button" class="ed-find-btn" onclick="edFindStep(-1)" title="Previous match (Shift+Enter)">PREV</button>
+      <button type="button" class="ed-find-btn" onclick="edFindStep(1)" title="Next match (Enter)">NEXT</button>
+      <span id="editor-find-status"></span>
+      <button type="button" class="ed-find-btn" onclick="closeEdFind()" title="Close (Esc)">✕</button>
     </div>
 
     <div id="editor-vars-panel">
@@ -2811,16 +3008,18 @@ body.presentation-mode .ed-btn{font-size:13px;padding:11px 24px;}
 
     <div id="editor-body">
       <div id="editor-gutter"></div>
-      <textarea id="editor-textarea"
-        spellcheck="false"
-        autocorrect="off"
-        autocapitalize="off"
-        oninput="onEditorInput()"
-        onkeydown="onEditorKey(event)"
-        onscroll="syncGutter()"
-        onclick="updatePos()"
-        onkeyup="updatePos()"
-      ></textarea>
+      <div id="editor-code-wrap">
+        <textarea id="editor-textarea"
+          spellcheck="false"
+          autocorrect="off"
+          autocapitalize="off"
+          oninput="onEditorInput()"
+          onkeydown="onEditorKey(event)"
+          onscroll="syncEditorScroll()"
+          onclick="updatePos()"
+          onkeyup="updatePos()"
+        ></textarea>
+      </div>
     </div>
 
     <div id="editor-statusbar">
@@ -2830,8 +3029,8 @@ body.presentation-mode .ed-btn{font-size:13px;padding:11px 24px;}
 
     <div id="editor-actions">
       <div id="editor-save-status"></div>
-      <button class="ed-btn" id="ed-btn-saveas" onclick="edSaveAs()">⬇ SAVE COPY</button>
-      <button class="ed-btn" id="ed-btn-save" onclick="edSave()">💾 SAVE FILE</button>
+      <button class="ed-btn" id="ed-btn-saveas" onclick="edSaveAs()" title="Download a copy to your computer">⬇ DOWNLOAD</button>
+      <button class="ed-btn" id="ed-btn-save" onclick="edSave()" title="Save to your MY PAYLOADS library">💾 SAVE TO MY PAYLOADS</button>
     </div>
   </div>
 </div>
@@ -4026,17 +4225,32 @@ function renderPreviewCode(code, lang, isMarkdown) {
 async function selectPayloadSet(setId) {
   const set = _payloadSets[setId];
   if (!set) return;
+  if (set.cat) expandPayloadCat(set.cat);
+  const k = payloadSetDomKey(setId);
+  const wasExpanded = isPayloadSetExpanded(setId);
+  const isActiveSet = (S.selectedSetKey || '') === k;
+
+  if (wasExpanded && isActiveSet) {
+    collapsePayloadSet(setId);
+    return;
+  }
+
   S.flashSetSelected = true;
-  S.selectedSetKey = setId.toLowerCase();
+  S.selectedSetKey = k;
+  const readmeIdx = _flatPayloads.findIndex(p =>
+    p.set_id === set.set_id && p.file_role === 'readme');
   const primaryIdx = _flatPayloads.findIndex(p =>
     p.set_id === set.set_id && (p.is_primary || p.file_role === 'primary'));
-  const idx = primaryIdx >= 0 ? primaryIdx : _flatPayloads.findIndex(p => p.set_id === set.set_id);
+  const idx = readmeIdx >= 0
+    ? readmeIdx
+    : (primaryIdx >= 0 ? primaryIdx : _flatPayloads.findIndex(p => p.set_id === set.set_id));
+  expandPayloadSet(setId);
   if (idx >= 0) {
     await selectPayload(idx, true);
     S.flashSetSelected = true;
     applyPayloadListSelection();
     updateActionButtons();
-    updatePackageFileButton();
+    updateMyPayloadsButtons();
   }
 }
 
@@ -4049,6 +4263,8 @@ async function selectPayload(idx, keepFlashSet) {
   S.selectedPayloadKey = payloadItemKey(p);
   S.selectedSetKey = payloadSetKey(p);
   if (!keepFlashSet) S.flashSetSelected = false;
+  if (payloadHasGroupedSet(p)) expandPayloadSet(payloadSetKey(p));
+  if (p?.cat) expandPayloadCat(p.cat);
 
   applyPayloadListSelection();
 
@@ -4063,7 +4279,7 @@ async function selectPayload(idx, keepFlashSet) {
   document.getElementById('right').classList.add('payload-active');
   updateActionButtons();
   updateArmedState();
-  updatePackageFileButton();
+  updateMyPayloadsButtons();
 
   let code = '';
   let previewLang = p.lang;
@@ -4134,6 +4350,85 @@ async function createNewPayload() {
   }
 }
 
+function ensureMyPayloadsGroup(groups) {
+  const out = groups?.length ? [...groups] : [];
+  if (!out.some(g => g.cat === 'MY PAYLOADS')) {
+    out.push({ cat: 'MY PAYLOADS', sets: [] });
+  }
+  return sortPayloadGroups(out);
+}
+
+function myPayloadsPackageCount() {
+  const seen = new Set();
+  for (const p of _flatPayloads) {
+    if (p.cat === 'MY PAYLOADS' && isUserPayload(p) && p.set_id) {
+      seen.add(p.set_id);
+    }
+  }
+  return seen.size;
+}
+
+function renderMyPayloadsCatRow(group) {
+  const isUsb = S.device === 'usb';
+  const pkgCount = (group?.sets || []).length;
+  const catKey = payloadCatDomKey('MY PAYLOADS');
+  const catExpanded = isPayloadCatExpanded('MY PAYLOADS');
+  const collapsedCls = catExpanded ? '' : ' collapsed';
+  const pTitle = isUsb
+    ? 'New script in MY PAYLOADS'
+    : 'New package in MY PAYLOADS';
+  const fHidden = isUsb || pkgCount === 0 ? ' is-hidden' : '';
+  const emptyHint = pkgCount === 0 && !isUsb
+    ? '<span class="p-cat-hint">no packages yet</span>' : '';
+  return `<div class="p-cat-actions${collapsedCls}" data-cat-id="${catKey}"
+    onclick="togglePayloadCatClick(event,'MY PAYLOADS')">
+    <button type="button" class="p-cat-chevron" aria-label="${catExpanded ? 'Collapse category' : 'Expand category'}"
+      onclick="togglePayloadCatExpand(event,'MY PAYLOADS')">▾</button>
+    <span class="p-cat-label">MY PAYLOADS</span>
+    ${emptyHint}
+    <button type="button" id="btn-new-package" class="browse-chip-btn browse-chip-btn--package"
+      onclick="event.stopPropagation();createNewPayload()" title="${pTitle}">P+</button>
+    <button type="button" id="btn-add-file" class="browse-chip-btn browse-chip-btn--file${fHidden}"
+      onclick="event.stopPropagation();addPackageFile()" title="Add file to selected package">F+</button>
+  </div>`;
+}
+
+function renderPayloadCatHeader(group) {
+  const cat = group.cat;
+  const catKey = payloadCatDomKey(cat);
+  const setCount = (group.sets || []).length;
+  const catExpanded = isPayloadCatExpanded(cat);
+  const collapsedCls = catExpanded ? '' : ' collapsed';
+  const countLabel = setCount === 1 ? '1 package' : `${setCount} packages`;
+  return `<div class="p-cat-header${collapsedCls}" data-cat-id="${catKey}"
+    onclick="togglePayloadCatClick(event,'${cat.replace(/'/g, "\\'")}')">
+    <button type="button" class="p-cat-chevron" aria-label="${catExpanded ? 'Collapse category' : 'Expand category'}"
+      onclick="togglePayloadCatExpand(event,'${cat.replace(/'/g, "\\'")}')">▾</button>
+    <span class="p-cat-name">${cat}</span>
+    <span class="p-cat-count">${countLabel}</span>
+  </div>`;
+}
+
+function updateMyPayloadsButtons() {
+  const fBtn = document.getElementById('btn-add-file');
+  const pBtn = document.getElementById('btn-new-package');
+  if (!pBtn && !fBtn) return;
+  const isUsb = S.device === 'usb';
+  const pkgCount = myPayloadsPackageCount();
+  const p = S.selectedPayload || S.payload;
+  const canAddFile = !!(p && isUserPayload(p) && p.cat === 'MY PAYLOADS'
+    && !isUsb && userPackageName(p));
+  if (pBtn) {
+    pBtn.title = isUsb ? 'New script in MY PAYLOADS' : 'New package in MY PAYLOADS';
+  }
+  if (fBtn) {
+    fBtn.classList.toggle('is-hidden', isUsb || pkgCount === 0 || !canAddFile);
+    fBtn.title = canAddFile
+      ? `Add file to package "${userPackageName(p)}"`
+      : 'Select a file in your package first';
+  }
+}
+
 function userPackageName(p) {
   if (!p?.path) return '';
   const norm = p.path.replace(/\\/g, '/');
@@ -4141,12 +4436,57 @@ function userPackageName(p) {
   return m ? m[1] : (p.set_id || '');
 }
 
-function updatePackageFileButton() {
-  const btn = document.getElementById('btn-add-package-file');
-  if (!btn) return;
-  const p = S.selectedPayload || S.payload;
-  const show = !!(p && isUserPayload(p) && p.cat === 'MY PAYLOADS' && S.device !== 'usb' && userPackageName(p));
-  btn.classList.toggle('is-hidden', !show);
+function userPackageNameFromSet(set) {
+  const primary = set?.primary_path || set?.files?.[0]?.path || '';
+  const norm = String(primary).replace(/\\/g, '/');
+  const m = norm.match(/\/payloads\/[^/]+\/([^/]+)\//);
+  return m ? m[1] : (set?.set_id || set?.name || '');
+}
+
+function isUserPackageSet(set, group) {
+  if (!set || group?.cat !== 'MY PAYLOADS' || !set.operator_owned || S.device === 'usb') {
+    return false;
+  }
+  const primary = set.primary_path || set.files?.[0]?.path || '';
+  return /\/payloads\/[^/]+\/[^/]+\/[^/]+/.test(String(primary).replace(/\\/g, '/'));
+}
+
+async function deleteUserPackage(e, setKey) {
+  e.stopPropagation();
+  e.preventDefault();
+  const set = _payloadSets[setKey];
+  if (!set) return;
+  const pkgName = userPackageNameFromSet(set);
+  if (!pkgName) {
+    toast('Could not resolve package folder', 'err');
+    return;
+  }
+  const label = set.set_name || set.name || pkgName;
+  const fileCount = (set.files || []).length;
+  const msg = `Delete package "${label}" and all ${fileCount} file(s) inside?\n\nThis removes the entire folder from MY PAYLOADS and cannot be undone.`;
+  if (!confirm(msg)) return;
+  try {
+    const r = await fetch(
+      `/api/payload/package?device=${encodeURIComponent(S.device)}&package=${encodeURIComponent(pkgName)}`,
+      { method: 'DELETE' },
+    );
+    const data = await r.json();
+    if (!r.ok || !data.ok) {
+      toast(data.error || 'Delete failed', 'err');
+      return;
+    }
+    S.payload = null;
+    S.selectedPayload = null;
+    S.selectedPayloadKey = '';
+    S.selectedSetKey = '';
+    S.flashSetSelected = false;
+    invalidateLureOptions();
+    invalidateSnarfBuild();
+    await loadDevicePayloads(S.device);
+    toast(`Package "${label}" deleted`, 'ok');
+  } catch (err) {
+    toast(`Delete failed: ${err}`, 'err');
+  }
 }
 
 async function addPackageFile() {
@@ -4355,6 +4695,7 @@ async function loadDevicePayloads(device) {
   const prevKey = keepPrev
     ? (S.selectedPayloadKey || (S.selectedPayload && payloadItemKey(S.selectedPayload)))
     : '';
+  if (device === S.device) loadPayloadTreeState(device);
   const r = await fetch(`/api/payloads/${device}?username=${encodeURIComponent(S.currentUser || '')}`);
   const data = await r.json();
   S.payloads[device] = data.groups || [];
@@ -4463,22 +4804,200 @@ function applyPayloadListSelection() {
   });
 }
 
+const PAYLOAD_CAT_PINNED_LAST = ['MY PAYLOADS'];
 const USB_PAYLOAD_CAT_ORDER = ['BUILT-INS', 'EXFILS', 'LURES', 'MY PAYLOADS'];
 
-function sortUsbPayloadGroups(groups) {
-  const order = Object.fromEntries(USB_PAYLOAD_CAT_ORDER.map((c, i) => [c, i]));
+function sortPayloadGroups(groups) {
+  if (!groups?.length) return groups || [];
+  if (S.device === 'usb') {
+    const order = Object.fromEntries(USB_PAYLOAD_CAT_ORDER.map((c, i) => [c, i]));
+    return [...groups].sort((a, b) => {
+      const ia = order[a.cat] ?? 50;
+      const ib = order[b.cat] ?? 50;
+      return ia - ib || String(a.cat).localeCompare(String(b.cat));
+    });
+  }
+  const pinned = new Set(PAYLOAD_CAT_PINNED_LAST);
   return [...groups].sort((a, b) => {
-    const ia = order[a.cat] ?? 50;
-    const ib = order[b.cat] ?? 50;
-    return ia - ib || String(a.cat).localeCompare(String(b.cat));
+    const aPin = pinned.has(a.cat);
+    const bPin = pinned.has(b.cat);
+    if (aPin !== bPin) return aPin ? 1 : -1;
+    return String(a.cat).localeCompare(String(b.cat), undefined, { sensitivity: 'base' });
   });
+}
+
+let _expandedPayloadSets = new Set();
+let _collapsedPayloadCats = new Set();
+let _payloadCatKeys = [];
+
+function payloadTreeStorageKey(device) {
+  return `tsk:payload-tree:${S.currentUser || 'default'}:${device || S.device}`;
+}
+
+function loadPayloadTreeState(device) {
+  _expandedPayloadSets = new Set();
+  _collapsedPayloadCats = new Set();
+  try {
+    const raw = localStorage.getItem(payloadTreeStorageKey(device));
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    if (Array.isArray(data.expandedSets)) {
+      _expandedPayloadSets = new Set(data.expandedSets.map(k => String(k).toLowerCase()));
+    }
+    if (Array.isArray(data.collapsedCats)) {
+      _collapsedPayloadCats = new Set(data.collapsedCats.map(k => String(k).toLowerCase()));
+    }
+  } catch (e) { /* ignore corrupt state */ }
+}
+
+function savePayloadTreeState(device) {
+  try {
+    localStorage.setItem(payloadTreeStorageKey(device), JSON.stringify({
+      expandedSets: [..._expandedPayloadSets],
+      collapsedCats: [..._collapsedPayloadCats],
+    }));
+  } catch (e) { /* quota / private mode */ }
+}
+
+function prunePayloadTreeState() {
+  const validSets = new Set(Object.keys(_payloadSets).map(k => payloadSetDomKey(k)));
+  _expandedPayloadSets = new Set([..._expandedPayloadSets].filter(k => validSets.has(k)));
+  const validCats = new Set(_payloadCatKeys);
+  _collapsedPayloadCats = new Set([..._collapsedPayloadCats].filter(k => validCats.has(k)));
+}
+
+function payloadCatDomKey(cat) {
+  return String(cat || '').toLowerCase();
+}
+
+function isPayloadCatExpanded(cat) {
+  return !_collapsedPayloadCats.has(payloadCatDomKey(cat));
+}
+
+function expandPayloadCat(cat) {
+  _collapsedPayloadCats.delete(payloadCatDomKey(cat));
+  applyPayloadCatCollapseState();
+  updateCollapseAllButton();
+  savePayloadTreeState(S.device);
+}
+
+function collapsePayloadCat(cat) {
+  _collapsedPayloadCats.add(payloadCatDomKey(cat));
+  applyPayloadCatCollapseState();
+  updateCollapseAllButton();
+  savePayloadTreeState(S.device);
+}
+
+function togglePayloadCatExpand(e, cat) {
+  e.stopPropagation();
+  e.preventDefault();
+  if (isPayloadCatExpanded(cat)) collapsePayloadCat(cat);
+  else expandPayloadCat(cat);
+}
+
+function togglePayloadCatClick(e, cat) {
+  if (e.target.closest('button') && !e.target.classList.contains('p-cat-chevron')) return;
+  togglePayloadCatExpand(e, cat);
+}
+
+function applyPayloadCatCollapseState() {
+  document.querySelectorAll('.p-cat-header[data-cat-id], .p-cat-actions[data-cat-id]').forEach(el => {
+    const expanded = isPayloadCatExpanded(el.dataset.catId);
+    el.classList.toggle('collapsed', !expanded);
+  });
+  document.querySelectorAll('.p-set-header[data-cat-id], .p-file-row[data-cat-id]').forEach(el => {
+    const expanded = isPayloadCatExpanded(el.dataset.catId);
+    el.classList.toggle('p-cat-collapsed', !expanded);
+  });
+}
+
+function payloadSetDomKey(setKey) {
+  return String(setKey || '').toLowerCase();
+}
+
+function isPayloadSetExpanded(setKey) {
+  return _expandedPayloadSets.has(payloadSetDomKey(setKey));
+}
+
+function expandPayloadSet(setKey) {
+  _expandedPayloadSets.add(payloadSetDomKey(setKey));
+  applyPayloadSetCollapseState();
+  updateCollapseAllButton();
+  savePayloadTreeState(S.device);
+}
+
+function collapsePayloadSet(setKey) {
+  _expandedPayloadSets.delete(payloadSetDomKey(setKey));
+  applyPayloadSetCollapseState();
+  updateCollapseAllButton();
+  savePayloadTreeState(S.device);
+}
+
+function togglePayloadSetExpand(e, setKey) {
+  e.stopPropagation();
+  e.preventDefault();
+  const k = payloadSetDomKey(setKey);
+  if (_expandedPayloadSets.has(k)) _expandedPayloadSets.delete(k);
+  else _expandedPayloadSets.add(k);
+  applyPayloadSetCollapseState();
+  updateCollapseAllButton();
+  savePayloadTreeState(S.device);
+}
+
+function applyPayloadSetCollapseState() {
+  document.querySelectorAll('.p-set-header[data-set-id]').forEach(el => {
+    const expanded = isPayloadSetExpanded(el.dataset.setId);
+    el.classList.toggle('collapsed', !expanded);
+  });
+  document.querySelectorAll('.p-file-row[data-set-id]').forEach(el => {
+    const expanded = isPayloadSetExpanded(el.dataset.setId);
+    el.classList.toggle('p-set-collapsed', !expanded);
+  });
+}
+
+function setAllPayloadSetsExpanded(expanded) {
+  const keys = Object.keys(_payloadSets);
+  if (expanded) {
+    keys.forEach(k => _expandedPayloadSets.add(k));
+    _collapsedPayloadCats.clear();
+  } else {
+    _expandedPayloadSets.clear();
+    _payloadCatKeys.forEach(k => _collapsedPayloadCats.add(k));
+  }
+  applyPayloadSetCollapseState();
+  applyPayloadCatCollapseState();
+  updateCollapseAllButton();
+  savePayloadTreeState(S.device);
+}
+
+function toggleCollapseAllPayloads() {
+  const keys = Object.keys(_payloadSets);
+  if (!keys.length && !_payloadCatKeys.length) return;
+  const allSetsExpanded = keys.length === 0 || keys.every(k => isPayloadSetExpanded(k));
+  const allCatsExpanded = _payloadCatKeys.every(k => isPayloadCatExpanded(k));
+  setAllPayloadSetsExpanded(!(allSetsExpanded && allCatsExpanded));
+}
+
+function updateCollapseAllButton() {
+  const btn = document.getElementById('btn-payload-collapse');
+  if (!btn) return;
+  const keys = Object.keys(_payloadSets);
+  const collapsible = keys.filter(k => {
+    const set = _payloadSets[k];
+    return (set?.files || []).length > 0;
+  });
+  btn.classList.toggle('is-hidden', collapsible.length === 0 && _payloadCatKeys.length === 0);
+  if (!collapsible.length && !_payloadCatKeys.length) return;
+  const allSetsExpanded = collapsible.length === 0 || collapsible.every(k => isPayloadSetExpanded(k));
+  const allCatsExpanded = _payloadCatKeys.every(k => isPayloadCatExpanded(k));
+  btn.textContent = (allSetsExpanded && allCatsExpanded) ? 'COLLAPSE ALL' : 'EXPAND ALL';
 }
 
 function renderPayloads(groups) {
   const list = document.getElementById('payload-list');
   _flatPayloads = [];
   _payloadSets = {};
-  if (S.device === 'usb' && groups?.length) groups = sortUsbPayloadGroups(groups);
+  groups = ensureMyPayloadsGroup(groups);
   const color  = getDeviceColor(S.device) || '#fff';
   const isReal = (S.repoExists || {})[S.device];
   let html = '';
@@ -4493,20 +5012,40 @@ function renderPayloads(groups) {
     </div>`;
   }
   let idx = 0;
+  _payloadCatKeys = [];
   for (const group of groups) {
-    html += `<div class="p-cat">${group.cat}</div>`;
+    const catKey = payloadCatDomKey(group.cat);
+    _payloadCatKeys.push(catKey);
+    if (group.cat === 'MY PAYLOADS') {
+      html += renderMyPayloadsCatRow(group);
+    } else {
+      html += renderPayloadCatHeader(group);
+    }
     const sets = group.sets || [];
+    const catAttr = ` data-cat-id="${catKey}"`;
     for (const set of sets) {
       const setKey = (set.set_id || set.name || '').toLowerCase();
-      _payloadSets[setKey] = set;
+      _payloadSets[setKey] = { ...set, cat: group.cat };
       const tags = (set.tags || []).map(t =>
         `<span class="tag tag-${t}">${t}</span>`).join('');
-      const showHeader = (set.files || []).length !== 1 || set.name;
+      const fileCount = (set.files || []).length;
+      const showHeader = fileCount !== 1 || set.name;
+      const expanded = isPayloadSetExpanded(setKey);
       if (showHeader) {
-        html += `<div class="p-set-header ${setHeaderClasses(setKey)}"
-          data-set-id="${setKey}" onclick="selectPayloadSet('${setKey.replace(/'/g, "\\'")}')">
+        const collapsedCls = expanded ? '' : ' collapsed';
+        const fileCountLabel = fileCount > 1
+          ? `<span class="p-set-file-count">${fileCount} files</span>` : '';
+        const pkgDelBtn = isUserPackageSet(set, group)
+          ? `<button type="button" class="p-item-delete p-set-delete" onclick="deleteUserPackage(event,'${setKey.replace(/'/g, "\\'")}')" title="Delete entire package and all files">DEL</button>`
+          : '';
+        html += `<div class="p-set-header ${setHeaderClasses(setKey)}${collapsedCls}"
+          data-set-id="${setKey}"${catAttr} onclick="selectPayloadSet('${setKey.replace(/'/g, "\\'")}')">
+          <button type="button" class="p-set-chevron" aria-label="${expanded ? 'Collapse' : 'Expand'}"
+            onclick="togglePayloadSetExpand(event,'${setKey.replace(/'/g, "\\'")}')">▾</button>
           <div class="p-icon" style="color:${color}"></div>
           <span class="p-set-name">${set.set_name || set.name}</span>
+          ${fileCountLabel}
+          ${pkgDelBtn}
           <div class="p-tags">${tags}</div>
         </div>`;
       }
@@ -4543,7 +5082,9 @@ function renderPayloads(groups) {
         const lureHint = (row.cat === 'LURES' && row.file)
           ? `<span class="p-lure-victim">→ ${row.file}</span>` : '';
         const label = row.display_name || row.file || row.name;
-        html += `<div class="p-item p-file-row${sel ? ' ' + sel : ''}" onclick="selectPayload(${n})" data-idx="${n}">
+        const collapseCls = showHeader && !expanded ? ' p-set-collapsed' : '';
+        const setAttr = showHeader ? ` data-set-id="${setKey}"${catAttr}` : catAttr;
+        html += `<div class="p-item p-file-row${sel ? ' ' + sel : ''}${collapseCls}" onclick="selectPayload(${n})" data-idx="${n}"${setAttr}>
           <span class="p-num">#${String(n+1).padStart(2,'0')}</span>
           <span class="p-name">${label}${lureHint}</span>
           ${roleBadge}
@@ -4554,6 +5095,11 @@ function renderPayloads(groups) {
     }
   }
   list.innerHTML = html || '<div class="cfg-hint" style="padding:20px">No payloads found.</div>';
+  prunePayloadTreeState();
+  applyPayloadCatCollapseState();
+  applyPayloadSetCollapseState();
+  updateCollapseAllButton();
+  updateMyPayloadsButtons();
 }
 
 /** After payload list reload, re-bind selection to new _flatPayloads entries (with real paths). */
@@ -4585,7 +5131,7 @@ function syncPayloadSelectionAfterReload(prevKey) {
   syncPreviewEmptyHint();
   updateActionButtons();
   updateArmedState();
-  updatePackageFileButton();
+  updateMyPayloadsButtons();
 }
 
 function getPreviewTemplate(p) {
@@ -4672,6 +5218,8 @@ async function onSearch(e) {
     // Render flat results
     const list = document.getElementById('payload-list');
     _flatPayloads = data.results;
+    _payloadSets = {};
+    document.getElementById('btn-payload-collapse')?.classList.add('is-hidden');
     const color = getDeviceColor(S.device) || '#fff';
     let html = `<div class="p-cat">${data.count} RESULTS FOR "${q.toUpperCase()}"</div>`;
     data.results.forEach((p, idx) => {
@@ -5272,7 +5820,7 @@ function showHelp() {
         Set <span class="help-k">SCRIPT NAME</span>, then <em>GENERATE</em> → <em>SAVE TO PAYLOADS</em> (or <em>SAVE + FLASH</em>) → script appears under <span class="help-k">EXFILS</span>.</div>
       <div class="help-flow-step"><strong>3 · SNARF → LURE</strong> - Windows: <span class="help-k">LNK</span> shortcut (binary; preview only) · Linux: <span class="help-k">README</span> script or <span class="help-k">.desktop</span> entry.
         Set <span class="help-k">PACKAGE NAME</span>. Attach a saved exfil script or use a test stub. <em>SAVE PACKAGE</em> → row under <span class="help-k">LURES</span> → <em>FLASH</em> deploys lure + companion scripts together.</div>
-      <div class="help-flow-step"><strong>4 · MY PAYLOADS</strong> - <span class="help-k">+ NEW</span> or editor save for hand-written scripts. List order on USB: BUILT-INS → EXFILS → LURES → MY PAYLOADS.</div>
+      <div class="help-flow-step"><strong>4 · MY PAYLOADS</strong> - Scroll to the MY PAYLOADS section · <span class="help-k">P+</span> new package (or script on USB) · <span class="help-k">F+</span> add file to selected package · or save from editor. USB list order: BUILT-INS → EXFILS → LURES → MY PAYLOADS.</div>
       <div class="help-flow-step"><strong>5 · FLASH</strong> - Plug a <em>plain USB stick</em> (not Bunny/Ducky). Right panel: scan stick, pick deploy (root or hidden <code>.tsk/</code>), preview, then FLASH.
         Scripts get <code>RUN_PAYLOAD.bat</code> / <code>.sh</code> launchers on Windows/Linux.</div>
       <div class="help-flow-step"><strong>6 · SNARF → CATCH</strong> - If exfil uses phone-home, uploads hit <code>POST /api/snarf</code>.
@@ -5288,11 +5836,14 @@ function showHelp() {
       <div class="help-line">Device cards: <span class="help-k">OFFLINE</span> · <span class="help-k">READY</span> (detected) · <span class="help-k">ARMED</span> (LHOST + payload + device ready on selected card)</div>
 
       <div class="cfg-section-title" style="color:var(--red)">PAYLOADS &amp; FLASH</div>
-      <div class="help-line"><span class="help-k">1–99</span> Select payload · <span class="help-k">f</span> / <span class="help-k">Ctrl+Enter</span> Flash · <span class="help-k">e</span> Edit</div>
+      <div class="help-line"><span class="help-k">1-99</span> Select payload · <span class="help-k">f</span> / <span class="help-k">Ctrl+Enter</span> Flash · <span class="help-k">e</span> Edit</div>
       <div class="help-line"><span class="help-k">flash 1</span> / <span class="help-k">flash 2</span> - Bash Bunny switch position</div>
 
       <div class="cfg-section-title" style="color:var(--red)">COMMAND BAR</div>
       <div class="help-line"><span class="help-k">set lhost</span> 10.0.0.5 · <span class="help-k">set lport</span> 1337 · <span class="help-k">clone ducky</span> · <span class="help-k">devices</span></div>
+      <div class="help-line"><span class="help-k">create package</span> · <span class="help-k">add file</span> - MY PAYLOADS package actions (same as P+ / F+)</div>
+      <div class="help-line">Payload list: click category or package headers to expand/collapse · <span class="help-k">EXPAND ALL</span> toggles everything</div>
+      <div class="help-line">Editor: <span class="help-k">Ctrl+F</span> find (Aa = match case) · Enter / Shift+Enter next/prev · <span class="help-k">Ctrl+D</span> vars panel</div>
       <div class="help-line"><span class="help-k">turtle connect</span> - SSH terminal · <span class="help-k">Esc</span> - Close modals · Operator modal (O) - password, rename, log out</div>
 
       <div class="cfg-section-title" style="color:var(--red)">FUN &amp; EASTER EGGS</div>
@@ -5485,6 +6036,41 @@ function onEditorFilenameInput() {
   document.getElementById('editor-modified')?.classList.add('visible');
 }
 
+function updateEditorSaveLabels(path) {
+  const saveBtn = document.getElementById('ed-btn-save');
+  const dlBtn = document.getElementById('ed-btn-saveas');
+  const statusEl = document.getElementById('editor-save-status');
+  const isRepo = path && isRepoPayloadPath(path);
+  const isOwned = path && !isRepo && isUserPayload({ path });
+
+  if (saveBtn) {
+    if (isRepo) {
+      saveBtn.textContent = '💾 SAVE TO MY PAYLOADS';
+      saveBtn.title = 'Save a copy into your MY PAYLOADS library (repo files cannot be overwritten)';
+    } else if (isOwned) {
+      saveBtn.textContent = '💾 SAVE CHANGES';
+      saveBtn.title = 'Save changes to this file in MY PAYLOADS';
+    } else {
+      saveBtn.textContent = '💾 SAVE TO MY PAYLOADS';
+      saveBtn.title = 'Save into your MY PAYLOADS library';
+    }
+  }
+  if (dlBtn) {
+    dlBtn.textContent = '⬇ DOWNLOAD';
+    dlBtn.title = 'Download a copy to your computer';
+  }
+  if (statusEl) {
+    if (!path) {
+      statusEl.textContent = 'New payload - save goes to MY PAYLOADS';
+    } else if (isRepo) {
+      statusEl.textContent = 'Repo file (read-only) - use SAVE TO MY PAYLOADS or DOWNLOAD';
+    } else {
+      statusEl.textContent = `Editing: ${path}`;
+    }
+    statusEl.style.color = isRepo || !path ? 'var(--yellow)' : 'var(--text)';
+  }
+}
+
 async function openEditor(payload) {
   if (isBinaryPayload(payload)) {
     toast('LNK shortcuts are binary - edit the companion .ps1 or rebuild in SNARF → LURE', 'warn');
@@ -5510,7 +6096,6 @@ async function openEditor(payload) {
         console.warn('[TSK Editor] read failed:', data.error, 'path:', path);
       } else if (data.binary) {
         toast('Cannot edit binary shortcut files', 'warn');
-        btn.disabled = false;
         return;
       } else {
         content = data.content || getPreviewTemplate(payload);
@@ -5530,11 +6115,7 @@ async function openEditor(payload) {
   document.getElementById('editor-device-badge').textContent = payload.lang || 'TXT';
   document.getElementById('editor-modified').classList.remove('visible');
   document.getElementById('ed-btn-save').disabled = false;
-  document.getElementById('editor-save-status').textContent = path
-    ? (isRepoPayloadPath(path) ? `Repo file (read-only) - Save writes to MY PAYLOADS` : `Editing: ${path}`)
-    : 'Preview payload - Save writes to MY PAYLOADS';
-  document.getElementById('editor-save-status').style.color =
-    path && !isRepoPayloadPath(path) ? 'var(--text)' : 'var(--yellow)';
+  updateEditorSaveLabels(path);
 
   // Store both the path and ensure we have the full absolute path
   S.editorPath    = path;
@@ -5545,15 +6126,18 @@ async function openEditor(payload) {
   updatePos();
   updateLineCount();
   updateVarsPanel();
+  closeEdFind();
+  updateGutter();
 
   // Show modal
   document.getElementById('editor-overlay').classList.add('visible');
   ta.focus();
-  // Scroll to top
   ta.scrollTop = 0;
+  syncEditorScroll();
 }
 
 function closeEditor() {
+  closeEdFind();
   if (S.editorDirty) {
     if (!confirm('You have unsaved changes. Close anyway?')) return;
   }
@@ -5575,10 +6159,12 @@ function onEditorInput() {
   updateGutter();
   updateLineCount();
   updateVarsPanel();
+  if (!document.getElementById('editor-find-bar')?.classList.contains('is-hidden')) {
+    refreshFindUi(undefined, false);
+  }
 }
 
 function onEditorKey(e) {
-  // Tab inserts spaces instead of moving focus
   if (e.key === 'Tab') {
     e.preventDefault();
     const ta = e.target;
@@ -5588,18 +6174,27 @@ function onEditorKey(e) {
     ta.selectionStart = ta.selectionEnd = start + 4;
     onEditorInput();
   }
-  // Ctrl+S saves
+  if (e.key === 'f' && (e.ctrlKey || e.metaKey)) {
+    e.preventDefault();
+    toggleEdFind(true);
+    return;
+  }
   if (e.key === 's' && (e.ctrlKey || e.metaKey)) {
     e.preventDefault();
     edSave();
   }
-  // Ctrl+D toggles vars panel
   if (e.key === 'd' && (e.ctrlKey || e.metaKey)) {
     e.preventDefault();
     toggleVarsPanel();
   }
-  // Escape closes
-  if (e.key === 'Escape') closeEditor();
+  if (e.key === 'Escape') {
+    if (!document.getElementById('editor-find-bar')?.classList.contains('is-hidden')) {
+      e.preventDefault();
+      closeEdFind();
+      return;
+    }
+    closeEditor();
+  }
 }
 
 // ── EDITOR VARIABLE SUBSTITUTION PANEL ───────────────────────────────────────
@@ -5679,21 +6274,64 @@ function toggleVarsPanel() {
 
 function updateGutter() {
   const ta      = document.getElementById('editor-textarea');
-  const content = ta.value;
-  const lineArr = content.split('\n');
   const g       = document.getElementById('editor-gutter');
+  if (!ta || !g) return;
+  const content = ta.value.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const lineArr = content.split('\n');
+  const linePx  = syncGutterLineMetrics(ta, g);
 
-  // Build set of var-containing line numbers for highlighting
   const lineMap = _getVarLines(content);
   const varLines = new Set();
   Object.values(lineMap).forEach(s => s.forEach(n => varLines.add(n)));
 
+  const findActive = edFindIsActive();
+  const findInp = document.getElementById('editor-find-input');
+  const matchLines = findActive
+    ? edFindMatchLineNumbers(content, findInp.value, edFindCaseSensitive())
+    : new Set();
+  const selStart = ta.selectionStart;
+  const matchAt = findActive && _edFindMatchAt >= 0 ? _edFindMatchAt : selStart;
+  const currentLine = findActive && matchAt >= 0
+    ? edLineNumberAt(content, matchAt)
+    : 0;
+
   let html = '';
   for (let i = 1; i <= lineArr.length; i++) {
-    const cls = varLines.has(i) ? ' class="gutter-var"' : '';
-    html += `<div${cls}>${i}</div>`;
+    const classes = [];
+    if (findActive && matchLines.has(i)) {
+      classes.push(i === currentLine ? 'gutter-find-current' : 'gutter-find');
+    } else if (varLines.has(i)) {
+      classes.push('gutter-var');
+    }
+    const cls = classes.length ? ` class="${classes.join(' ')}"` : '';
+    html += `<div${cls} style="height:${linePx}px;line-height:${linePx}px">${i}</div>`;
   }
   g.innerHTML = html;
+  g.scrollTop = ta.scrollTop;
+}
+
+function syncGutterLineMetrics(ta, g) {
+  const style = getComputedStyle(ta);
+  const padTop = parseFloat(style.paddingTop) || 12;
+  const padBot = parseFloat(style.paddingBottom) || 12;
+  const lines  = Math.max(1, ta.value.split('\n').length);
+  const innerH = Math.max(0, ta.scrollHeight - padTop - padBot);
+  const linePx   = Math.max(16, Math.round((innerH / lines) * 100) / 100);
+  g.style.fontSize = style.fontSize;
+  g.style.paddingTop = style.paddingTop;
+  g.style.paddingBottom = style.paddingBottom;
+  ta.style.lineHeight = linePx + 'px';
+  document.documentElement.style.setProperty('--ed-line-px', linePx + 'px');
+  return linePx;
+}
+
+function edLineNumberAt(hay, charIndex) {
+  if (charIndex <= 0) return 1;
+  let line = 1;
+  for (let i = 0; i < charIndex && i < hay.length; i++) {
+    if (hay[i] === '\n') line++;
+  }
+  return line;
 }
 
 function syncGutter() {
@@ -5701,11 +6339,144 @@ function syncGutter() {
   document.getElementById('editor-gutter').scrollTop = ta.scrollTop;
 }
 
+function syncEditorScroll() {
+  syncGutter();
+}
+
+function edFindIsActive() {
+  const bar = document.getElementById('editor-find-bar');
+  const inp = document.getElementById('editor-find-input');
+  return !!(bar && !bar.classList.contains('is-hidden') && inp?.value);
+}
+
+function edFindMatchLineNumbers(hay, q, caseSensitive) {
+  const lines = new Set();
+  if (!q) return lines;
+  let pos = 0;
+  while (true) {
+    const idx = edFindNextIndex(hay, q, pos, true, caseSensitive);
+    if (idx < 0) break;
+    lines.add(edLineNumberAt(hay, idx));
+    pos = idx + Math.max(q.length, 1);
+  }
+  return lines;
+}
+
+function edFindLineAtIndex(hay, idx) {
+  return edLineNumberAt(hay, idx);
+}
+
+function edFindCurrentMatchNumber(hay, q, idx, caseSensitive) {
+  if (!q || idx < 0) return 0;
+  let current = 0;
+  let pos = 0;
+  while (true) {
+    const m = edFindNextIndex(hay, q, pos, true, caseSensitive);
+    if (m < 0) break;
+    current++;
+    if (m === idx) return current;
+    pos = m + Math.max(q.length, 1);
+  }
+  return 0;
+}
+
+function edFindNearestMatch(hay, q, pos, caseSensitive) {
+  if (!q) return -1;
+  let lastBefore = -1;
+  let p = 0;
+  while (true) {
+    const m = edFindNextIndex(hay, q, p, true, caseSensitive);
+    if (m < 0) break;
+    if (pos >= m && pos < m + q.length) return m;
+    if (m <= pos) lastBefore = m;
+    p = m + Math.max(q.length, 1);
+  }
+  if (lastBefore >= 0) return lastBefore;
+  return edFindNextIndex(hay, q, 0, true, caseSensitive);
+}
+
+function refreshFindUi(fromPos, jumpToFirst) {
+  const ta = document.getElementById('editor-textarea');
+  const inp = document.getElementById('editor-find-input');
+  const status = document.getElementById('editor-find-status');
+  if (!ta || !inp || !edFindIsActive()) {
+    ta?.classList.remove('ed-find-active');
+    _edFindMatchAt = -1;
+    if (status) status.textContent = '';
+    updateGutter();
+    return;
+  }
+  ta.classList.add('ed-find-active');
+  const hay = ta.value.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const q = inp.value;
+  const caseSensitive = edFindCaseSensitive();
+  const count = edFindMatchCount(hay, q, caseSensitive);
+  let at = -1;
+  if (jumpToFirst) {
+    at = edFindNextIndex(hay, q, 0, true, caseSensitive);
+  } else {
+    const anchor = typeof fromPos === 'number' ? fromPos : ta.selectionStart;
+    at = edFindNearestMatch(hay, q, anchor, caseSensitive);
+  }
+  if (count > 0 && at >= 0) {
+    _edFindMatchAt = at;
+    const refocusFind = document.activeElement === inp
+      || !!document.activeElement?.closest('#editor-find-bar');
+    ta.setSelectionRange(at, at + q.length);
+    scrollEditorToSelection(ta, at);
+    if (refocusFind) inp.focus();
+    else ta.focus();
+    const current = edFindCurrentMatchNumber(hay, q, at, caseSensitive);
+    if (status) status.textContent = `${current} of ${count}`;
+  } else {
+    _edFindMatchAt = -1;
+    if (status) status.textContent = 'Not found';
+  }
+  requestAnimationFrame(() => {
+    updateGutter();
+    updatePos();
+  });
+}
+
+function edFindCaseSensitive() {
+  return !!document.getElementById('editor-find-case')?.checked;
+}
+
+function edFindNextIndex(hay, q, start, forward, caseSensitive) {
+  if (!q) return -1;
+  if (caseSensitive) {
+    return forward ? hay.indexOf(q, start) : hay.lastIndexOf(q, start);
+  }
+  const hayL = hay.toLowerCase();
+  const qL = q.toLowerCase();
+  return forward ? hayL.indexOf(qL, start) : hayL.lastIndexOf(qL, start);
+}
+
+function edFindMatchCount(hay, q, caseSensitive) {
+  if (!q) return 0;
+  let count = 0;
+  let pos = 0;
+  while (true) {
+    const idx = edFindNextIndex(hay, q, pos, true, caseSensitive);
+    if (idx < 0) break;
+    count++;
+    pos = idx + Math.max(q.length, 1);
+  }
+  return count;
+}
+
 function updatePos() {
   const ta  = document.getElementById('editor-textarea');
-  const txt = ta.value.substring(0, ta.selectionStart);
-  const ln  = txt.split('\n').length;
-  const col = txt.split('\n').pop().length + 1;
+  const inp = document.getElementById('editor-find-input');
+  const hay = ta.value.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const findBarOpen = !document.getElementById('editor-find-bar')?.classList.contains('is-hidden');
+  const useFindPos = findBarOpen && _edFindMatchAt >= 0
+    && (document.activeElement === inp || !!document.activeElement?.closest('#editor-find-bar'));
+  const pos = useFindPos ? _edFindMatchAt : ta.selectionStart;
+  const ln  = edLineNumberAt(hay, pos);
+  const head = hay.substring(0, pos);
+  const lastNl = head.lastIndexOf('\n');
+  const col = lastNl < 0 ? head.length + 1 : head.length - lastNl;
   document.getElementById('editor-pos').textContent = `Ln ${ln}, Col ${col}`;
 }
 
@@ -5853,23 +6624,110 @@ function edSaveAs() {
 }
 
 function edFind() {
-  const q = prompt('Find in file:');
-  if (!q) return;
-  const ta  = document.getElementById('editor-textarea');
-  const idx = ta.value.indexOf(q, ta.selectionEnd);
-  if (idx >= 0) {
-    ta.setSelectionRange(idx, idx + q.length);
-    ta.focus();
-    updatePos();
-    // Scroll to selection
-    const linesBefore = ta.value.substring(0,idx).split('\n').length;
-    const lineH = 19.2;
-    ta.scrollTop = Math.max(0, (linesBefore - 5) * lineH);
-    syncGutter();
-    toast(`Found at line ${linesBefore}`, 'info');
-  } else {
-    toast('Not found', 'err');
+  toggleEdFind(true);
+}
+
+function toggleEdFind(forceOpen) {
+  const bar = document.getElementById('editor-find-bar');
+  if (!bar) return;
+  const open = forceOpen === true || bar.classList.contains('is-hidden');
+  if (!open) {
+    closeEdFind();
+    return;
   }
+  bar.classList.remove('is-hidden');
+  document.getElementById('ed-tool-find')?.classList.add('active');
+  const inp = document.getElementById('editor-find-input');
+  inp?.focus();
+  inp?.select();
+  refreshFindUi(0, true);
+}
+
+function closeEdFind() {
+  document.getElementById('editor-find-bar')?.classList.add('is-hidden');
+  document.getElementById('ed-tool-find')?.classList.remove('active');
+  document.getElementById('editor-textarea')?.classList.remove('ed-find-active');
+  _edFindMatchAt = -1;
+  const status = document.getElementById('editor-find-status');
+  if (status) status.textContent = '';
+  updateGutter();
+}
+
+function onEditorFindKey(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    edFindStep(e.shiftKey ? -1 : 1, true);
+  } else if (e.key === 'Escape') {
+    e.preventDefault();
+    closeEdFind();
+  }
+}
+
+function onEditorFindInput() {
+  refreshFindUi(0, true);
+}
+
+function onEditorFindCaseToggle(e) {
+  if (e) e.preventDefault();
+  const wrap = document.getElementById('editor-find-case-wrap');
+  wrap?.classList.toggle('active', edFindCaseSensitive());
+  const ta = document.getElementById('editor-textarea');
+  refreshFindUi(ta?.selectionStart ?? 0, false);
+}
+
+function edFindStep(direction, keepFindFocus) {
+  const ta = document.getElementById('editor-textarea');
+  const inp = document.getElementById('editor-find-input');
+  const status = document.getElementById('editor-find-status');
+  if (!ta || !inp) return;
+  const q = inp.value;
+  if (!q) {
+    if (status) status.textContent = '';
+    toast('Enter search text', 'info');
+    return;
+  }
+  const hay = ta.value.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const caseSensitive = edFindCaseSensitive();
+  let idx = -1;
+  if (direction >= 0) {
+    const start = ta.selectionEnd;
+    idx = edFindNextIndex(hay, q, start, true, caseSensitive);
+    if (idx < 0 && start > 0) idx = edFindNextIndex(hay, q, 0, true, caseSensitive);
+  } else {
+    const start = ta.selectionStart - 1;
+    idx = edFindNextIndex(hay, q, start, false, caseSensitive);
+    if (idx < 0) idx = edFindNextIndex(hay, q, hay.length, false, caseSensitive);
+  }
+  if (idx < 0) {
+    if (status) status.textContent = 'Not found';
+    ta.classList.add('ed-find-active');
+    updateGutter();
+    toast('Not found', 'err');
+    return;
+  }
+  ta.setSelectionRange(idx, idx + q.length);
+  _edFindMatchAt = idx;
+  if (keepFindFocus) inp.focus();
+  else ta.focus();
+  scrollEditorToSelection(ta, idx);
+  const count = edFindMatchCount(hay, q, caseSensitive);
+  const current = edFindCurrentMatchNumber(hay, q, idx, caseSensitive);
+  if (status) status.textContent = `${current} of ${count}`;
+  ta.classList.add('ed-find-active');
+  requestAnimationFrame(() => {
+    updateGutter();
+    updatePos();
+  });
+}
+
+function scrollEditorToSelection(ta, idx) {
+  const hay = ta.value.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const lineNum = edLineNumberAt(hay, idx);
+  const style = getComputedStyle(ta);
+  const padTop = parseFloat(style.paddingTop) || 12;
+  const lines = Math.max(1, hay.split('\n').length);
+  const lineH = Math.max(16, (ta.scrollHeight - padTop - (parseFloat(style.paddingBottom) || 12)) / lines);
+  ta.scrollTop = Math.max(0, (lineNum - 4) * lineH);
 }
 
 function edSelectAll() {
@@ -5884,9 +6742,12 @@ function edUndo() {
 }
 
 let _edWrap = false;
+let _edFindMatchAt = -1;
 function edWrap() {
   _edWrap = !_edWrap;
-  document.getElementById('editor-textarea').style.whiteSpace = _edWrap ? 'pre-wrap' : 'pre';
+  const ta = document.getElementById('editor-textarea');
+  ta.style.whiteSpace = _edWrap ? 'pre-wrap' : 'pre';
+  updateGutter();
   toast(`Word wrap ${_edWrap ? 'ON' : 'OFF'}`, 'info');
 }
 
@@ -7515,6 +8376,12 @@ function onCmd(e) {
       return;
     }
     navigate(CMD_MAP[cmd]); return;
+  }
+  if (raw === 'create package' || raw === 'new package') {
+    createNewPayload(); return;
+  }
+  if (raw === 'add file') {
+    addPackageFile(); return;
   }
   if (raw.startsWith('clone ')) { repoClone(parts[1]||'all'); return; }
   if (raw === 'update all' || raw === 'update') { repoUpdate(); return; }

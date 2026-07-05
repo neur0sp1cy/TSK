@@ -32,7 +32,7 @@ class TurtleSSHError(Exception):
     pass
 
 
-# OG LAN Turtle only offers ssh-rsa — Paramiko 5 removed it from defaults.
+# OG LAN Turtle only offers ssh-rsa - Paramiko 5 removed it from defaults.
 if HAS_PARAMIKO:
     class TurtleTransport(paramiko.Transport):
         _preferred_keys = ("ssh-rsa",)
@@ -126,7 +126,7 @@ def _connect_openssh(cfg: dict, remote_cmd: str = "echo OK", timeout: int = 20) 
             )
         return False, err or f"ssh failed (exit {result.returncode})"
     except subprocess.TimeoutExpired:
-        return False, "SSH timed out — is the Turtle plugged in and booted?"
+        return False, "SSH timed out - is the Turtle plugged in and booted?"
     except Exception as e:
         return False, str(e)
 
@@ -160,7 +160,7 @@ def _connect_paramiko(cfg: dict) -> "paramiko.SSHClient":
         )
     except paramiko.AuthenticationException:
         raise TurtleSSHError(
-            "SSH authentication failed — check LAN TURTLE PASSWORD in CONFIG."
+            "SSH authentication failed - check LAN TURTLE PASSWORD in CONFIG."
         )
     except (paramiko.SSHException, OSError, TimeoutError) as e:
         raise TurtleSSHError(f"SSH connect failed: {e}")
@@ -231,7 +231,7 @@ def turtle_upload_file(
         return
 
     raise TurtleSSHError(
-        "Cannot upload — install sshpass: sudo apt install sshpass"
+        "Cannot upload - install sshpass: sudo apt install sshpass"
     )
 
 

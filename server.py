@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-TSK Web Server — FastAPI backend
+TSK Web Server - FastAPI backend
 Serves the web UI and exposes all TSK functionality via REST + WebSocket.
 """
 
@@ -108,7 +108,7 @@ def _issue_token(username: str) -> str:
 
 
 async def require_auth(request: Request) -> str:
-    """FastAPI dependency — validates X-TSK-Token header and returns the username."""
+    """FastAPI dependency - validates X-TSK-Token header and returns the username."""
     token = request.headers.get("X-TSK-Token", "").strip()
     username = _tokens.get(token, "")
     if not username:
@@ -143,7 +143,7 @@ def broadcast_sync(msg: dict) -> None:
         print(f"[TSK] broadcast_sync failed ({msg.get('type')}): {e}", flush=True)
 
 # ─────────────────────────────────────────────────────────────────────────────
-#  Routes — UI
+#  Routes - UI
 # ─────────────────────────────────────────────────────────────────────────────
 
 @app.get("/", response_class=HTMLResponse)
@@ -172,7 +172,7 @@ async def branding_asset(asset_name: str):
     return JSONResponse({"error": "file missing on server"}, status_code=404)
 
 # ─────────────────────────────────────────────────────────────────────────────
-#  Routes — Config
+#  Routes - Config
 # ─────────────────────────────────────────────────────────────────────────────
 
 @app.get("/api/config")
@@ -347,7 +347,7 @@ async def auth_status(request: Request):
     }
 
 # ─────────────────────────────────────────────────────────────────────────────
-#  Routes — Devices
+#  Routes - Devices
 # ─────────────────────────────────────────────────────────────────────────────
 
 @app.get("/api/devices")
@@ -387,7 +387,7 @@ async def get_usb_mounts(force: bool = False, username: str = Depends(require_au
     }
 
 # ─────────────────────────────────────────────────────────────────────────────
-#  Routes — Payloads
+#  Routes - Payloads
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _get_payload_db(device: str, username: str = "") -> list:
@@ -495,7 +495,8 @@ def _merge_usb_flat_payloads(db: list, flat: list) -> list:
                 "is_primary": True,
             }],
         })
-    return [{"cat": c, "sets": by_cat[c]} for c in sorted(by_cat)]
+    from payload_sets import sort_payload_categories
+    return [{"cat": c, "sets": by_cat[c]} for c in sort_payload_categories(list(by_cat))]
 
 
 def _merge_legacy_user_files(db: list, flat: list) -> list:
@@ -538,7 +539,7 @@ async def get_payloads(device: str, username: str = Depends(require_auth)):
     }
 
 async def _read_file(path: str, username: str):
-    """Shared file reader — paths confined to repo/user directories."""
+    """Shared file reader - paths confined to repo/user directories."""
     if not path:
         return JSONResponse({"content": "", "error": "No path"}, status_code=400)
     try:
@@ -620,7 +621,7 @@ async def search_payloads(device: str, q: str, username: str = Depends(require_a
     return {"results": results, "count": len(results)}
 
 # ─────────────────────────────────────────────────────────────────────────────
-#  Routes — Repos
+#  Routes - Repos
 # ─────────────────────────────────────────────────────────────────────────────
 
 @app.get("/api/repos")
@@ -747,7 +748,7 @@ async def update_repos(username: str = Depends(require_auth)):
     return {"ok": True}
 
 # ─────────────────────────────────────────────────────────────────────────────
-#  Routes — Flash
+#  Routes - Flash
 # ─────────────────────────────────────────────────────────────────────────────
 
 @app.post("/api/flash")
@@ -866,7 +867,7 @@ async def get_lan_ip():
     }
 
 # ─────────────────────────────────────────────────────────────────────────────
-#  WebSocket — live updates
+#  WebSocket - live updates
 # ─────────────────────────────────────────────────────────────────────────────
 
 @app.get("/api/test-terminal")
@@ -875,7 +876,7 @@ async def test_terminal(username: str = Depends(require_auth)):
     import asyncio
     async def send():
         for i in range(5):
-            await broadcast({"type": "terminal", "line": f"  TEST LINE {i+1} — WebSocket is working!", "cls": "ok" if i%2==0 else "progress"})
+            await broadcast({"type": "terminal", "line": f"  TEST LINE {i+1} - WebSocket is working!", "cls": "ok" if i%2==0 else "progress"})
             await asyncio.sleep(0.3)
         await broadcast({"type": "terminal", "line": "  ✓ WebSocket pipeline verified", "cls": "ok"})
     asyncio.create_task(send())
@@ -967,7 +968,7 @@ async def websocket_ssh_turtle(ws: WebSocket, token: str = ""):
             pass
 
 # ─────────────────────────────────────────────────────────────────────────────
-#  Routes — USB Dropper / SnarfSnarf
+#  Routes - USB Dropper / SnarfSnarf
 # ─────────────────────────────────────────────────────────────────────────────
 
 @app.get("/api/dropper/snarfsnarf/options")
@@ -1147,7 +1148,7 @@ async def dropper_lure_flash(data: dict, username: str = Depends(require_auth)):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-#  Routes — Snarf receiver (phone-home catch)
+#  Routes - Snarf receiver (phone-home catch)
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _snarf_status_payload() -> dict:
@@ -1661,7 +1662,7 @@ async def delete_payload(data: dict, username: str = Depends(require_auth)):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-#  Routes — Music (operator drop folder)
+#  Routes - Music (operator drop folder)
 # ─────────────────────────────────────────────────────────────────────────────
 
 MUSIC_DIR = STATIC_DIR / "music"
@@ -1682,7 +1683,7 @@ async def music_tracks():
     return {"tracks": tracks}
 
 
-# Static assets — mounted after API routes
+# Static assets - mounted after API routes
 if STATIC_DIR.is_dir():
     app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
