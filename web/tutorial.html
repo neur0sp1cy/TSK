@@ -239,15 +239,15 @@ ul.compact li{margin:8px 0;font-size:15px;line-height:1.55;}
 
           <div class="step">
             <div class="step-title">STEP 3 · SET LHOST &amp; LPORT</div>
-            <div class="step-block"><strong>What to do:</strong> Open <em>CONFIG</em> (sidebar or <kbd>C</kbd>). Click the LAN IP helper next to LHOST, or type your machine's LAN IP manually. Set LPORT to <code>1337</code> unless you changed the server port.</div>
+            <div class="step-block"><strong>What to do:</strong> Open <em>CONFIG</em> (SYSTEM tile <kbd>C</kbd> or command bar <code>set lhost</code>). Click the LAN IP helper next to LHOST, or type your machine's LAN IP manually. Set LPORT to <code>1337</code> unless you changed the server port.</div>
             <div class="step-block"><strong>Expected result:</strong> CONFIG modal shows LHOST/LPORT; dismissible hint banner clears when LHOST is set.</div>
             <div class="pass"><strong>Pass if:</strong> <code>set lhost</code> in the command bar reflects the saved value after reload.</div>
             <div class="fail"><strong>Troubleshooting:</strong> Phone-home will fail if LHOST is <code>127.0.0.1</code> and the target is another machine on the LAN - use your real LAN IP.</div>
           </div>
 
           <div class="step">
-            <div class="step-title">STEP 4 · CLONE A PAYLOAD REPO (OPTIONAL)</div>
-            <div class="step-block"><strong>What to do:</strong> Open <em>PAYLOAD REPOS</em>, click <em>CLONE</em> on Rubber Ducky (or any device you plan to use).</div>
+            <div class="step-title">STEP 4 · CLONE A REPO (OPTIONAL)</div>
+            <div class="step-block"><strong>What to do:</strong> Open <em>REPOS</em> (SYSTEM tile <kbd>R</kbd>), click <em>CLONE</em> on Rubber Ducky (or any device you plan to use).</div>
             <div class="step-block"><strong>Expected result:</strong> Toast confirms clone; payload counts update in the sidebar badges.</div>
             <div class="pass"><strong>Pass if:</strong> Payload list shows entries for that device.</div>
           </div>
@@ -285,7 +285,7 @@ ul.compact li{margin:8px 0;font-size:15px;line-height:1.55;}
           <div class="step">
             <div class="step-title">STEP 3 · SAVE TO PAYLOAD LIBRARY</div>
             <div class="step-block"><strong>What to do:</strong> Click <em>SAVE TO PAYLOADS</em> (or <em>SAVE + FLASH</em> if stick is already plugged in).</div>
-            <div class="step-block"><strong>Expected result:</strong> Toast confirms save. Modal closes; script appears under <code>EXFILS</code> in the payload list (order: BUILT-INS → EXFILS → LURES → MY PAYLOADS).</div>
+            <div class="step-block"><strong>Expected result:</strong> Toast confirms save. Modal closes; script appears under <code>EXFILS</code> in the payload list (order: BUILT-INS → EXFILS → LURES → MY PAYLOADS). Click category or package headers to expand/collapse; <em>EXPAND ALL</em> toggles the whole tree.</div>
             <div class="pass"><strong>Pass if:</strong> Selecting the saved payload shows its content in the right preview panel.</div>
           </div>
 

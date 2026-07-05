@@ -25,7 +25,7 @@ If you are unsure whether you are allowed to test, **do not deploy**. Get permis
 
 ## Disclaimer
 
-TSK is provided **as is**, without warranty. The authors and contributors are **not responsible** for misuse, illegal activity, or damage arising from your use of this software.
+TSK is provided **as is**, without warranty. **Neur0Sp1cy** is **not responsible** for misuse, illegal activity, or damage arising from your use of this software.
 
 You are solely responsible for complying with laws and policies that apply to you. The "Hack the Planet" easter egg and similar UI flourishes are **fiction and nostalgia** - not an invitation to break the law.
 

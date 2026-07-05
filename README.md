@@ -36,7 +36,7 @@ Full policy: **[SECURITY.md](SECURITY.md)** (authorized use, vulnerability repor
 
 ## Features
 
-- **Web UI** - Browse HAK5 payload repos, preview, edit, and flash to supported devices
+- **Web UI** - Browse HAK5 payload repos, preview, edit, and flash to supported devices; collapsible categories and package accordions with persisted expand state
 - **USB Dropper** - Build exfil scripts (PowerShell / Bash), lure packages (LNK, README, `.desktop`), flash to a plain USB stick
 - **SnarfSnarf (SNARF modal)** - Visual exfil builder with phone-home or on-stick output; saved scripts appear under **EXFILS**, lure packages under **LURES**, hand-authored files under **MY PAYLOADS** (`+ NEW`)
 - **CATCH** - Live receiver for phone-home uploads with preview and ZIP export
@@ -47,6 +47,8 @@ Full policy: **[SECURITY.md](SECURITY.md)** (authorized use, vulnerability repor
 See [TESTING.md](TESTING.md) for lab setup and step-by-step USB test scenarios.
 
 **Pre-release checklist:** [RELEASE_ROADMAP.md](RELEASE_ROADMAP.md) (timeline, polish, go-live).
+
+**Release notes:** [CHANGELOG.md](CHANGELOG.md)
 
 **Full feature checklist:** [TESTING_CHECKLIST.md](TESTING_CHECKLIST.md) (pass/fail every feature before release).
 
@@ -105,7 +107,7 @@ uv run python server.py
 ### First login
 
 1. Click **NEW** on the login screen and register an operator (password min 8 characters).
-2. Open **CONFIG** and set **LHOST** to your LAN IP (use the LAN IP helper).
+2. Open **CONFIG** (**C** tile under SYSTEM) and set **LHOST** to your LAN IP (use the LAN IP helper).
 3. Set **LPORT** to `1337` unless you changed the server port.
 4. Optional: open **/tutorial** for Mission 1 walkthrough, or press **H** and click **OPEN TUTORIAL**.
 
@@ -122,8 +124,8 @@ Session auth: register/login required; API uses `X-TSK-Token` header. Password m
 
 | Area | Purpose |
 |------|---------|
-| Left nav | Devices + SYSTEM tiles (About, Help, Config, Repos, Operator) |
-| Center | Payload list for selected device; USB shows **+ NEW**, **SNARF**, and LHOST chip in header |
+| Left nav | **SYSTEM** tiles (About, Help, Config, Repos, Operator) + **DEVICES** cards |
+| Center | Payload list for selected device (expand/collapse categories and packages); USB shows **+ NEW**, **SNARF**, and LHOST chip in header |
 | Modals | CONFIG, REPOS, OPERATOR, SNARF (USB), About, Help |
 | Right panel | Preview, USB stick scan, FLASH / EDIT / SAVE |
 | Bottom bar | Command line (`set lhost`, `clone ducky`, `devices`, …) |
