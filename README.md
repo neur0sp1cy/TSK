@@ -22,6 +22,8 @@ Modern web rebuild of **The Skeleton Key** (2018 TUI lineage). GitHub repo: **[n
 
 **Contact:** [neur0sp1cy@proton.me](mailto:neur0sp1cy@proton.me) - questions, concerns, and comments.
 
+**Special thanks to [derv82](https://github.com/derv82/)** for early testing and feedback.
+
 ---
 
 ## Legal and authorized use
