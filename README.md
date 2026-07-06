@@ -53,9 +53,9 @@ Full policy: **[SECURITY.md](SECURITY.md)** (authorized use, vulnerability repor
 </p>
 
 <p align="center">
-  <img src="web/static/screenshot-main.png" alt="TSK main UI — device sidebar, HAK5 payload browse, and preview panel" width="100%">
+  <img src="web/static/screenshot-main.png" alt="TSK main UI - device sidebar, HAK5 payload browse, and preview panel" width="100%">
 </p>
-<p align="center"><sub><strong>Payload browse</strong> — HAK5 libraries, expand/collapse categories, live preview, flash controls</sub></p>
+<p align="center"><sub><strong>Payload browse</strong> - HAK5 libraries, expand/collapse categories, live preview, flash controls</sub></p>
 
 <br>
 
@@ -63,11 +63,11 @@ Full policy: **[SECURITY.md](SECURITY.md)** (authorized use, vulnerability repor
 <tr>
 <td width="50%" valign="top" align="center">
   <img src="web/static/screenshot-snarf.png" alt="SNARF USB Dropper exfil builder" width="100%">
-  <p><sub><strong>SNARF</strong> — visual exfil builder · targets, format, LHOST/LPORT</sub></p>
+  <p><sub><strong>SNARF</strong> - visual exfil builder · targets, format, LHOST/LPORT</sub></p>
 </td>
 <td width="50%" valign="top" align="center">
   <img src="web/static/screenshot-catch.png" alt="CATCH phone-home receiver with snarfed files" width="100%">
-  <p><sub><strong>CATCH</strong> — live phone-home uploads · preview · ZIP export</sub></p>
+  <p><sub><strong>CATCH</strong> - live phone-home uploads · preview · ZIP export</sub></p>
 </td>
 </tr>
 </table>
@@ -75,21 +75,21 @@ Full policy: **[SECURITY.md](SECURITY.md)** (authorized use, vulnerability repor
 <br>
 
 <p align="center">
-  <img src="web/static/screenshot-flash.png" alt="USB Dropper flash complete — payload on stick with terminal log" width="100%">
+  <img src="web/static/screenshot-flash.png" alt="USB Dropper flash complete - payload on stick with terminal log" width="100%">
 </p>
-<p align="center"><sub><strong>USB flash</strong> — scan a plain stick, substitute LHOST/LPORT, deploy exfil or lure packages</sub></p>
+<p align="center"><sub><strong>USB flash</strong> - scan a plain stick, substitute LHOST/LPORT, deploy exfil or lure packages</sub></p>
 
 <br>
 
 <table width="100%">
 <tr>
 <td width="50%" valign="top" align="center">
-  <img src="web/static/screenshot-config.png" alt="CONFIG operator settings — LHOST, LPORT, device mounts" width="100%">
-  <p><sub><strong>CONFIG</strong> — LHOST/LPORT, tools, device mount paths</sub></p>
+  <img src="web/static/screenshot-config.png" alt="CONFIG operator settings - LHOST, LPORT, device mounts" width="100%">
+  <p><sub><strong>CONFIG</strong> - LHOST/LPORT, tools, device mount paths</sub></p>
 </td>
 <td width="50%" valign="top" align="center">
-  <img src="web/static/screenshot-about.png" alt="About modal — hardware tags, QR codes, Ko-fi" width="100%">
-  <p><sub><strong>About</strong> — repo, phone-home, and support links</sub></p>
+  <img src="web/static/screenshot-about.png" alt="About modal - hardware tags, QR codes, Ko-fi" width="100%">
+  <p><sub><strong>About</strong> - repo, phone-home, and support links</sub></p>
 </td>
 </tr>
 </table>
@@ -97,9 +97,9 @@ Full policy: **[SECURITY.md](SECURITY.md)** (authorized use, vulnerability repor
 <br>
 
 <p align="center">
-  <img src="web/static/screenshot-tutorial.png" alt="In-app tutorial Mission 01 — initial setup" width="100%">
+  <img src="web/static/screenshot-tutorial.png" alt="In-app tutorial Mission 01 - initial setup" width="100%">
 </p>
-<p align="center"><sub><strong>Tutorial</strong> — seven guided missions at <a href="http://127.0.0.1:1337/tutorial">/tutorial</a> (or press <strong>H</strong> → Open Tutorial)</sub></p>
+<p align="center"><sub><strong>Tutorial</strong> - seven guided missions at <a href="http://127.0.0.1:1337/tutorial">/tutorial</a> (or press <strong>H</strong> → Open Tutorial)</sub></p>
 
 ---
 
